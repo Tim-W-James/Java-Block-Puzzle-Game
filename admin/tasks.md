@@ -1,4 +1,7 @@
 # COMP1110 Assignment 2 Group Tasks
+Weekly meeting times
+Monday 9-11am
+Tuesday 4-6pm
 
 For each task or sub-task, record who is responsible, the deadline, and any dependencies.
 Use the entries below as an example.
