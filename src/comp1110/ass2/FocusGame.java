@@ -25,6 +25,7 @@ public class FocusGame {
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // FIXME Task 2: determine whether a piece placement is well-formed
         return false;
+
     }
 
     /**
