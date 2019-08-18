@@ -1,28 +1,29 @@
-package comp1110.ass2.gui;
+package comp1110.ass2;
 
 public class Tile {
 
-    private TileType t;
-    private Position p;
-    private Orientation o;
+    private TileType type;
+    private Position pos;
+    private Direction dir;
+    private String placement;
 
     public Tile (String placement) {
-        this.t  = ;
-        this.p = ;
-        this. o = ;
-
+//        this.type = ;
+//        this.pos = ;
+//        this.dir = ;
+        this.placement = placement;
     }
 
     public TileType getTileType() {
-        return t;
+        return type;
     }
 
     public Position getPosition() {
-        return p;
+        return pos;
     }
 
-    public Orientation getOrientation() {
-        return o;
+    public Direction getDirection() {
+        return dir;
     }
 
     //getOrientation
