@@ -26,5 +26,6 @@ public class GameBoardArray {
     public boolean checkValidPosition(Tile t) {
         // TODO
         // Checks if a tile can go in a given board position
+        return false;
     }
 }
