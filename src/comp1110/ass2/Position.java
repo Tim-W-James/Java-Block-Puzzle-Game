@@ -1,8 +1,9 @@
 package comp1110.ass2;
 
+// stores a position for a tile
 public class Position {
-    private int x;
-    private int y;
+    private int x; //x is the column
+    private int y; // y is the row
 
     public Position () {
         this(-1,-1);

@@ -1,13 +1,11 @@
 package comp1110.ass2;
 
-/*
-    Valid directions for a piece
- */
+// encodes the direction a tile is facing
 public enum Direction {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST;
+    NORTH, //0
+    SOUTH, //1
+    EAST,  //2
+    WEST;  //3
 
     public char toChar() {
         switch (this) {
