@@ -23,21 +23,13 @@ public class FocusGame {
      * @return True if the piece placement is well-formed
      */
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
-            if (piecePlacement.length() == 4) {
-                if (piecePlacement.charAt(0) >= 97 && piecePlacement.charAt(0) <= 106) {
-                    if (piecePlacement.charAt(1) >= '0' && piecePlacement.charAt(1) <= '8') {
-                        if (piecePlacement.charAt(2) >= '0' && piecePlacement.charAt(2) <= '4') {
-                            if (piecePlacement.charAt(3) >= '0' && piecePlacement.charAt(3) <= '3') {
-                                return true;
-                            } else
-                                return false;
-                        } else
-                            return false;
-                    } else
-                        return false;
-                } else
-                    return false;
-            }
+        //Using ascii values
+            if (piecePlacement.length() == 4 &&
+            piecePlacement.charAt(0) >= 97 && piecePlacement.charAt(0) <= 106 &&
+            piecePlacement.charAt(1) >= 48 && piecePlacement.charAt(1) <= 56 &&
+            piecePlacement.charAt(2) >= 48 && piecePlacement.charAt(2) <= 52 &&
+            piecePlacement.charAt(3) >= 48 && piecePlacement.charAt(3) <= 51)
+                return true;
             else
                 return false;
     }
