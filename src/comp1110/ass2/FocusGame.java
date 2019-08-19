@@ -79,9 +79,8 @@ public class FocusGame {
 
                 // check that each individual piece placement is well formed,
                 // and that the same piece shape does not occur more than once
-                String tempPlacement = placement;
                 if (!isPiecePlacementWellFormed(substring) ||
-                        tempPlacement.length() - tempPlacement.replace(substring.substring(0,1),"").length() > 1)
+                        placement.length() - placement.replace(substring.substring(0,1),"").length() > 1)
                     return false;
 
                 substring = "";
