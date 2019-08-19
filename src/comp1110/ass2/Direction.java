@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+/*
+    Valid directions for a piece
+ */
 public enum Direction {
     NORTH,
     SOUTH,
