@@ -43,8 +43,8 @@ public class Tile {
     public static Position placementToPosition (String placement) {
         // position indexed at x: [1] and y: [2]
         return new Position(
-                Character.getNumericValue(placement.charAt(1)),
-                Character.getNumericValue(placement.charAt(2)));
+            Character.getNumericValue(placement.charAt(1)),
+            Character.getNumericValue(placement.charAt(2)));
     }
 
     public static Direction placementToDirection (String placement) {

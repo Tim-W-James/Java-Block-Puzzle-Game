@@ -1,6 +1,7 @@
 package comp1110.ass2;
 
 import java.util.Set;
+import java.lang.String;
 
 /**
  * This class provides the text interface for the IQ Focus Game
@@ -24,14 +25,11 @@ public class FocusGame {
      */
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         //Using ascii values
-            if (piecePlacement.length() == 4 &&
+        return (piecePlacement.length() == 4 &&
             piecePlacement.charAt(0) >= 97 && piecePlacement.charAt(0) <= 106 &&
             piecePlacement.charAt(1) >= 48 && piecePlacement.charAt(1) <= 56 &&
             piecePlacement.charAt(2) >= 48 && piecePlacement.charAt(2) <= 52 &&
-            piecePlacement.charAt(3) >= 48 && piecePlacement.charAt(3) <= 51)
-                return true;
-            else
-                return false;
+            piecePlacement.charAt(3) >= 48 && piecePlacement.charAt(3) <= 51);
     }
 
     /**
@@ -45,26 +43,52 @@ public class FocusGame {
      */
     public static boolean isPlacementStringWellFormed(String placement) {
         // FIXME Task 3: determine whether a placement is well-formed
-        int l = placement.length();
-        //20
-        //5 4's
-        if (l % 4 == 0 && l/4 <= 10) {
-            for (int i = 0; l == 0; i++) {
-                return isPiecePlacementWellFormed(i );
-                if (i == 3) {
-                    i = 0;
-                    l -= l / 4;
-                }
-                else
-                    i++;
+//        int l = placement.length();
+//        //20
+//        //5 4's
+//        if (l % 4 == 0 && l/4 <= 10) {
+//            for (int i = 0; l == 0; i++) {
+//                return isPiecePlacementWellFormed(i );
+//                if (i == 3) {
+//                    i = 0;
+//                    l -= l / 4;
+//                }
+//                else
+//                    i++;
+//
+//            }
+//
+//        }
+//        else
+//            return false;
+//            //get rid of that section of the pieceplacement and use contains to see if the shape
+//            //appears in the stirng again
 
-            }
 
-        }
-        else
+        // check length is valid
+        if (placement.length() % 4 != 0)
             return false;
-            //get rid of that section of the pieceplacement and use contains to see if the shape
-            //appears in the stirng again
+
+        String[] substringArray = new String[placement.length()/4];
+        String substring = "";
+        int acc = 0;
+
+        for (char x : placement.toCharArray()) {
+            substring += x;
+            if (acc % 4 == 0) {
+                substringArray[acc/4] = substring;
+                String temp = placement;
+
+                if (!isPiecePlacementWellFormed(substring) ||
+                    temp.length() - temp.replace(substring.substring(0,1),"").length() > 1)
+                    return false;
+
+                substring = "";
+            }
+            acc++;
+        }
+
+        return true;
     }
 
     /**
