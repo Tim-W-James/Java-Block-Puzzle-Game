@@ -8,8 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+
+import java.awt.*;
 
 /**
  * A very simple viewer for piece placements in the IQ-Focus game.
@@ -38,6 +42,11 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
+        Image image = new Image("comp1110/ass2/gui/assets/a.png");
+
+        ImageView iv1 = new ImageView();
+        iv1.setImage(image);
+        root.getChildren().add(iv1);
     }
 
     /**
@@ -71,6 +80,7 @@ public class Viewer extends Application {
         root.getChildren().add(controls);
 
         makeControls();
+        makePlacement("magic");
 
         primaryStage.setScene(scene);
         primaryStage.show();
