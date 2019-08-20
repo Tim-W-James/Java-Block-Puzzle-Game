@@ -42,29 +42,6 @@ public class FocusGame {
      * @return True if the placement is well-formed
      */
     public static boolean isPlacementStringWellFormed(String placement) {
-        // Rebecca's implementation
-//        int l = placement.length();
-//        //20
-//        //5 4's
-//        if (l % 4 == 0 && l/4 <= 10) {
-//            for (int i = 0; l == 0; i++) {
-//                return isPiecePlacementWellFormed(i );
-//                if (i == 3) {
-//                    i = 0;
-//                    l -= l / 4;
-//                }
-//                else
-//                    i++;
-//
-//            }
-//
-//        }
-//        else
-//            return false;
-//            //get rid of that section of the pieceplacement and use contains to see if the shape
-//            //appears in the stirng again
-
-
         // check length is valid
         if (placement.length() % 4 != 0 ||
                 placement.length() == 0)
