@@ -30,10 +30,12 @@ collaboration:
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
-code:
-  - comment:
-    url:
-    licence:
+code: ImageView iv1 = new ImageView();
+      iv1.setImage(image);
+    comment: Helped us with Task 4 in helping the images pop up in the window.
+    url: https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/ImageView.html
+    licence: from Oracle Java documentation
+    -IS THIS NECESSARY TO REFERENCE AND WHAT SHOULD BE PUT FOR LICENCE?
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL
