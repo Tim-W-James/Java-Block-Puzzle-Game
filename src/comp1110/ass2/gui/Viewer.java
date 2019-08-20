@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import com.sun.webkit.network.Util;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.awt.*;
+import java.net.URI;
 
 /**
  * A very simple viewer for piece placements in the IQ-Focus game.
@@ -29,7 +31,7 @@ public class Viewer extends Application {
     private static final int VIEWER_WIDTH = 720;
     private static final int VIEWER_HEIGHT = 480;
 
-    private static final String URI_BASE = "assets/";
+    private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
     private final Group root = new Group();
     private final Group controls = new Group();
@@ -42,10 +44,24 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
-        Image image = new Image("comp1110/ass2/gui/assets/a.png");
+
+        char shape = placement.charAt(0);
+        int xPos = Character.getNumericValue(placement.charAt(1));
+        int yPos = Character.getNumericValue(placement.charAt(2));
+        char direction = placement.charAt(3);
+
+        Image image = new Image((URI_BASE + shape + ".png").toString());
 
         ImageView iv1 = new ImageView();
         iv1.setImage(image);
+        iv1.setFitWidth(SQUARE_SIZE);
+        iv1.setPreserveRatio(true);
+        iv1.setSmooth(true);
+        iv1.setCache(true);
+
+        iv1.setTranslateX(xPos * SQUARE_SIZE);
+        iv1.setTranslateY(yPos * SQUARE_SIZE);
+
         root.getChildren().add(iv1);
     }
 
@@ -80,7 +96,6 @@ public class Viewer extends Application {
         root.getChildren().add(controls);
 
         makeControls();
-        makePlacement("magic");
 
         primaryStage.setScene(scene);
         primaryStage.show();
