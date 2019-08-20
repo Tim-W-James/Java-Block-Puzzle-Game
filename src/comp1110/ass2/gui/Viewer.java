@@ -54,8 +54,14 @@ public class Viewer extends Application {
 
         ImageView iv1 = new ImageView();
         iv1.setImage(image);
-        iv1.setFitWidth(SQUARE_SIZE);
-        iv1.setPreserveRatio(true);
+
+        int[] size = tileSize(placement);
+        iv1.setFitWidth(SQUARE_SIZE*size[0]);
+        iv1.setFitHeight(SQUARE_SIZE*size[1]);
+
+
+//        iv1.setFitWidth(SQUARE_SIZE);
+//        iv1.setPreserveRatio(true);
         iv1.setSmooth(true);
         iv1.setCache(true);
 
@@ -63,6 +69,57 @@ public class Viewer extends Application {
         iv1.setTranslateY(yPos * SQUARE_SIZE);
 
         root.getChildren().add(iv1);
+    }
+
+    private int[] tileSize(String placement) {
+        char shape = placement.charAt(0);
+        switch (shape) {
+            case 'a': {
+                int[] size = {3,2};
+                return size;
+            }
+            case 'b': {
+                int[] size = {4,2};
+                return size;
+            }
+            case 'c': {
+                int[] size = {4,2};
+                return size;
+            }
+            case 'd': {
+                int[] size = {3,2};
+                return size;
+            }
+            case 'e': {
+                int[] size = {3,2};
+                return size;
+            }
+            case 'f': {
+                int[] size = {3,1};
+                return size;
+            }
+            case 'g': {
+                int[] size = {3,2};
+                return size;
+            }
+            case 'h': {
+                int[] size = {3,3};
+                return size;
+            }
+            case 'i': {
+                int[] size = {2,2};
+                return size;
+            }
+            case 'j': {
+                int[] size = {4,2};
+                return size;
+            }
+            default: {
+                int[] size = {1,1};
+                return size;
+            }
+
+        }
     }
 
     /**
