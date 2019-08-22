@@ -3,8 +3,8 @@ package comp1110.ass2;
 // encodes the direction a tile is facing
 public enum Direction {
     NORTH, //0
-    SOUTH, //1
-    EAST,  //2
+    EAST,  //1
+    SOUTH, //2
     WEST;  //3
 
     public char toChar() {
