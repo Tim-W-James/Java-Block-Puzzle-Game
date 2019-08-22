@@ -73,6 +73,7 @@ public class GameBoardArray {
         if (!checkValidPosition(t))
             throw new IllegalArgumentException("Invalid Tile Input");
 
+        //There's probably a more efficient way...
         switch (t.getDirection()) {
             case NORTH:
                 if (s == Shape.A)
@@ -128,6 +129,171 @@ public class GameBoardArray {
                     gameBoard[7-x][y-1] = WTE;
                     gameBoard[6-x][y-1] = RED;
                     gameBoard[9-x][y] = GRN;
+
+            case SOUTH:
+                if (s == Shape.A)
+                    gameBoard[9-x][y] = RED;
+                    gameBoard[8-x][y] = WTE;
+                    gameBoard[7-x][y] = GRN;
+                    gameBoard[8-x][y-1] = RED;
+                if (s == Shape.B)
+                    gameBoard[7-x][y-1] = WTE;
+                    gameBoard[6-x][y-1] = WTE;
+                    gameBoard[9-x][y] = GRN;
+                    gameBoard[8-x][y] = GRN;
+                    gameBoard[7-x][y] = BLE;
+                if (s == Shape.C)
+                    gameBoard[9-x][y-1] = BLE;
+                    gameBoard[8-x][y-1] = WTE;
+                    gameBoard[7-x][y-1] = RED;
+                    gameBoard[6-x][y-1] = RED;
+                    gameBoard[8-x][y] = GRN;
+                if (s == Shape.D)
+                    gameBoard[9-x][y-1] = BLE;
+                    gameBoard[9-x][y] = RED;
+                    gameBoard[8-x][y] = RED;
+                    gameBoard[7-x][y] = RED;
+                if (s == Shape.E)
+                    gameBoard[8-x][y-1] = RED;
+                    gameBoard[7-x][y-1] = RED;
+                    gameBoard[9-x][y] = BLE;
+                    gameBoard[8-x][y] = BLE;
+                    gameBoard[7-x][y] = BLE;
+                if (s == Shape.F)
+                    gameBoard[9-x][y-1] = WTE;
+                    gameBoard[8-x][y-1] = WTE;
+                    gameBoard[7-x][y-1] = WTE;
+                if (s == Shape.G)
+                    gameBoard[9-x][y-1] = WTE;
+                    gameBoard[8-x][y-1] = BLE;
+                    gameBoard[8-x][y] = BLE;
+                    gameBoard[7-x][y] = WTE;
+                if (s == Shape.H)
+                    gameBoard[7-x][y-1] = WTE;
+                    gameBoard[7-x][y] = WTE;
+                    gameBoard[9-x][y+1] = GRN;
+                    gameBoard[8-x][y+1] = GRN;
+                    gameBoard[7-x][y+1] = RED;
+                if (s == Shape.I)
+                    gameBoard[9-x][y-1] = WTE;
+                    gameBoard[9-x][y] = BLE;
+                    gameBoard[8-x][y] = BLE;
+                if (s == Shape.J)
+                    gameBoard[9-x][y] = RED;
+                    gameBoard[8-x][y] = WTE;
+                    gameBoard[7-x][y] = GRN;
+                    gameBoard[6-x][y] = GRN;
+                    gameBoard[9-x][y-1] = GRN;
+
+            case EAST:
+                if (s == Shape.A)
+                    gameBoard[8-x][y-1] = GRN;
+                    gameBoard[9-x][y] = RED;
+                    gameBoard[8-x][y] = WTE;
+                    gameBoard[8-x][y+1] = RED;
+                if (s == Shape.B)
+                    gameBoard[9-x][y-1] = WTE;
+                    gameBoard[9-x][y] = WTE;
+                    gameBoard[8-x][y] = BLE;
+                    gameBoard[8-x][y+1] = GRN;
+                    gameBoard[8-x][y+2] = GRN;
+                if (s == Shape.C)
+                    gameBoard[9-x][y-1] = RED;
+                    gameBoard[9-x][y] = RED;
+                    gameBoard[9-x][y+1] = WTE;
+                    gameBoard[8-x][y+1] =GRN;
+                    gameBoard[9-x][y+2] = BLE;
+                if (s == Shape.D)
+                    gameBoard[8-x][y-1] = RED;
+                    gameBoard[8-x][y] = RED;
+                    gameBoard[9-x][y+1] = BLE;
+                    gameBoard[8-x][y+1] = RED;
+                if (s == Shape.E)
+                    gameBoard[9-x][y-1] = RED;
+                    gameBoard[8-x][y-1] = BLE;
+                    gameBoard[9-x][y] = RED;
+                    gameBoard[8-x][y] = BLE;
+                    gameBoard[8-x][y+1] = BLE;
+                if (s == Shape.F)
+                    gameBoard[9-x][y-1] = WTE;
+                    gameBoard[9-x][y] = WTE;
+                    gameBoard[9-x][y+1] = WTE;
+                if (s == Shape.G)
+                    gameBoard[8-x][y-1] = WTE;
+                    gameBoard[9-x][y] = BLE;
+                    gameBoard[8-x][y] = BLE;
+                    gameBoard[9-x][y+1] = WTE;
+                if (s == Shape.H)
+                    gameBoard[9-x][y-1] = WTE;
+                    gameBoard[8-x][y-1] = WTE;
+                    gameBoard[7-x][y-1] = RED;
+                    gameBoard[7-x][y] = GRN;
+                    gameBoard[7-x][y+1] = GRN;
+                if (s == Shape.I)
+                    gameBoard[8-x][y-1] = BLE;
+                    gameBoard[9-x][y] = WTE;
+                    gameBoard[8-x][y] = BLE;
+                if (s == Shape.J)
+                    gameBoard[9-x][y-1] = GRN;
+                    gameBoard[8-x][y-1] = GRN;
+                    gameBoard[8-x][y] = GRN;
+                    gameBoard[8-x][y+1] = WTE;
+                    gameBoard[8-x][y+2] = RED;
+
+            default:
+                if (s == Shape.A)
+                    gameBoard[9-x][y-1] = RED;
+                    gameBoard[9-x][y] = WTE;
+                    gameBoard[8-x][y] = RED;
+                    gameBoard[9-x][y+1] = GRN;
+                if (s == Shape.B)
+                    gameBoard[9-x][y-1] = GRN;
+                    gameBoard[9-x][y] = GRN;
+                    gameBoard[9-x][y+1] = BLE;
+                    gameBoard[8-x][y+1] = WTE;
+                    gameBoard[8-x][y+2] = WTE;
+                if (s == Shape.C)
+                    gameBoard[8-x][y-1] = BLE;
+                    gameBoard[9-x][y] = GRN;
+                    gameBoard[8-x][y] = WTE;
+                    gameBoard[8-x][y+1] =RED;
+                    gameBoard[8-x][y+2] = RED;
+                if (s == Shape.D)
+                    gameBoard[9-x][y-1] = RED;
+                    gameBoard[8-x][y-1] = BLE;
+                    gameBoard[9-x][y] = RED;
+                    gameBoard[9-x][y+1] = RED;
+                if (s == Shape.E)
+                    gameBoard[9-x][y-1] = BLE;
+                    gameBoard[9-x][y] = BLE;
+                    gameBoard[8-x][y] = RED;
+                    gameBoard[9-x][y+1] = BLE;
+                    gameBoard[8-x][y+1] = RED;
+                if (s == Shape.F)
+                    gameBoard[9-x][y-1] = WTE;
+                    gameBoard[9-x][y] = WTE;
+                    gameBoard[9-x][y+1] = WTE;
+                if (s == Shape.G)
+                    gameBoard[8-x][y-1] = WTE;
+                    gameBoard[9-x][y] = BLE;
+                    gameBoard[8-x][y] = BLE;
+                    gameBoard[9-x][y+1] = WTE;
+                if (s == Shape.H)
+                    gameBoard[9-x][y-1] = GRN;
+                    gameBoard[9-x][y] = GRN;
+                    gameBoard[9-x][y+1] = RED;
+                    gameBoard[8-x][y+1] = WTE;
+                    gameBoard[7-x][y+1] = WTE;
+                if (s == Shape.I)
+                    gameBoard[9-x][y-1] = BLE;
+                    gameBoard[8-x][y-1] = WTE;
+                    gameBoard[9-x][y] = BLE;
+                if (s == Shape.J)
+                    gameBoard[9-x][y-1] = RED;
+                    gameBoard[9-x][y] = WTE;
+                    gameBoard[9-x][y+1] = GRN;
+                    gameBoard[9-x][y+2] = GRN;
+                    gameBoard[8-x][y+2] = GRN;
         }
 
         // TODO updateBoardPosition should update the board with a tile
