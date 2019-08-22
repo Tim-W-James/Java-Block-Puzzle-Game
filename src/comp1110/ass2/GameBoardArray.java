@@ -46,8 +46,20 @@ public class GameBoardArray {
 
     public boolean checkValidPosition(Tile t) {
         // TODO checkValidPosition should check if a tile can go in a given board position
-        return false;
+
+
+        if (!(t.getPosition().getX() >= 1 && t.getPosition().getX() <= 9
+            && t.getPosition().getX() >= 1 && t.getPosition().getY() <= 5))
+            return false;
+        else
+        //Factoring in the two columns with nulls at the end
+            if ((t.getPosition().getX() == 1 || t.getPosition().getX() == 9)
+                && t.getPosition().getY() == 5)
+                return false;
+            else
+                return true;
     }
+
     public boolean checkValidPosition(String piecePlacement) { // also accepts String input
         Tile t = new Tile(piecePlacement);
         return checkValidPosition(t);
@@ -55,7 +67,7 @@ public class GameBoardArray {
 
     public void updateBoardPosition(Tile t) {
         // check position is valid
-        if (checkValidPosition(t))
+        if (!checkValidPosition(t))
             throw new IllegalArgumentException("Invalid Tile Input");
 
         // TODO updateBoardPosition should update the board with a tile
