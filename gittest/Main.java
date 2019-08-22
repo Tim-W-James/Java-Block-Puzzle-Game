@@ -3,5 +3,6 @@ public class Main {
         A a = new A();
         System.out.println("Potato");
         B b = new B();
+        C c = new C();
     }
 }
