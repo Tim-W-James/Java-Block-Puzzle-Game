@@ -23,6 +23,7 @@ public class FocusGame {
      * @param piecePlacement A string describing a piece placement
      * @return True if the piece placement is well-formed
      */
+
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // check each character falls within valid ascii values
         return (piecePlacement.length() == 4 &&
@@ -82,8 +83,12 @@ public class FocusGame {
      * @return True if the placement sequence is valid
      */
     public static boolean isPlacementStringValid(String placement) {
-        // FIXME Task 5: determine whether a placement string is valid
-        return false;
+        if (!isPlacementStringWellFormed(placement))
+            return false;
+
+        // TODO check if valid
+
+        return true;
     }
 
     /**
