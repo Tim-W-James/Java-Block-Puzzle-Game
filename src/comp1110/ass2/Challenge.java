@@ -1,9 +1,13 @@
 package comp1110.ass2;
 
 public class Challenge {
+    // 9 characters long with only characters that correspond to a state
     private String challenge;
 
     public Challenge(String challenge) {
+        if (!isChallengeWFormed(challenge)) // check if well-formed
+            throw new IllegalArgumentException("Input Challenge Invalid");
+
         this.challenge = challenge;
     }
 
@@ -13,8 +17,6 @@ public class Challenge {
 
     // replace the central 3*3 square on a GameBoardArray with the challenge condition
     private GameBoardArray overlayOnGBA (GameBoardArray initBoard) {
-        //GameBoardArray finlBoard = super.clone(initBoard); // TODO change to copy instead
-
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 3; l++) {
                 initBoard.getBoardState()[3+l][1+i] = State.charToState(challenge.charAt(l+3*i));
@@ -29,10 +31,22 @@ public class Challenge {
 
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 3; l++) {
-                if (initBoard.getBoardState()[3+l][1+i] != challengeBoard.getBoardState()[3+l][1+i]) {
+                if (initBoard.getBoardState()[3+l][1+i] != challengeBoard.getBoardState()[3+l][1+i])
                     return false;
-                }
             }
+        }
+
+        return true;
+    }
+
+    // class method to check if a challenge is well-formed
+    public static boolean isChallengeWFormed (String challenge) {
+        if (challenge.length() != 9) // check length
+            return false;
+
+        for (char c : challenge.toCharArray()) { // check if each character is valid
+            if (!(c == 'R' || c == 'G' || c == 'B' || c == 'W' || c == 'N' || c == 'E'))
+                return false;
         }
 
         return true;

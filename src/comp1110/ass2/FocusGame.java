@@ -83,10 +83,18 @@ public class FocusGame {
      * @return True if the placement sequence is valid
      */
     public static boolean isPlacementStringValid(String placement) {
+        // check placement is well-formed
         if (!isPlacementStringWellFormed(placement))
             return false;
 
-        // TODO check if valid
+        // check placement is valid to game rules
+        GameBoardArray board = new GameBoardArray();
+        for (Tile t : Tile.placementToTileArray(placement)) {
+            if (!board.checkValidPosition(t))
+                return false;
+            else
+                board.updateBoardPosition(t);
+        }
 
         return true;
     }

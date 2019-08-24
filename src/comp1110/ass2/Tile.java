@@ -29,7 +29,7 @@ public class Tile {
             throw new IllegalArgumentException(invalidTileMsg);
     }
 
-    /*
+    /**
      get methods
       */
 
@@ -41,7 +41,7 @@ public class Tile {
 
     public String getPlacement() { return placement; }
 
-    /*
+    /**
      class methods to convert from piece placement String
       */
 
@@ -70,16 +70,14 @@ public class Tile {
         // encode vertical symmetry
         if ((placementToShape(piecePlacement) == Shape.F ||
                 placementToShape(piecePlacement) == Shape.G) &&
-                piecePlacement.charAt(3) == '2') {
+                piecePlacement.charAt(3) == '2')
             return NORTH;
-        }
 
         // encode horizontal symmetry
         else if ((placementToShape(piecePlacement) == Shape.F ||
                 placementToShape(piecePlacement) == Shape.G) &&
-                piecePlacement.charAt(3) == '3') {
+                piecePlacement.charAt(3) == '3')
             return EAST;
-        }
 
         // encode as normal
         else {
