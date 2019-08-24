@@ -1,21 +1,19 @@
 package comp1110.ass2.gui;
 
-import com.sun.webkit.network.Util;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.net.URI;
+// do we need these imports?
+//import com.sun.webkit.network.Util;
+//import java.awt.*;
+//import java.net.URI;
 
 /**
  * A very simple viewer for piece placements in the IQ-Focus game.
