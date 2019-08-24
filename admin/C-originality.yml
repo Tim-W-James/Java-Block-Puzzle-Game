@@ -19,7 +19,6 @@ declaration: >-
 #
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
-collaboration:
 
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
@@ -40,7 +39,6 @@ code: ImageView iv1 = new ImageView();
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external assets)
-assets:]
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
