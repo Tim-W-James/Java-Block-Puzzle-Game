@@ -9,6 +9,7 @@ public class Position {
     public Position (int x, int y) {
         this.x = x;
         this.y = y;
+        this.s = null;
     }
 
     // can also store a state with a position
@@ -26,6 +27,9 @@ public class Position {
 
     @Override
     public String toString() {
-        return x+""+y;
+        if (s == null)
+            return "[X:"+x+"][Y:"+y+"]";
+        else
+            return "[X:"+x+"][Y:"+y+"] State:"+s;
     }
 }
