@@ -23,6 +23,8 @@ public class Position {
 
     public int getY() { return y; }
 
+    public String getPosString() { return x+""+y; }
+
     public Tile.State getS() { return s; }
 
     @Override
