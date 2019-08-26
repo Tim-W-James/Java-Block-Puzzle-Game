@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.GameBoardArray;
 import comp1110.ass2.Tile;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -37,6 +38,9 @@ public class Viewer extends Application {
     private final Group controls = new Group();
     private TextField textField;
 
+    /* GameBoard instance */
+    GameBoardArray board = new GameBoardArray();
+
     /**
      * Draw a placement in the window, removing any previously drawn one
      *
@@ -46,27 +50,34 @@ public class Viewer extends Application {
         // FIXME Task 4: implement the simple placement viewer
 
         Tile toPlace = new Tile(placement);
-
         var shapes = toPlace.getShapeArrangement();
-        for (Position shape:
-             shapes) {
-            System.out.println(shape);
 
-            Image image = new Image((URI_BASE + stateToString(shape)) + ".png");
-            ImageView iv1 = new ImageView();
-            iv1.setImage(image);
-            iv1.setFitHeight(SQUARE_SIZE);
-            iv1.setFitWidth(SQUARE_SIZE);
+        if (board.checkValidPosition(toPlace)) {
+            board.updateBoardPosition(toPlace);
 
-            iv1.setSmooth(true);
-            iv1.setCache(true);
+            for (Position shape:
+                    shapes) {
+                System.out.println(shape);
 
-            iv1.setTranslateX(shape.getX() * SQUARE_SIZE);
-            iv1.setTranslateY(shape.getY() * SQUARE_SIZE);
+                Image image = new Image((URI_BASE + stateToString(shape)) + ".png");
+                ImageView iv1 = new ImageView();
+                iv1.setImage(image);
+                iv1.setFitHeight(SQUARE_SIZE);
+                iv1.setFitWidth(SQUARE_SIZE);
 
-            root.getChildren().add(iv1);
+                iv1.setSmooth(true);
+                iv1.setCache(true);
 
+                iv1.setTranslateX(shape.getX() * SQUARE_SIZE);
+                iv1.setTranslateY(shape.getY() * SQUARE_SIZE);
+
+                root.getChildren().add(iv1);
+            }
+        } else {
+            System.out.println("Position for " + toPlace + " Is invalid");
         }
+
+
 
 //
 //        char shape = placement.charAt(0);
