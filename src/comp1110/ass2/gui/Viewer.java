@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.Tile;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import comp1110.ass2.Position;
 
 // do we need these imports?
 //import com.sun.webkit.network.Util;
@@ -43,40 +45,80 @@ public class Viewer extends Application {
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
 
-        char shape = placement.charAt(0);
-        int xPos = Character.getNumericValue(placement.charAt(1));
-        int yPos = Character.getNumericValue(placement.charAt(2));
-        char direction = placement.charAt(3);
+        Tile toPlace = new Tile(placement);
 
-        // Set the image based on the shape
-        Image image = new Image((URI_BASE + shape + ".png").toString());
+        var shapes = toPlace.getShapeArrangement();
+        for (Position shape:
+             shapes) {
+            System.out.println(shape);
 
-        // Create a view for the image
-        ImageView iv1 = new ImageView();
-        iv1.setImage(image);
+            Image image = new Image((URI_BASE + stateToString(shape)) + ".png");
+            ImageView iv1 = new ImageView();
+            iv1.setImage(image);
+            iv1.setFitHeight(SQUARE_SIZE);
+            iv1.setFitWidth(SQUARE_SIZE);
 
-        // Get the rotation for the piece
-        // TODO
-//        double rotation = tileRotation(placement);
-//        iv1.setNodeOrientation();
+            iv1.setSmooth(true);
+            iv1.setCache(true);
 
-        // Get the size of the piece
-        int[] size = tileSize(placement);
-        iv1.setFitWidth(SQUARE_SIZE*size[0]);
-        iv1.setFitHeight(SQUARE_SIZE*size[1]);
-//        iv1.setPreserveRatio(true);
+            iv1.setTranslateX(shape.getX() * SQUARE_SIZE);
+            iv1.setTranslateY(shape.getY() * SQUARE_SIZE);
 
+            root.getChildren().add(iv1);
 
+        }
 
-        iv1.setSmooth(true);
-        iv1.setCache(true);
+//
+//        char shape = placement.charAt(0);
+//        int xPos = Character.getNumericValue(placement.charAt(1));
+//        int yPos = Character.getNumericValue(placement.charAt(2));
+//        char direction = placement.charAt(3);
+//
+//        // Set the image based on the shape
+//        Image image = new Image((URI_BASE + shape + ".png").toString());
+//
+//        // Create a view for the image
+//        ImageView iv1 = new ImageView();
+//        iv1.setImage(image);
+//
+//        // Get the rotation for the piece
+//        // TODO
+////        double rotation = tileRotation(placement);
+////        iv1.setNodeOrientation();
+//
+//        // Get the size of the piece
+//        int[] size = tileSize(placement);
+//        iv1.setFitWidth(SQUARE_SIZE*size[0]);
+//        iv1.setFitHeight(SQUARE_SIZE*size[1]);
+////        iv1.setPreserveRatio(true);
+//
+//        iv1.setSmooth(true);
+//        iv1.setCache(true);
+//
+//        // Move the piece
+//        iv1.setTranslateX(xPos * SQUARE_SIZE);
+//        iv1.setTranslateY(yPos * SQUARE_SIZE);
+//
+//
+//        root.getChildren().add(iv1);
+    }
 
-        // Move the piece
-        iv1.setTranslateX(xPos * SQUARE_SIZE);
-        iv1.setTranslateY(yPos * SQUARE_SIZE);
+    private String stateToString(Position s) {
+        switch (s.getS()) {
+            case WTE:
+                return "sq-w";
+            case RED:
+                return "sq-r";
+            case BLE:
+                return "sq-b";
+            case GRN:
+                return "sq-g";
+            case EMP:
+                return "";
+            default:
+                return "";
+        }
 
-
-        root.getChildren().add(iv1);
     }
 
     private int[] tileSize(String placement) {
