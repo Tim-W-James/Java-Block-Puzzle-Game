@@ -19,7 +19,7 @@ public class Challenge {
     private GameBoardArray overlayOnGBA (GameBoardArray initBoard) {
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 3; l++) {
-                initBoard.getBoardState()[3+l][1+i] = Tile.State.charToState(challenge.charAt(l+3*i));
+                initBoard.getBoardState()[3+l][1+i] = State.charToState(challenge.charAt(l+3*i));
             }
         }
         return initBoard;

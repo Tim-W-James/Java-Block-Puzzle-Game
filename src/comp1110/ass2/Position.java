@@ -4,7 +4,7 @@ package comp1110.ass2;
 public class Position {
     private int x; // x is the column
     private int y; // y is the row
-    private Tile.State s; // associate with State if needed
+    private State s; // associate with State if needed
 
     public Position (int x, int y) {
         this.x = x;
@@ -13,7 +13,7 @@ public class Position {
     }
 
     // can also store a state with a position
-    public Position (int x, int y, Tile.State s) {
+    public Position (int x, int y, State s) {
         this.x = x;
         this.y = y;
         this.s = s;
@@ -25,7 +25,7 @@ public class Position {
 
     public String getPosString() { return x+""+y; }
 
-    public Tile.State getS() { return s; }
+    public State getS() { return s; }
 
     @Override
     public String toString() {

@@ -1,16 +1,16 @@
 package comp1110.ass2;
 
-import static comp1110.ass2.Tile.State.*;
+import static comp1110.ass2.State.*;
 
 public class GameBoardArray {
 
     // initially all states are empty, except (0,4) and (8,4) which are unused
     // 9*5, 43 used squares
-    private Tile.State[][] gameBoard;
+    private State[][] gameBoard;
     private String errorMsg;
 
     public GameBoardArray () { // zero arg constructor
-        gameBoard = new Tile.State[][]{
+        gameBoard = new State[][]{
                 {EMP, EMP, EMP, EMP, NLL},
                 {EMP, EMP, EMP, EMP, EMP},
                 {EMP, EMP, EMP, EMP, EMP},
@@ -35,11 +35,11 @@ public class GameBoardArray {
      get methods for the class
       */
 
-    public Tile.State[][] getBoardState() { return gameBoard; }
+    public State[][] getBoardState() { return gameBoard; }
 
     // find the state at a given position
-    public Tile.State getStateAt(Position pos) { return gameBoard[pos.getX()][pos.getY()]; }
-    public Tile.State getStateAt(int x, int y) { return gameBoard[x][y]; }
+    public State getStateAt(Position pos) { return gameBoard[pos.getX()][pos.getY()]; }
+    public State getStateAt(int x, int y) { return gameBoard[x][y]; }
 
 
     /**
