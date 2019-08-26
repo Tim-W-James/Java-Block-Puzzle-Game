@@ -31,6 +31,15 @@ public class GameBoardArray {
         }
     }
 
+    // build board from placements
+    public GameBoardArray (Tile[] placements) {
+        gameBoard = new GameBoardArray().gameBoard;
+        for (Tile t : placements) {
+            updateBoardPosition(t);
+        }
+    }
+
+
     /**
      get methods for the class
       */
@@ -120,8 +129,8 @@ public class GameBoardArray {
 
                 // indicate challenge zone
                 if (x > 2 && x < 6 && y > 0 && y <4) {
-                    br1 = '{';
-                    br2 = '}';
+                    br1 = '*';
+                    br2 = '*';
                 }
 
                 if (gameBoard[x][y] == EMP)
