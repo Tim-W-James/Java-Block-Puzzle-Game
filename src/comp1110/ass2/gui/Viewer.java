@@ -13,10 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import comp1110.ass2.Position;
 
-// do we need these imports?
-//import com.sun.webkit.network.Util;
-//import java.awt.*;
-//import java.net.URI;
 
 /**
  * A very simple viewer for piece placements in the IQ-Focus game.
