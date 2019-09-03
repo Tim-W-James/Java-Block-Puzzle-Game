@@ -1,5 +1,8 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static comp1110.ass2.Direction.*;
 import static comp1110.ass2.State.*;
 
@@ -484,6 +487,26 @@ public class Tile {
 
         return result;
     }
+
+
+
+    //Returns an array of unused shapes yet to be used
+    public static Shape[] returnUnusedTileShapes(String placement) {
+        String shapes = "abcdefghij";
+        String[] pieces = placementToPieceArray(placement);
+
+        for (String p : pieces) {
+            if (shapes.contains(placementToShape(p).toString())) {
+                shapes.replace(placementToShape(p).toString(), "");
+            }
+        }
+        Shape[] unused = new Shape[shapes.length()];
+        for (int i = 0; i < shapes.length(); i++) {
+            unused[i] = Shape.charToShape(shapes.charAt(i));
+        }
+        return unused;
+    }
+
 
     @Override
     public String toString() {
