@@ -43,7 +43,7 @@ public class Viewer extends Application {
      * @param placement A valid placement string
      */
     void makePlacement(String placement) {
-        // FIXME Task 4: implement the simple placement viewer
+
 
         Tile toPlace = new Tile(placement);
         var shapes = toPlace.getShapeArrangement();
@@ -73,7 +73,7 @@ public class Viewer extends Application {
             System.out.println("Position for " + toPlace + " Is invalid");
         }
 
-
+//Can we delete this commented out part?
 
 //
 //        char shape = placement.charAt(0);
@@ -110,6 +110,7 @@ public class Viewer extends Application {
 //        root.getChildren().add(iv1);
     }
 
+    //converts state of tile to corresponding string
     private String stateToString(Position s) {
         switch (s.getS()) {
             case WTE:
@@ -120,14 +121,13 @@ public class Viewer extends Application {
                 return "sq-b";
             case GRN:
                 return "sq-g";
-            case EMP:
-                return "";
             default:
                 return "";
         }
 
     }
 
+    //returns dimensions of tile depending on tile type
     private int[] tileSize(String placement) {
         char shape = placement.charAt(0);
         switch (shape) {
@@ -179,6 +179,7 @@ public class Viewer extends Application {
         }
     }
 
+    //returns orientation of tile in terms of degrees
     private int tileRotation(String placement) {
         int direction = placement.charAt(3);
         switch (direction) {
