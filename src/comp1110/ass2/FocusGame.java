@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.lang.String;
 
@@ -126,7 +127,28 @@ public class FocusGame {
      */
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
+        Set<String> viablePieces = new HashSet<>();
+
+        if (isPlacementStringValid(placement) && Challenge.isChallengeWFormed(challenge)) {
+            Shape[] unused = Tile.returnUnusedTileShapes(placement);
+            for (Shape s : unused) {
+
+                //Look at colours (i.e. shape arrangement of each tile) of unused shapes
+                    //Switch statements for each of the orientations?
+                    //If any of the colours+orientations work for the challenge string, add it to the viable Pieces set??
+
+
+                //Any other ideas how we can go about this??
+
+
+            }
+        }
+        else {
+            return null;
+        }
+
         return null;
+
     }
 
     /**
