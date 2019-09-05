@@ -32,6 +32,18 @@ public class Tile {
             throw new IllegalArgumentException(invalidTileMsg);
     }
 
+
+    //Created for Task 6 implementation
+        //DELETE IF NOT USED
+    public Tile(Shape s, int x, int y, Direction d) {
+        this.shape = s;
+        this.pos = new Position(x, y);
+        this.dir = d;
+        //Not sure if we can just create new Positions within the constructor?
+        //Double check
+    }
+
+
     /**
      get methods
       */
@@ -486,6 +498,19 @@ public class Tile {
         }
 
         return result;
+    }
+
+
+    //Created for Task 6 implementation
+        //DELETE IF NOT USED
+    public static String tileToPiecePlacement(Tile t) {
+        char shape = t.getShape().toChar();
+        char x = (char) t.getPosition().getX();
+        char y = (char) t.getPosition().getY();
+        char dir = t.getDirection().toChar();
+
+        String piecePlacement = "" + shape + x + y + dir;
+        return piecePlacement;
     }
 
 

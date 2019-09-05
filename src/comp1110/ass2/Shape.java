@@ -16,7 +16,7 @@ public enum Shape {
     char type;
 
     Shape(char c) {
-        this.type = type;
+        this.type = c;
     }
 
     public static Shape charToShape(char s) {

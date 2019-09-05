@@ -131,24 +131,51 @@ public class FocusGame {
 
         if (isPlacementStringValid(placement) && Challenge.isChallengeWFormed(challenge)) {
             Shape[] unused = Tile.returnUnusedTileShapes(placement);
-            for (Shape s : unused) {
-
-                //Look at colours (i.e. shape arrangement of each tile) of unused shapes
-                    //Switch statements for each of the orientations?
-                    //If any of the colours+orientations work for the challenge string, add it to the viable Pieces set??
+            GameBoardArray currentBoard = new GameBoardArray(placement);
 
 
-                //Any other ideas how we can go about this??
+            //1. Look at every single space on the game board array.
+            for (int y = 0; y < 5; y++) {
+                for (int x = 0; x < 9; x++) {
 
+                    //2. If it is empty, for each unused shape, check every orientation from that position
+                    if (currentBoard.getStateAt(x,y) == State.EMP) {
+                        for (Shape s : unused) {
+                            Direction d = Direction.NORTH;
+                            /*N.B. direction shouldn't be fixed as you need to check all
+                            directions of the piece.
+                            Switch statement probably easier?*/
 
+                            Tile candidate = new Tile(s,x,y,d);
+                            /*N.B. created new things on Tile document to get this.
+                            Delete respective functions if scrapping this.*/
+
+                            //3. Check if tile is valid on game board using checkValidPosition
+                            if (currentBoard.checkValidPosition(candidate)) {
+                                //4. If valid, check Shape arrangement of the tile
+                                Position[] posState = candidate.getShapeArrangement();
+                                for (int i = 0; i < posState.length; i++) {
+                                    //5. If tile fulfils even just one square of the challenge area, add it to the set
+                                        /*Probably a better way for this tho*/
+
+                                    if (challenge.contains(posState[i].getS().toChar())) {
+                                        /**idk why `contains` won't accept a char**/
+                                        //6. Convert Tile to pieceplacement and add to Set
+                                        viablePieces.add(Tile.tileToPiecePlacement(candidate));
+                                    }
+                                }
+                            }
+                        }
+                }
+            }
             }
         }
         else {
             return null;
         }
 
-        return null;
 
+        return viablePieces;
     }
 
     /**
