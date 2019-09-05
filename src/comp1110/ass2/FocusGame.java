@@ -158,7 +158,7 @@ public class FocusGame {
                                     //5. If tile fulfils even just one square of the challenge area, add it to the set
                                         /*Probably a better way for this tho*/
 
-                                    if (challenge.contains(posState[i].getS().toChar())) {
+                                    if (challenge.contains(String.valueOf(posState[i].getS().toChar()))) {
                                         /**idk why `contains` won't accept a char**/
                                         //6. Convert Tile to pieceplacement and add to Set
                                         viablePieces.add(Tile.tileToPiecePlacement(candidate));
