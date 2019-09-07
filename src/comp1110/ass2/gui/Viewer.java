@@ -72,42 +72,6 @@ public class Viewer extends Application {
         } else {
             System.out.println("Position for " + toPlace + " Is invalid");
         }
-
-//Can we delete this commented out part?
-
-//
-//        char shape = placement.charAt(0);
-//        int xPos = Character.getNumericValue(placement.charAt(1));
-//        int yPos = Character.getNumericValue(placement.charAt(2));
-//        char direction = placement.charAt(3);
-//
-//        // Set the image based on the shape
-//        Image image = new Image((URI_BASE + shape + ".png").toString());
-//
-//        // Create a view for the image
-//        ImageView iv1 = new ImageView();
-//        iv1.setImage(image);
-//
-//        // Get the rotation for the piece
-//        // TODO
-////        double rotation = tileRotation(placement);
-////        iv1.setNodeOrientation();
-//
-//        // Get the size of the piece
-//        int[] size = tileSize(placement);
-//        iv1.setFitWidth(SQUARE_SIZE*size[0]);
-//        iv1.setFitHeight(SQUARE_SIZE*size[1]);
-////        iv1.setPreserveRatio(true);
-//
-//        iv1.setSmooth(true);
-//        iv1.setCache(true);
-//
-//        // Move the piece
-//        iv1.setTranslateX(xPos * SQUARE_SIZE);
-//        iv1.setTranslateY(yPos * SQUARE_SIZE);
-//
-//
-//        root.getChildren().add(iv1);
     }
 
     //converts state of tile to corresponding string
@@ -230,6 +194,7 @@ public class Viewer extends Application {
         root.getChildren().add(controls);
 
         makeControls();
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
