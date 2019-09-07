@@ -7,6 +7,7 @@ public class GameBoardArray {
     // initially all states are empty, except (0,4) and (8,4) which are unused
     // 9*5, 43 used squares
     private State[][] gameBoard;
+    private String placementString; // stores placement String within the gameboard
     private String errorMsg;
 
     public GameBoardArray () { // zero arg constructor
@@ -21,6 +22,7 @@ public class GameBoardArray {
                 {EMP, EMP, EMP, EMP, EMP},
                 {EMP, EMP, EMP, EMP, NLL}
         };
+        placementString = "";
     }
 
     // build board from placements
@@ -29,6 +31,7 @@ public class GameBoardArray {
         for (Tile t : Tile.placementToTileArray(placements)) {
             updateBoardPosition(t);
         }
+        placementString = placements;
     }
 
     // build board from placements
@@ -37,6 +40,7 @@ public class GameBoardArray {
         for (Tile t : placements) {
             updateBoardPosition(t);
         }
+        placementString = Tile.tileArrayToPlacement(placements);
     }
 
 
@@ -45,10 +49,26 @@ public class GameBoardArray {
       */
 
     public State[][] getBoardState() { return gameBoard; }
+    public String getPlacementString() { return placementString; }
 
     // find the state at a given position
     public State getStateAt(Position pos) { return gameBoard[pos.getX()][pos.getY()]; }
     public State getStateAt(int x, int y) { return gameBoard[x][y]; }
+
+    // based on the placementString, returns the appropriate Tile of a given Position
+    public Tile getTileAt (Position p) {
+        // check position has a tile
+        if (getStateAt(p) == EMP || getStateAt(p) == NLL)
+            throw new IllegalArgumentException("No Tile At: "+p);
+
+        // TODO find the Tile at Position p
+        // note that this Tile's piece placement should exist in placementString
+
+        return new Tile("TODO getTileAt");
+    }
+    public Tile getTileAt (int x, int y) {
+        return getTileAt(new Position(x, y));
+    }
 
 
     /**
@@ -89,7 +109,7 @@ public class GameBoardArray {
     }
 
     // updates a board position given a tile
-    public void updateBoardPosition(Tile t) {
+    public String updateBoardPosition(Tile t) {
         // check position is valid
         if (!checkValidPosition(t))
             throw new IllegalArgumentException("Invalid Tile Input: "+errorMsg);
@@ -98,14 +118,23 @@ public class GameBoardArray {
         for (Position p : t.getShapeArrangement()) {
             gameBoard[p.getX()][p.getY()] = p.getS();
         }
+
+        // add new tile to the placement string,
+        // note that Tile.pieceArrayToPlacement ensures placementString is correctly sorted
+        String temp = placementString += t.getPlacement();
+        placementString = Tile.pieceArrayToPlacement(Tile.placementToPieceArray(temp));
+
+        return placementString;
     }
-    public void updateBoardPosition(String piecePlacement) { // also accepts String input
+    public String updateBoardPosition(String piecePlacement) { // also accepts String input
         Tile t = new Tile(piecePlacement);
         updateBoardPosition(t);
+
+        return placementString;
     }
 
     // updates a board position given a tile, without checking if that placement is valid
-    // WARNING: error prone
+    // WARNING: error prone, also does not update the placement string
     public void updateBoardPositionForced(Tile t) {
         // update each required position in the board
         for (Position p : t.getShapeArrangement()) {
@@ -115,6 +144,24 @@ public class GameBoardArray {
     public void updateBoardPositionForced(String piecePlacement) { // also accepts String input
         Tile t = new Tile(piecePlacement);
         updateBoardPositionForced(t);
+    }
+
+    // removes a given tile from the board
+    public String removeFromBoard (Tile t) {
+
+        // TODO check that the Tile actually exists on the board before it can be removed
+//        if (put ya condition here)
+//            throw new IllegalArgumentException("Tile "+t+" does not exist on the board");
+
+        // TODO update the gameBoard by removing the Tile
+
+        // TODO update the placementString by removing the piecePlacement
+
+        return placementString;
+    }
+    public String removeFromBoard (String piecePlacement) { // also supports String input
+        removeFromBoard(new Tile(piecePlacement));
+        return placementString;
     }
 
     // prints the array for easy debugging

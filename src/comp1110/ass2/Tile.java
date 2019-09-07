@@ -1,14 +1,13 @@
 package comp1110.ass2;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static comp1110.ass2.Direction.*;
 import static comp1110.ass2.State.*;
 
 // Tile stores information from a piece placement string,
 // provides more intuitive methods for dealing with tiles
-public class Tile {
+public class Tile implements Comparable<Tile> {
 
     private Shape shape;   // encoded at [0], in the range a .. j
     private Position pos;  // encoded x at [1], in the range 0 .. 8, and y at [2], in the range 0 .. 4
@@ -39,10 +38,15 @@ public class Tile {
         this.shape = s;
         this.pos = new Position(x, y);
         this.dir = d;
-        //Not sure if we can just create new Positions within the constructor?
+        this.placement = "" + s.toChar() + x + y + d.toChar(); // now stores information as a placement String too - TIM
+        //Not sure if we can just create new Positions within the constructor? (this should be fine - TIM)
         //Double check
     }
 
+    @Override
+    public int compareTo(Tile o) {
+        return this.getShape().toChar() - o.getShape().toChar();
+    }
 
     /**
      get methods
@@ -500,17 +504,39 @@ public class Tile {
         return result;
     }
 
+    // class method to convert an array of piece placements to a placement String
+    public static String pieceArrayToPlacement (String[] pieceArr) {
+        String result = "";
+
+        // placement strings are sorted by shape type
+        Arrays.sort(pieceArr);
+
+        for (String x : pieceArr) {
+            result += x;
+        }
+
+        return result;
+    }
+
+    // class method to convert an array of tiles to a placement String
+    public static String tileArrayToPlacement (Tile[] tileArr) {
+        String result = "";
+
+        // placement strings are sorted by shape type
+        Arrays.sort(tileArr);
+
+        for (Tile x : tileArr) {
+            result += x.placement;
+        }
+
+        return result;
+    }
+
 
     //Created for Task 6 implementation
         //DELETE IF NOT USED
     public static String tileToPiecePlacement(Tile t) {
-        char shape = t.getShape().toChar();
-        char x = (char) t.getPosition().getX();
-        char y = (char) t.getPosition().getY();
-        char dir = t.getDirection().toChar();
-
-        String piecePlacement = "" + shape + x + y + dir;
-        return piecePlacement;
+        return t.getPlacement(); // simplified because tiles should already store a placement String - TIM
     }
 
 
