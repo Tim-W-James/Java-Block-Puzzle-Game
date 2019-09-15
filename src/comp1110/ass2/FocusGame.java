@@ -159,7 +159,7 @@ public class FocusGame {
                                         /*Probably a better way for this tho*/
 
                                     if (challenge.contains(String.valueOf(posState[i].getS().toChar()))) {
-                                        /**idk why `contains` won't accept a char**/
+
                                         //6. Convert Tile to pieceplacement and add to Set
                                         viablePieces.add(Tile.tileToPiecePlacement(candidate));
                                     }
