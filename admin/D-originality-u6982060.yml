@@ -22,7 +22,7 @@ declaration: >-
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration:
   - name: Tim James
-    comment: Structure of helper classes and how they would be more efficient for the Focus Game tasks
+    comment: Structure of helper classes and how they would be effective for the Focus Game tasks
   - name: Nick Dale
     comment: Viewer tasks
 

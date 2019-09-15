@@ -55,17 +55,38 @@ public class GameBoardArray {
     public State getStateAt(Position pos) { return gameBoard[pos.getX()][pos.getY()]; }
     public State getStateAt(int x, int y) { return gameBoard[x][y]; }
 
+
+
     // based on the placementString, returns the appropriate Tile of a given Position
+    // TODO Method needs to be tested for correctness
     public Tile getTileAt (Position p) {
         // check position has a tile
         if (getStateAt(p) == EMP || getStateAt(p) == NLL)
             throw new IllegalArgumentException("No Tile At: "+p);
 
-        // TODO find the Tile at Position p
-        // note that this Tile's piece placement should exist in placementString
-
-        return new Tile("TODO getTileAt");
+        //1. split placementString into piece placements
+        String[] piecePlacements = new String[placementString.length()/4];
+        int index = 0;
+        String temp = "";
+        for (int i = 1; i < placementString.length()+1; i++) {
+            temp += placementString.charAt(i);
+            if (i%4 == 0) {
+                piecePlacements[index] = temp;
+                index++;
+                temp = "";
+            }
+        }
+        //2. Check position of each placement string
+        String correctTile = "";
+        for (String pp : piecePlacements) {
+            if (pp.charAt(1) == p.getX() && pp.charAt(2) == p.getY()) {
+                correctTile = pp;
+            }
+        }
+        return new Tile(correctTile);
     }
+
+    // returns appropriate Tile given X and Y coordinates
     public Tile getTileAt (int x, int y) {
         return getTileAt(new Position(x, y));
     }
@@ -156,6 +177,7 @@ public class GameBoardArray {
         // TODO update the gameBoard by removing the Tile
 
         // TODO update the placementString by removing the piecePlacement
+
 
         return placementString;
     }
