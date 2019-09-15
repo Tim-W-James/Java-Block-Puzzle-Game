@@ -79,7 +79,7 @@ public class GameBoardArray {
         //2. Check position of each placement string
         String correctTile = "";
         for (String pp : piecePlacements) {
-            if (pp.charAt(1) == p.getX() && pp.charAt(2) == p.getY()) {
+            if (checkValidPosition(pp) && pp.charAt(1) == p.getX() && pp.charAt(2) == p.getY()) {
                 correctTile = pp;
             }
         }
@@ -168,19 +168,21 @@ public class GameBoardArray {
     }
 
     // removes a given tile from the board
+    // TODO method needs to be checked for correctness
     public String removeFromBoard (Tile t) {
-
-        // TODO check that the Tile actually exists on the board before it can be removed
-//        if (put ya condition here)
-//            throw new IllegalArgumentException("Tile "+t+" does not exist on the board");
-
-        // TODO update the gameBoard by removing the Tile
-
-        // TODO update the placementString by removing the piecePlacement
-
-
+        // 1. check that the Tile actually exists on the board before it can be removed
+        if (t != getTileAt(t.getPosition())) {
+            throw new IllegalArgumentException("Tile "+t+" does not exist on the current game board");
+        }
+        // 2. update the gameBoard by removing the Tile
+        for (Position p : t.getShapeArrangement()) {
+            gameBoard[p.getX()][p.getY()] = EMP;
+        }
+        // 3. update placementString by removing the piecePlacement
+        placementString.replace(t.getPlacement(), "");
         return placementString;
     }
+
     public String removeFromBoard (String piecePlacement) { // also supports String input
         removeFromBoard(new Tile(piecePlacement));
         return placementString;
