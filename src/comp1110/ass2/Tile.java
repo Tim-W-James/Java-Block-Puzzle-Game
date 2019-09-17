@@ -17,7 +17,7 @@ public class Tile implements Comparable<Tile> {
             "\t- the first character is in the range a .. j (shape)\n" +
             "\t- the second character is in the range 0 .. 8 (column)\n" +
             "\t- the third character is in the range 0 .. 4 (row)\n" +
-            "\t- the fourth character is in the range 0 .. 3 (orientation)";
+            "\t- the fourth character is in the range 0 .. 3 (direction)";
 
     public Tile (String piecePlacement) {
         // ensure placement is valid
@@ -25,22 +25,18 @@ public class Tile implements Comparable<Tile> {
             this.shape = placementToShape(piecePlacement);
             this.pos = placementToPosition(piecePlacement);
             this.dir = placementToDirection(piecePlacement);
-            this.placement = piecePlacement;
+            this.placement = "" + shape.toChar() + pos.getX() + pos.getY() + dir.toChar();
         }
         else
             throw new IllegalArgumentException(invalidTileMsg);
     }
 
+    public Tile(Shape s, Position p, Direction d) {
+        this("" + s.toChar() + p.getX() + p.getY() + d.toChar());
+    }
 
-    //Created for Task 6 implementation
-        //DELETE IF NOT USED
     public Tile(Shape s, int x, int y, Direction d) {
-        this.shape = s;
-        this.pos = new Position(x, y);
-        this.dir = d;
-        this.placement = "" + s.toChar() + x + y + d.toChar(); // now stores information as a placement String too - TIM
-        //Not sure if we can just create new Positions within the constructor? (this should be fine - TIM)
-        //Double check
+        this(s, new Position(x, y), d);
     }
 
     @Override
@@ -59,62 +55,6 @@ public class Tile implements Comparable<Tile> {
     public Direction getDirection() { return dir; }
 
     public String getPlacement() { return placement; }
-
-    /**
-     class methods to convert from piece placement String
-      */
-
-    public static Shape placementToShape (String piecePlacement) {
-        if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
-            throw new IllegalArgumentException(invalidTileMsg);
-
-        // shape indexed at [0]
-        return Shape.valueOf(Character.toString((piecePlacement.charAt(0) - 32)).toUpperCase());
-    }
-
-    public static Position placementToPosition (String piecePlacement) {
-        if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
-            throw new IllegalArgumentException(invalidTileMsg);
-
-        // position indexed at x: [1] and y: [2]
-        return new Position(
-            Character.getNumericValue(piecePlacement.charAt(1)),
-            Character.getNumericValue(piecePlacement.charAt(2)));
-    }
-
-    public static Direction placementToDirection (String piecePlacement) {
-        if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
-            throw new IllegalArgumentException(invalidTileMsg);
-
-        // encode vertical symmetry
-        if ((placementToShape(piecePlacement) == Shape.F ||
-                placementToShape(piecePlacement) == Shape.G) &&
-                piecePlacement.charAt(3) == '2')
-            return NORTH;
-
-        // encode horizontal symmetry
-        else if ((placementToShape(piecePlacement) == Shape.F ||
-                placementToShape(piecePlacement) == Shape.G) &&
-                piecePlacement.charAt(3) == '3')
-            return EAST;
-
-        // encode as normal
-        else {
-            switch (piecePlacement.charAt(3)) { // direction indexed at [3]
-                case '0':
-                    return NORTH;
-
-                case '1':
-                    return EAST;
-
-                case '2':
-                    return SOUTH;
-
-                default:
-                    return WEST;
-            }
-        }
-    }
 
     // returns an array of positions a tile has, given a shape and direction,
     // relative to [0][0], with [x][y] origin position offset
@@ -469,6 +409,62 @@ public class Tile implements Comparable<Tile> {
         }
     }
 
+    /**
+     class methods to convert from piece placement String
+      */
+
+    public static Shape placementToShape (String piecePlacement) {
+        if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
+            throw new IllegalArgumentException(invalidTileMsg);
+
+        // shape indexed at [0]
+        return Shape.valueOf(Character.toString((piecePlacement.charAt(0) - 32)).toUpperCase());
+    }
+
+    public static Position placementToPosition (String piecePlacement) {
+        if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
+            throw new IllegalArgumentException(invalidTileMsg);
+
+        // position indexed at x: [1] and y: [2]
+        return new Position(
+            Character.getNumericValue(piecePlacement.charAt(1)),
+            Character.getNumericValue(piecePlacement.charAt(2)));
+    }
+
+    public static Direction placementToDirection (String piecePlacement) {
+        if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
+            throw new IllegalArgumentException(invalidTileMsg);
+
+        // encode vertical symmetry
+        if ((placementToShape(piecePlacement) == Shape.F ||
+                placementToShape(piecePlacement) == Shape.G) &&
+                piecePlacement.charAt(3) == '2')
+            return NORTH;
+
+        // encode horizontal symmetry
+        else if ((placementToShape(piecePlacement) == Shape.F ||
+                placementToShape(piecePlacement) == Shape.G) &&
+                piecePlacement.charAt(3) == '3')
+            return EAST;
+
+        // encode as normal
+        else {
+            switch (piecePlacement.charAt(3)) { // direction indexed at [3]
+                case '0':
+                    return NORTH;
+
+                case '1':
+                    return EAST;
+
+                case '2':
+                    return SOUTH;
+
+                default:
+                    return WEST;
+            }
+        }
+    }
+
     // class method to convert a placement to an array of piece placements
     public static String[] placementToPieceArray (String placement) {
         // check placement is well formed
@@ -532,14 +528,9 @@ public class Tile implements Comparable<Tile> {
         return result;
     }
 
-
-    //Created for Task 6 implementation
-        //DELETE IF NOT USED
     public static String tileToPiecePlacement(Tile t) {
-        return t.getPlacement(); // simplified because tiles should already store a placement String - TIM
+        return t.getPlacement();
     }
-
-
 
     //Returns an array of unused shapes yet to be used
     public static Shape[] returnUnusedTileShapes(String placement) {
@@ -561,7 +552,17 @@ public class Tile implements Comparable<Tile> {
 
     @Override
     public String toString() {
-        return "Shape: "+shape+", X: "+pos.getX()+", Y: "+pos.getY()+", Dir: "+dir;
+        return "Shape: "+shape+", X: "+pos.getX()+", Y: "+pos.getY()+", Dir: "+dir+", Placement: "+placement;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Tile) // must match instance variables
+            return (shape.equals(((Tile) obj).shape)
+                    && pos.equals(((Tile) obj).pos)
+                    && dir.equals(((Tile) obj).dir)
+                    && placement.equals(((Tile) obj).placement));
+        else
+            return false;
+    }
 }
