@@ -20,6 +20,10 @@ public class TileTest {
     private Tile tC = new Tile("g723");
     private Tile tD = new Tile("h611");
 
+    /*
+     instance methods
+     */
+
     @Test
     public void checkConstructors () {
         assertEquals("Must match Tile using (String placement) constructor input", tA, new Tile("b132"));
@@ -72,5 +76,74 @@ public class TileTest {
                 new Position(8,2, State.GRN),
                 new Position(8,3, State.GRN)};
         assertArrayEquals("getShapeArrangement must match for Tile ["+tC+"]", posArrD, tD.getShapeArrangement());
+    }
+
+
+    /*
+     class methods
+     */
+
+    @Test
+    public void checkPlacementToField () {
+        assertEquals("Method .placementToShape must return the correct value",
+                sA,
+                Tile.placementToShape("b132"));
+        assertEquals("Method .placementToPosition must return the correct value",
+                pA,
+                Tile.placementToPosition("b132"));
+        assertEquals("Method .placementToDirection must return the correct value",
+                dA,
+                Tile.placementToDirection("b132"));
+        assertEquals("Method .placementToDirection must return the correct value (symmetric)",
+                Direction.EAST,
+                Tile.placementToDirection("f003"));
+    }
+
+    @Test
+    public void checkPlacementConversion () {
+        String placementString = "a000b013c113d302e323f400g420h522i613j701";
+        String[] placementStringArr = {
+                "a000",
+                "b013",
+                "c113",
+                "d302",
+                "e323",
+                "f400",
+                "g420",
+                "h522",
+                "i613",
+                "j701"
+        };
+        assertArrayEquals("Must be divided into length 4 substrings where " +
+                        "each substring represents a piece placement",
+                placementStringArr,
+                Tile.placementToPieceArray(placementString));
+
+        Tile[] placementTileArr = {
+                new Tile("a000"),
+                new Tile("b013"),
+                new Tile("c113"),
+                new Tile("d302"),
+                new Tile("e323"),
+                new Tile("f400"),
+                new Tile("g420"),
+                new Tile("h522"),
+                new Tile("i613"),
+                new Tile("j701")
+        };
+        assertArrayEquals("Must be broken into separate instances of " +
+                        "Tiles each representing a single piece placement",
+                placementTileArr,
+                Tile.placementToTileArray(placementString));
+
+        assertEquals("Placement Strings must contain blocks of 4 characters " +
+                        "that represent individual piece placements",
+                placementString,
+                Tile.pieceArrayToPlacement(placementStringArr));
+
+        assertEquals("Placement Strings must contain blocks of 4 characters " +
+                        "that represent individual piece placements",
+                placementString,
+                Tile.tileArrayToPlacement(placementTileArr));
     }
 }
