@@ -5,13 +5,21 @@ import comp1110.ass2.Tile;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import comp1110.ass2.Position;
+
+import java.awt.*;
 
 
 /**
@@ -24,7 +32,7 @@ import comp1110.ass2.Position;
 public class Viewer extends Application {
 
     /* board layout */
-    private static final int SQUARE_SIZE = 60;
+    private static final int SQUARE_SIZE = 70;
     private static final int VIEWER_WIDTH = 720;
     private static final int VIEWER_HEIGHT = 480;
 
@@ -32,6 +40,7 @@ public class Viewer extends Application {
 
     private final Group root = new Group();
     private final Group controls = new Group();
+    private final Group rootBackground = new Group();
     private TextField textField;
 
     /* GameBoard instance */
@@ -64,10 +73,10 @@ public class Viewer extends Application {
                 iv1.setSmooth(true);
                 iv1.setCache(true);
 
-                iv1.setTranslateX(shape.getX() * SQUARE_SIZE);
-                iv1.setTranslateY(shape.getY() * SQUARE_SIZE);
+                iv1.setTranslateX(shape.getX() * SQUARE_SIZE + 50);
+                iv1.setTranslateY(shape.getY() * SQUARE_SIZE + 80);
 
-                root.getChildren().add(iv1);
+                rootBackground.getChildren().add(iv1);
             }
         } else {
             System.out.println("Position for " + toPlace + " Is invalid");
@@ -219,7 +228,26 @@ public class Viewer extends Application {
         hb.setSpacing(10);
         hb.setLayoutX(130);
         hb.setLayoutY(VIEWER_HEIGHT - 50);
+
         controls.getChildren().add(hb);
+
+
+    }
+
+    private void makeBackground() {
+        Image image = new Image(URI_BASE + "board" + ".png");
+        ImageView iv = new ImageView(image);
+        iv.setFitWidth(720);
+        iv.setFitHeight(463);
+
+        StackPane hb = new StackPane();
+        hb.getChildren().add(iv);
+//        hb.prefHeight(VIEWER_HEIGHT);
+//        hb.prefWidth(VIEWER_WIDTH);
+        rootBackground.getChildren().add(hb);
+
+
+
     }
 
     @Override
@@ -227,11 +255,15 @@ public class Viewer extends Application {
         primaryStage.setTitle("FocusGame Viewer");
         Scene scene = new Scene(root, VIEWER_WIDTH, VIEWER_HEIGHT);
 
+        root.getChildren().add(rootBackground);
+        makeBackground();
         root.getChildren().add(controls);
-
         makeControls();
+
+        makePlacement("a000");
 
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 }
