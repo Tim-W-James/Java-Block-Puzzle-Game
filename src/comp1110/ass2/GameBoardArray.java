@@ -64,6 +64,8 @@ public class GameBoardArray {
         if (getStateAt(p) == EMP || getStateAt(p) == NLL)
             throw new IllegalArgumentException("No Tile At: "+p);
 
+
+        //TODO condense code by using Tile.placementToPieceArray
         //1. split placementString into piece placements
         String[] piecePlacements = new String[placementString.length()/4];
         int index = 0;

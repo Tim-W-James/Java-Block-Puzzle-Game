@@ -1,5 +1,6 @@
-package comp1110.ass2;
+package comp1110.ass2.OurTests;
 
+import comp1110.ass2.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
