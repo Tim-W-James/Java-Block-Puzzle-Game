@@ -7,7 +7,7 @@ public class GameBoardArray {
     // initially all states are empty, except (0,4) and (8,4) which are unused
     // 9*5, 43 used squares
     private State[][] gameBoard;
-    private String placementString; // stores and updates placementString
+    private String placementString = ""; // stores and updates placementString
     private String errorMsg;
 
     public GameBoardArray () { // zero arg constructor
@@ -22,7 +22,6 @@ public class GameBoardArray {
                 {EMP, EMP, EMP, EMP, EMP},
                 {EMP, EMP, EMP, EMP, NLL}
         };
-        placementString = "";
     }
 
     // build board from placements

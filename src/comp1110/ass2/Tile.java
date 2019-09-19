@@ -13,7 +13,7 @@ public class Tile implements Comparable<Tile> {
     private Position pos;  // encoded x at [1], in the range 0 .. 8, and y at [2], in the range 0 .. 4
     private Direction dir; // encoded at [3], in the range 0 .. 3
     private String placement;
-    static private String invalidTileMsg = "Invalid Placement Input, \n\tPlease ensure:\n" +
+    static private String invalidTileMsg = "\n\tPlease ensure:\n" +
             "\t- the first character is in the range a .. j (shape)\n" +
             "\t- the second character is in the range 0 .. 8 (column)\n" +
             "\t- the third character is in the range 0 .. 4 (row)\n" +
@@ -28,7 +28,7 @@ public class Tile implements Comparable<Tile> {
             this.placement = "" + shape.toChar() + pos.getX() + pos.getY() + dir.toChar();
         }
         else
-            throw new IllegalArgumentException(invalidTileMsg);
+            throw new IllegalArgumentException("Invalid Placement Input for "+piecePlacement+","+invalidTileMsg);
     }
 
     public Tile(Shape s, Position p, Direction d) {
@@ -415,7 +415,7 @@ public class Tile implements Comparable<Tile> {
 
     public static Shape placementToShape (String piecePlacement) {
         if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
-            throw new IllegalArgumentException(invalidTileMsg);
+            throw new IllegalArgumentException("Invalid Placement Input for "+piecePlacement+","+invalidTileMsg);
 
         // shape indexed at [0]
         return Shape.valueOf(Character.toString((piecePlacement.charAt(0) - 32)).toUpperCase());
@@ -423,7 +423,7 @@ public class Tile implements Comparable<Tile> {
 
     public static Position placementToPosition (String piecePlacement) {
         if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
-            throw new IllegalArgumentException(invalidTileMsg);
+            throw new IllegalArgumentException("Invalid Placement Input for "+piecePlacement+","+invalidTileMsg);
 
         // position indexed at x: [1] and y: [2]
         return new Position(
@@ -433,7 +433,7 @@ public class Tile implements Comparable<Tile> {
 
     public static Direction placementToDirection (String piecePlacement) {
         if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
-            throw new IllegalArgumentException(invalidTileMsg);
+            throw new IllegalArgumentException("Invalid Placement Input for "+piecePlacement+","+invalidTileMsg);
 
         // encode vertical symmetry
         if ((placementToShape(piecePlacement) == Shape.F ||
@@ -469,7 +469,7 @@ public class Tile implements Comparable<Tile> {
     public static String[] placementToPieceArray (String placement) {
         // check placement is well formed
         if (!FocusGame.isPlacementStringWellFormed(placement))
-            throw new IllegalArgumentException("Invalid Placement Input");
+            throw new IllegalArgumentException("Invalid Placement String Input: "+placement);
 
         String[] result = new String[placement.length()/4];
 
