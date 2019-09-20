@@ -32,6 +32,11 @@ public class GameBoardArrayTest  {
 
     @Test
     public void checkConstructors() {
+    /*
+        for some reason, these tests are comparing answers to
+        string inputs: e.g. [[Lcomp1110.ass2.State;@2a9b652a ??
+     */
+
         //No constructor
         assertEquals("Game board must reflect no constructor",
                 gb_ONE,
@@ -82,6 +87,7 @@ public class GameBoardArrayTest  {
 
         Why is there a strikethrough??
 
+        WARNING: This test fails.
          */
         assertEquals("Method .getBoardState must return correct game board",
                 new State[][]{
@@ -93,14 +99,17 @@ public class GameBoardArrayTest  {
                         {EMP, BLE, BLE, EMP, EMP},
                         {RED, WTE, EMP, EMP, EMP},
                         {WTE, RED, EMP, EMP, EMP},
-                        {GRN, EMP, EMP, EMP, NLL}   //The correct value
+                        {GRN, EMP, EMP, EMP, NLL}   //Expected
                 },
-                gb_TWO.getBoardState() //Method that's being tested
+                gb_TWO.getBoardState() //Actual
                 );
+        /*
+        It seems like the game board returned is being flipped?
+         */
 
         assertEquals("Method .getPlacementString must return accompanying placementString",
-                "a000b013c113d302e323f400g420h522i613j701", //The correct value
-                gb_FOUR.getPlacementString()    //Method that's being tested
+                "a000b013c113d302e323f400g420h522i613j701", //Expected
+                gb_FOUR.getPlacementString()    //Actual
                 );
         assertEquals("Method .getStateAt must return correct state at given position (Position pos)",
                 RED,
@@ -112,10 +121,43 @@ public class GameBoardArrayTest  {
                 );
     }
 
+    //this method needs to be fixed up
+    @Test
+    public void checkGetTileAt() {
+        assertEquals("Method .getTileAt must return corresponding Tile from a Position",
+                new Tile("b013"),
+                gb_FOUR.getTileAt(new Position(0,1))
+                );
+        assertEquals("Method .getTileAt must return corresponding Tile from x y coordinates",
+                new Tile("a000"),
+                gb_TWO.getTileAt(1,1)
+                );
+    }
+
+
+    @Test
+    public void checkValidPosition() {
+        assertEquals("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
+                true,
+                gb_ONE.checkValidPosition(new Tile("i030"))
+                );
+        assertEquals("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
+                false,
+                gb_ONE.checkValidPosition("i031"));
+        assertEquals("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
+                false,
+                gb_FOUR.checkValidPosition("f000")
+                );
+    }
+
+    @Test
+    public void checkUpdateBoardPosition() {
+
+    }
+
+
     /*
     Tests to make:
-    - getTileAt(Position & int x, int y)
-    - checkValidPosition(Tile & String piecePlacement)
     - updateBoardPosition (Tile t & piece placement)
     - updateBoardPositionForced (Tile & piece placement)
         --Give a tile that is invalid but force it onto the board anyway

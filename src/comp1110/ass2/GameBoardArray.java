@@ -63,27 +63,19 @@ public class GameBoardArray {
         if (getStateAt(p) == EMP || getStateAt(p) == NLL)
             throw new IllegalArgumentException("No Tile At: "+p);
 
-
-        //TODO condense code by using Tile.placementToPieceArray
         //1. split placementString into piece placements
-        String[] piecePlacements = new String[placementString.length()/4];
-        int index = 0;
-        String temp = "";
-        for (int i = 1; i < placementString.length()+1; i++) {
-            temp += placementString.charAt(i);
-            if (i%4 == 0) {
-                piecePlacements[index] = temp;
-                index++;
-                temp = "";
-            }
-        }
-        //2. Check position of each placement string
+        String[] piecePlacements = Tile.placementToPieceArray(getPlacementString());
+
+        //2. Check position of each piece placement string
         String correctTile = "";
         for (String pp : piecePlacements) {
             if (checkValidPosition(pp) && pp.charAt(1) == p.getX() && pp.charAt(2) == p.getY()) {
                 correctTile = pp;
             }
         }
+        //TODO
+        //I think this needs to be extended so that you look at all positions that
+        //the piece placement covers (so u need to utilise Tile.getShapeArrangement)
         return new Tile(correctTile);
     }
 
