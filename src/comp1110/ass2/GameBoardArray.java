@@ -26,11 +26,16 @@ public class GameBoardArray {
 
     // build board from placements
     public GameBoardArray (String placements) {
-        gameBoard = new GameBoardArray().gameBoard;
-        for (Tile t : Tile.placementToTileArray(placements)) {
-            updateBoardPosition(t);
+        if (placements.length() > 0) {
+            gameBoard = new GameBoardArray().gameBoard;
+            for (Tile t : Tile.placementToTileArray(placements)) {
+                updateBoardPosition(t);
+            }
+            placementString = placements;
         }
-        placementString = placements;
+        else { // empty String input
+            gameBoard = new GameBoardArray().getBoardState();
+        }
     }
 
     // build board from placements
