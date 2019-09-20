@@ -1,7 +1,5 @@
 package comp1110.ass2;
 
-import javafx.geometry.Pos;
-
 // stores a position for a tile
 public class Position {
     private int x; // x is the column
@@ -40,15 +38,13 @@ public class Position {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Position) { // must match instance variables
-            if (s == null && ((Position) obj).s == null)
-                return (x == ((Position) obj).x
-                        && y == ((Position) obj).y);
-            else if (s != null && ((Position) obj).s != null)
+            if (s != null && ((Position) obj).s != null)
                 return (x == ((Position) obj).x
                         && y == ((Position) obj).y
                         && s.equals(((Position) obj).s));
             else
-                return false;
+                return (x == ((Position) obj).x
+                        && y == ((Position) obj).y);
         }
         else
             return false;

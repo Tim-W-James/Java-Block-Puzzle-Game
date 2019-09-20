@@ -413,6 +413,11 @@ public class Tile implements Comparable<Tile> {
         }
     }
 
+    // check if a Tile covers a given Position
+    public boolean doesTileContainPosition(Position p) {
+        return Arrays.asList(getShapeArrangement()).contains(p);
+    }
+
     /**
      class methods to convert from piece placement String
       */

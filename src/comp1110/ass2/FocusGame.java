@@ -126,10 +126,7 @@ public class FocusGame {
      * @param row      The cell's row.
      * @return A set of viable piece placements, or null if there are none.
      */
-    static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
-        // TODO optimize to avoid timeout
-
-        // store piece placements in sets
+    static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {// store piece placements in sets
         Set <String> possiblePieces = new HashSet<>();
         Set <String> viablePieces = new HashSet<>();
 
@@ -144,11 +141,10 @@ public class FocusGame {
                     for (int x = Math.max(0, col - s.getMaxReach()); x <= col; x++) { // iterate across relevant x Positions
                         for (int y = Math.max(0, row - s.getMaxReach()); y <= row; y++) { // iterate across relevant x Positions
                             Tile t = new Tile(s, x, y, d);
-                            // check that the placement is actually valid
-                            if (isPlacementStringValid(t.getPlacement()+placement)) {
-                                // check the relevant Position is not empty
-                                GameBoardArray gb = new GameBoardArray(t.getPlacement());
-                                if (gb.getStateAt(col, row) != State.EMP)
+                            // check the tile contains the relevant Position
+                            if (t.doesTileContainPosition(new Position(col, row))) {
+                                // check that the placement is actually valid
+                                if (isPlacementStringValid(t.getPlacement()+placement))
                                     possiblePieces.add(t.getRawPlacement()); // add to the set
                             }
                         }

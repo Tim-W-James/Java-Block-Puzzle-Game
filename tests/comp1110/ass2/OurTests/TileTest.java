@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class TileTest {
     @Rule
-    public Timeout globalTimeout = Timeout.millis(120000);
+    public Timeout globalTimeout = Timeout.millis(500);
 
     private Shape sA = Shape.B;
     private Position pA = new Position(1,3);
@@ -70,7 +70,6 @@ public class TileTest {
         assertArrayEquals("getShapeArrangement must match for Tile ["+tB+"]", posArrB, tB.getShapeArrangement());
         assertArrayEquals("getShapeArrangement must match for Tile ["+tC+"] (symmetric)", posArrB, tC.getShapeArrangement());
 
-        System.out.println(Arrays.toString(tC.getShapeArrangement()));
         Position[] posArrD = {
                 new Position(6,1, State.WTE),
                 new Position(7,1, State.WTE),
@@ -78,6 +77,8 @@ public class TileTest {
                 new Position(8,2, State.GRN),
                 new Position(8,3, State.GRN)};
         assertArrayEquals("getShapeArrangement must match for Tile ["+tC+"]", posArrD, tD.getShapeArrangement());
+        assertTrue("doesTileContainPosition contains [3,3] should return true for Tile["+tA+"]", tA.doesTileContainPosition(new Position(3, 3)));
+        assertTrue("doesTileContainPosition contains [8,3,GRN] should return true for Tile["+tD+"]", tD.doesTileContainPosition(new Position(8, 3, State.GRN)));
     }
 
 
