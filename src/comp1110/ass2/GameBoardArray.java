@@ -214,4 +214,12 @@ public class GameBoardArray {
 
         return result;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GameBoardArray) // must match instance variables
+            return placementString.equals(((GameBoardArray) obj).placementString);
+        else
+            return false;
+    }
 }

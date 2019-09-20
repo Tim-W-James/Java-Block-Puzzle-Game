@@ -68,4 +68,12 @@ public class Challenge {
 
         return result;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Challenge) // must match instance variables
+            return challenge.equals(((Challenge) obj).challenge);
+        else
+            return false;
+    }
 }
