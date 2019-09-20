@@ -49,6 +49,7 @@ public class TileTest {
         assertEquals("Method .getPosition must return the correct value", pA, tA.getPosition());
         assertEquals("Method .getDirection must return the correct value", dA, tA.getDirection());
         assertEquals("Method .getPlacement must return the correct value", "b132", tA.getPlacement());
+        assertEquals("Method .getRawPlacement must return the correct value", "g723", tC.getRawPlacement());
     }
 
     @Test

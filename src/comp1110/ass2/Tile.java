@@ -9,10 +9,11 @@ import static comp1110.ass2.State.*;
 // provides more intuitive methods for dealing with tiles
 public class Tile implements Comparable<Tile> {
 
-    private Shape shape;   // encoded at [0], in the range a .. j
-    private Position pos;  // encoded x at [1], in the range 0 .. 8, and y at [2], in the range 0 .. 4
-    private Direction dir; // encoded at [3], in the range 0 .. 3
+    private Shape shape;        // encoded at [0], in the range a .. j
+    private Position pos;       // encoded x at [1], in the range 0 .. 8, and y at [2], in the range 0 .. 4
+    private Direction dir;      // encoded at [3], in the range 0 .. 3
     private String placement;
+    private String rawPlacement;// raw inputted piece placement String which is not affected by symmetry encoding
     static private String invalidTileMsg = "\n\tPlease ensure:\n" +
             "\t- the first character is in the range a .. j (shape)\n" +
             "\t- the second character is in the range 0 .. 8 (column)\n" +
@@ -22,6 +23,7 @@ public class Tile implements Comparable<Tile> {
     public Tile (String piecePlacement) {
         // ensure placement is valid
         if (FocusGame.isPiecePlacementWellFormed(piecePlacement)) {
+            this.rawPlacement = piecePlacement;
             this.shape = placementToShape(piecePlacement);
             this.pos = placementToPosition(piecePlacement);
             this.dir = placementToDirection(piecePlacement);
@@ -55,6 +57,8 @@ public class Tile implements Comparable<Tile> {
     public Direction getDirection() { return dir; }
 
     public String getPlacement() { return placement; }
+
+    public String getRawPlacement() { return rawPlacement; }
 
     // returns an array of positions a tile has, given a shape and direction,
     // relative to [0][0], with [x][y] origin position offset

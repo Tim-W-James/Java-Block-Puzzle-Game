@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.lang.String;
@@ -126,56 +127,103 @@ public class FocusGame {
      * @return A set of viable piece placements, or null if there are none.
      */
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
-        // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
-        Set<String> viablePieces = new HashSet<>();
+        // TODO optimize to avoid timeout
 
-        if (isPlacementStringValid(placement) && Challenge.isChallengeWFormed(challenge)) {
-            Shape[] unused = Tile.returnUnusedTileShapes(placement);
-            GameBoardArray currentBoard = new GameBoardArray(placement);
+        // store piece placements in sets
+        Set <String> possiblePieces = new HashSet<>();
+        Set <String> viablePieces = new HashSet<>();
 
+        // store information about the game
+        Challenge ch = new Challenge(challenge);
 
-            //1. Look at every single space on the game board array.
-            for (int y = 0; y < 5; y++) {
-                for (int x = 0; x < 9; x++) {
-
-                    //2. If it is empty, for each unused shape, check every orientation from that position
-                    if (currentBoard.getStateAt(x,y) == State.EMP) {
-                        for (Shape s : unused) {
-                            Direction d = Direction.NORTH;
-                            /*N.B. direction shouldn't be fixed as you need to check all
-                            directions of the piece.
-                            Switch statement probably easier?*/
-
-                            Tile candidate = new Tile(s,x,y,d);
-                            /*N.B. created new things on Tile document to get this.
-                            Delete respective functions if scrapping this.*/
-
-                            //3. Check if tile is valid on game board using checkValidPosition
-                            if (currentBoard.checkValidPosition(candidate)) {
-                                //4. If valid, check Shape arrangement of the tile
-                                Position[] posState = candidate.getShapeArrangement();
-                                for (int i = 0; i < posState.length; i++) {
-                                    //5. If tile fulfils even just one square of the challenge area, add it to the set
-                                        /*Probably a better way for this tho*/
-
-                                    if (challenge.contains(String.valueOf(posState[i].getS().toChar()))) {
-
-                                        //6. Convert Tile to pieceplacement and add to Set
-                                        viablePieces.add(Tile.tileToPiecePlacement(candidate));
-                                    }
-                                }
+        // build a set of all possible values
+        for (Shape s : Shape.values()) { // iterate across Shapes
+            // don't add shapes that are already in the placement
+            if (!placement.contains(s.toString().toLowerCase())) {
+                for (Direction d : Direction.values()) { // iterate across Directions
+                    for (int x = Math.max(0, col - s.getMaxReach()); x <= col; x++) { // iterate across relevant x Positions
+                        for (int y = Math.max(0, row - s.getMaxReach()); y <= row; y++) { // iterate across relevant x Positions
+                            Tile t = new Tile(s, x, y, d);
+                            // check that the placement is actually valid
+                            if (isPlacementStringValid(t.getPlacement()+placement)) {
+                                // check the relevant Position is not empty
+                                GameBoardArray gb = new GameBoardArray(t.getPlacement());
+                                if (gb.getStateAt(col, row) != State.EMP)
+                                    possiblePieces.add(t.getRawPlacement()); // add to the set
                             }
                         }
+                    }
                 }
             }
-            }
         }
-        else {
+
+        // build a set of all valid values from possible values
+        for (String p : possiblePieces) {
+            GameBoardArray gb = new GameBoardArray(p+placement);
+            if (ch.isChallengeVld(gb, true)) // check the placement accepts the challenge condition
+                viablePieces.add(p);
+        }
+
+        // return null if empty
+        if (viablePieces.isEmpty())
             return null;
-        }
+        else
+            return viablePieces;
 
+        // Rebbecca's code
+//        Set<String> viablePieces = new HashSet<>();
+//
+//        if (isPlacementStringValid(placement) && Challenge.isChallengeWFormed(challenge)) {
+//            Shape[] unused = Tile.returnUnusedTileShapes(placement);
+//            GameBoardArray currentBoard = new GameBoardArray(placement);
+//
+//
+//            //1. Look at every single space on the game board array.
+//            for (int y = 0; y < 5; y++) {
+//                for (int x = 0; x < 9; x++) {
+//
+//                    //2. If it is empty, for each unused shape, check every orientation from that position
+//                    if (currentBoard.getStateAt(x,y) == State.EMP) {
+//                        for (Shape s : unused) {
+//                            Direction d = Direction.NORTH;
+//                            /*N.B. direction shouldn't be fixed as you need to check all
+//                            directions of the piece.
+//                            Switch statement probably easier?*/
+//
+//                            Tile candidate = new Tile(s,x,y,d);
+//                            /*N.B. created new things on Tile document to get this.
+//                            Delete respective functions if scrapping this.*/
+//
+//                            //3. Check if tile is valid on game board using checkValidPosition
+//                            if (currentBoard.checkValidPosition(candidate)) {
+//                                //4. If valid, check Shape arrangement of the tile
+//                                Position[] posState = candidate.getShapeArrangement();
+//                                for (int i = 0; i < posState.length; i++) {
+//                                    //5. If tile fulfils even just one square of the challenge area, add it to the set
+//                                        /*Probably a better way for this tho*/
+//
+//                                    if (challenge.contains(String.valueOf(posState[i].getS().toChar()))) {
+//
+//                                        //6. Convert Tile to pieceplacement and add to Set
+//                                        viablePieces.add(Tile.tileToPiecePlacement(candidate));
+//                                    }
+//                                }
+//                            }
+//                        }
+//                }
+//            }
+//            }
+//        }
+//        else {
+//            return null;
+//        }
+//
+//
+//        return viablePieces;
+    }
 
-        return viablePieces;
+    public static void main(String[] args) {
+        System.out.println(isPlacementStringValid(new Tile("a000").getPlacement()));
     }
 
     /**
