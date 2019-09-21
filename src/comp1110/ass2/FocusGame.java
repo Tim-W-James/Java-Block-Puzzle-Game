@@ -104,7 +104,7 @@ public class FocusGame {
     /**
      * Given a string describing a placement of pieces and a string describing
      * a challenge, return a set of all possible next viable piece placements
-     * which cover a specific board cell.
+     * which cover a specific board location.
      *
      * For a piece placement to be viable
      * - it must be valid
@@ -122,8 +122,8 @@ public class FocusGame {
      *                  - 'B' = Blue square
      *                  - 'G' = Green square
      *                  - 'W' = White square
-     * @param col      The cell's column.
-     * @param row      The cell's row.
+     * @param col      The location's column.
+     * @param row      The location's row.
      * @return A set of viable piece placements, or null if there are none.
      */
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
