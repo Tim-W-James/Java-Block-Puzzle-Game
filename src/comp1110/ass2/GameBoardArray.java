@@ -128,11 +128,26 @@ public class GameBoardArray {
     }
 
     // updates a board position given a tile
-    public String updateBoardPosition(Tile t) {
+    public GameBoardArray updateBoardPosition(Tile t) {
         // check position is valid
         if (!checkValidPosition(t))
             throw new IllegalArgumentException("Invalid Tile Input: "+errorMsg);
 
+        // update each required position in the board
+        updateBoardPositionForced(t);
+
+        return this;
+    }
+    public GameBoardArray updateBoardPosition(String piecePlacement) { // also accepts String input
+        Tile t = new Tile(piecePlacement);
+        updateBoardPosition(t);
+
+        return this;
+    }
+
+    // updates a board position given a tile, without checking if that placement is valid
+    // WARNING: error prone, also does not update the placement string
+    public GameBoardArray updateBoardPositionForced(Tile t) {
         // update each required position in the board
         for (Position p : t.getShapeArrangement()) {
             gameBoard[p.getX()][p.getY()] = p.getS();
@@ -143,26 +158,13 @@ public class GameBoardArray {
         String temp = placementString += t.getPlacement();
         placementString = Tile.pieceArrayToPlacement(Tile.placementToPieceArray(temp));
 
-        return placementString;
+        return this;
     }
-    public String updateBoardPosition(String piecePlacement) { // also accepts String input
-        Tile t = new Tile(piecePlacement);
-        updateBoardPosition(t);
-
-        return placementString;
-    }
-
-    // updates a board position given a tile, without checking if that placement is valid
-    // WARNING: error prone, also does not update the placement string
-    public void updateBoardPositionForced(Tile t) {
-        // update each required position in the board
-        for (Position p : t.getShapeArrangement()) {
-            gameBoard[p.getX()][p.getY()] = p.getS();
-        }
-    }
-    public void updateBoardPositionForced(String piecePlacement) { // also accepts String input
+    public GameBoardArray updateBoardPositionForced(String piecePlacement) { // also accepts String input
         Tile t = new Tile(piecePlacement);
         updateBoardPositionForced(t);
+
+        return this;
     }
 
     // removes a given tile from the board

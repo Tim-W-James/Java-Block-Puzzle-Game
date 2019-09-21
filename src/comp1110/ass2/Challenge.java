@@ -33,12 +33,12 @@ public class Challenge {
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 3; l++) {
                 if (isPartial) {
-                    if (initBoard.getBoardState()[3+l][1+i] != State.EMP
-                            && initBoard.getBoardState()[3+l][1+i] != challengeBoard.getBoardState()[3+l][1+i])
+                    if (initBoard.getStateAt(3+l,1+i) != State.EMP
+                            && initBoard.getStateAt(3+l,1+i) != challengeBoard.getStateAt(3+l,1+i))
                         return false;
                 }
                 else {
-                    if (initBoard.getBoardState()[3+l][1+i] != challengeBoard.getBoardState()[3+l][1+i])
+                    if (initBoard.getStateAt(3+l,1+i) != challengeBoard.getStateAt(3+l,1+i))
                         return false;
                 }
             }
@@ -72,7 +72,7 @@ public class Challenge {
             for (int l = 0; l < 3; l++) {
                 int x = 3+l;
                 int y = 1+i;
-                result += "(["+x+"]["+y+"]:"+board.getBoardState()[3+l][1+i]+")";
+                result += "(["+x+"]["+y+"]:"+board.getStateAt(3+l,1+i)+")";
             }
             result += "\n";
         }
