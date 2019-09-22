@@ -121,7 +121,6 @@ public class GameBoardArrayTest  {
                 );
     }
 
-    //this method needs to be fixed up
     @Test
     public void checkGetTileAt() {
         assertEquals("Method .getTileAt must return corresponding Tile from a Position",
@@ -137,33 +136,83 @@ public class GameBoardArrayTest  {
 
     @Test
     public void checkValidPosition() {
-        assertEquals("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
-                true,
-                gb_ONE.checkValidPosition(new Tile("i030"))
-                );
-        assertEquals("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
-                false,
+        assertTrue("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
+                gb_ONE.checkValidPosition(new Tile("i030")));
+        assertFalse("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
                 gb_ONE.checkValidPosition("i031"));
-        assertEquals("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
-                false,
-                gb_FOUR.checkValidPosition("f000")
-                );
+        assertFalse("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
+                gb_FOUR.checkValidPosition("f000"));
+        assertTrue("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
+                gb_THREE.checkValidPosition("d601"));
     }
 
     @Test
     public void checkUpdateBoardPosition() {
-
+        assertEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
+                new State[][] {
+                        {EMP, EMP, EMP, EMP, NLL},
+                        {EMP, EMP, EMP, EMP, GRN},
+                        {EMP, EMP, EMP, RED, WTE},
+                        {EMP, EMP, EMP, EMP, RED},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {GRN, WTE, EMP, WTE, EMP},
+                        {GRN, BLE, BLE, WTE, EMP},
+                        {RED, WTE, WTE, WTE, NLL}
+                },
+                gb_THREE.updateBoardPosition(new Tile("a532"))
+                );
+        assertEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
+                new State[][] {
+                        {EMP, EMP, EMP, EMP, NLL},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {BLE, WTE, EMP, EMP, EMP},
+                        {BLE, EMP, EMP, EMP, NLL}
+                },
+                gb_ONE.updateBoardPosition("i000")
+        );
+        assertEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
+                new State[][] {
+                        {BLE, WTE, EMP, BLE, NLL},
+                        {BLE, EMP, EMP, BLE, RED},
+                        {EMP, EMP, EMP, BLE, RED},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, WTE, EMP, EMP},
+                        {EMP, BLE, BLE, EMP, EMP},
+                        {RED, WTE, EMP, EMP, EMP},
+                        {WTE, RED, EMP, EMP, EMP},
+                        {GRN, EMP, EMP, EMP, NLL}
+                },
+                gb_TWO.updateBoardPosition("i700")
+        );
     }
+
+    @Test
+    public void checkRemoveFromBoard() {
+        assertEquals("Method .removeFromBoard must remove the right tile from both the gameboard and placement string",
+                "f030i113",
+                gb_THREE.removeFromBoard(new Tile("h000"))
+                );
+        assertEquals("Method .removeFromBoard must remove the right tile from both the gameboard and placement string",
+                "g210e630",
+                gb_TWO.removeFromBoard("a000"));
+        assertEquals("Method .removeFromBoard must remove the right tile from both the gameboard and placement string",
+                "a000b013c113d302e323f400g420h522i613",
+                gb_FOUR.removeFromBoard("j701"));
+    }
+
 
 
     /*
     Tests to make:
-    - updateBoardPosition (Tile t & piece placement)
     - updateBoardPositionForced (Tile & piece placement)
         --Give a tile that is invalid but force it onto the board anyway
           (assuming the tiles that fall off the board simply
           don't appear on the game board?)
-    - removeFromBoard( Tile & piece placement)
-
      */
 }

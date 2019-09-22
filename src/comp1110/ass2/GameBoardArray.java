@@ -62,26 +62,22 @@ public class GameBoardArray {
 
 
     // based on the placementString, returns the appropriate Tile of a given Position
-    // TODO Method needs to be tested for correctness
     public Tile getTileAt (Position p) {
         // check position has a tile
         if (getStateAt(p) == EMP || getStateAt(p) == NLL)
             throw new IllegalArgumentException("No Tile At: "+p);
-
-        //1. split placementString into piece placements
-        String[] piecePlacements = Tile.placementToPieceArray(getPlacementString());
-
-        //2. Check position of each piece placement string
-        String correctTile = "";
-        for (String pp : piecePlacements) {
-            if (checkValidPosition(pp) && pp.charAt(1) == p.getX() && pp.charAt(2) == p.getY()) {
-                correctTile = pp;
+        String correctpp = "";
+        // split placement string into array of tiles
+        Tile[] ppTiles = Tile.placementToTileArray(getPlacementString());
+        // Look at all the positions each Tile covers
+        for (Tile t : ppTiles) {
+            for (Position pos : t.getShapeArrangement()) {
+                if (pos.getX() == p.getX() && pos.getY() == p.getY()){
+                    correctpp += t.getPlacement();
+                }
             }
         }
-        //TODO
-        //I think this needs to be extended so that you look at all positions that
-        //the piece placement covers (so u need to utilise Tile.getShapeArrangement)
-        return new Tile(correctTile);
+        return new Tile(correctpp);
     }
 
     // returns appropriate Tile given X and Y coordinates
