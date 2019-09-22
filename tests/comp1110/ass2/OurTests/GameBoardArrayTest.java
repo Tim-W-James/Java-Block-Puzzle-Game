@@ -38,8 +38,7 @@ public class GameBoardArrayTest  {
      */
 
         //No constructor
-        assertEquals("Game board must reflect no constructor",
-                gb_ONE,
+        assertArrayEquals("Game board must reflect no constructor",
                 new State[][]{
                         {EMP, EMP, EMP, EMP, NLL},
                         {EMP, EMP, EMP, EMP, EMP},
@@ -50,10 +49,10 @@ public class GameBoardArrayTest  {
                         {EMP, EMP, EMP, EMP, EMP},
                         {EMP, EMP, EMP, EMP, EMP},
                         {EMP, EMP, EMP, EMP, NLL}
-                });
+                },  //expected
+                gb_ONE.getBoardState());    //actual
         //String placement constructor
-        assertEquals("Game board must correspond to String Placements",
-                gb_FOUR,
+        assertArrayEquals("Game board must correspond to String Placements",
                 new State[][]{
                         {GRN, GRN, WTE, RED, NLL},
                         {GRN, WTE, WTE, WTE, RED},
@@ -64,10 +63,10 @@ public class GameBoardArrayTest  {
                         {RED, BLE, WTE, RED, RED},
                         {WTE, RED, GRN, WTE, WTE},
                         {GRN, GRN, GRN, BLE, NLL}
-                });
+                },
+                gb_FOUR.getBoardState());
         //Tile[] constructor test
-        assertEquals("Game board must correspond to Tile[] placements",
-                gb_THREE,
+        assertArrayEquals("Game board must correspond to Tile[] placements",
                 new State[][]{
                         {EMP, EMP, EMP, EMP, NLL},
                         {EMP, EMP, EMP, EMP, EMP},
@@ -78,7 +77,8 @@ public class GameBoardArrayTest  {
                         {GRN, WTE, EMP, WTE, EMP},
                         {GRN, BLE, BLE, WTE, EMP},
                         {RED, WTE, WTE, WTE, NLL}
-                });
+                },
+                gb_THREE.getBoardState());
     }
 
     @Test
@@ -89,7 +89,7 @@ public class GameBoardArrayTest  {
 
         WARNING: This test fails.
          */
-        assertEquals("Method .getBoardState must return correct game board",
+        assertArrayEquals("Method .getBoardState must return correct game board",
                 new State[][]{
                         {EMP, EMP, EMP, BLE, NLL},
                         {EMP, EMP, EMP, BLE, RED},
