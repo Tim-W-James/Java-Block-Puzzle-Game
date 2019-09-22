@@ -224,4 +224,16 @@ public class GameBoardArray {
         else
             return false;
     }
+
+    public static GameBoardArray copy(GameBoardArray gb) {
+        GameBoardArray gbCopy = new GameBoardArray();
+        gbCopy.placementString = gb.placementString;
+
+
+        State[][] boardCopy = new State[gb.gameBoard.length][];
+        for(int i = 0; i < gb.gameBoard.length; i++)
+            boardCopy[i] = gb.gameBoard[i].clone();
+        gbCopy.gameBoard = boardCopy;
+        return gbCopy;
+    }
 }

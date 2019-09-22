@@ -1,6 +1,5 @@
 package comp1110.ass2;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.lang.String;
@@ -133,7 +132,7 @@ public class FocusGame {
         for (Shape s : Shape.values()) { // iterate across Shapes
             // add viable pieces
             // uses getViablePiecePlacements with a Shape input for each Shape
-            viablePieces.addAll(getViablePiecePlacements(placement, challenge, col, row, s));
+            viablePieces.addAll(getViablePiecePlacements(placement, challenge, col, row, s, true));
         }
 
         // return null if empty
@@ -194,36 +193,41 @@ public class FocusGame {
 //        return viablePieces;
     }
     // getViablePiecePlacements can check for individual shapes
-    static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row, Shape s) {
+    private static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row, Shape s, boolean includeSymmetry) {
         // store piece placements in sets
         Set<String> possiblePieces = new HashSet<>();
         Set<String> viablePieces = new HashSet<>();
-
-        // store information about the game
-        Challenge ch = new Challenge(challenge);
 
         // build a set of all possible values
         // don't add shapes that are already in the placement
         if (!placement.contains(s.toString().toLowerCase())) {
             for (Direction d : Direction.values()) { // iterate across Directions
-                for (int x = Math.max(0, col - s.getMaxReach()); x <= col; x++) { // iterate across relevant x Positions
-                    for (int y = Math.max(0, row - s.getMaxReach()); y <= row; y++) { // iterate across relevant y Positions
+                // don't consider symmetric duplicates
+                if (!includeSymmetry && (s == Shape.F || s == Shape.G) && d == Direction.SOUTH)
+                    break;
+                for (int x = Math.max(0, col - s.getMaxReach(d, false)); x <= col; x++) { // iterate across relevant x Positions
+                    for (int y = Math.max(0, row - s.getMaxReach(d, true)); y <= row; y++) { // iterate across relevant y Positions
                         Tile t = new Tile(s, x, y, d);
                         // check the tile contains the relevant Position
                         if (t.doesTileContainPosition(new Position(col, row))) {
                             // check that the placement is actually valid
-                            if (isPlacementStringValid(t.getPlacement() + placement))
+                            if (isPlacementStringValid(t.getPlacement() + placement)) {
                                 possiblePieces.add(t.getRawPlacement()); // add to the set
+                            }
                         }
                     }
                 }
             }
         }
 
+        // store information about the game
+        Challenge ch = new Challenge(challenge);
+
         // build a set of all valid values from possible values
         for (String p : possiblePieces) {
-            GameBoardArray gb = new GameBoardArray(p + placement);
-            if (ch.isChallengeVld(gb, true)) // check the placement accepts the challenge condition
+            // check the placement accepts the challenge condition
+            // and if outside of the range of the challenge
+            if (col > 5 || row > 3 || ch.isChallengeVld(new GameBoardArray(p), true))
                 viablePieces.add(p);
         }
 
@@ -247,28 +251,42 @@ public class FocusGame {
      * the challenge.
      */
     public static String getSolution(String challenge) {
-        // TODO optimize to complete tests in under 2 mins
         // recursively test possible placements until an accepted placement is found
         return getPossibleSolution(new GameBoardArray(), challenge, 0);
     }
-    public static String getPossibleSolution(GameBoardArray gb, String ch, int acc) {
-        // calculate position on board for a respective accumulator
-        int x = acc%9;
-        int y = (int) Math.floor((double) acc/9);
+    // recursive function with an int accumulator and game board which is incrementally built
+    private static String getPossibleSolution(GameBoardArray gb, String ch, int acc) {
+        int x;
+        int y;
 
-        if (acc > 43) // base case, terminates when every square has been checked
+        // calculate position on board for a respective accumulator
+        // first passes evaluate the challenge area, greatly reducing possible combinations
+        if (acc < 9) {
+            x = acc%3 + 3;
+            y = (int) Math.floor((double) acc/3) + 1;
+        }
+        // skip the challenge area when it has already been evaluated
+        else if (acc > 20 && acc < 24 || acc > 29 && acc < 33 || acc > 38 && acc < 42) {
+            return getPossibleSolution(gb, ch, acc+3);
+        }
+        // assign a x, y value to the accumulator
+        else {
+            x = acc % 9;
+            y = (int) Math.floor((double) acc / 9) - 1;
+        }
+
+        if (acc > 52) // base case, terminates when every square has been checked
             return gb.getPlacementString();
 
         if (gb.getStateAt(x, y) != State.EMP) // empty positions are skipped
             return getPossibleSolution(gb, ch, acc+1);
 
-        for (Shape s : Shape.values()) {
+        for (Shape s : Shape.values()) { // step case, check every square
             // only check Shapes that aren't already on the game board
             if (gb.getPlacementString().contains(s.toString().toLowerCase()))
                 continue;
 
-            Set <String> possiblePieces = getViablePiecePlacements(gb.getPlacementString(), ch, x, y, s);
-
+            Set <String> possiblePieces = getViablePiecePlacements(gb.getPlacementString(), ch, x, y, s, false);
             // skip iteration if no viable pieces are found
             if (possiblePieces.isEmpty())
                 continue;
@@ -276,7 +294,7 @@ public class FocusGame {
             for (String p : possiblePieces) {
                 // return part of a solution if it could lead to the solution
                 if (isPlacementStringValid(gb.getPlacementString()+p)) { // placement must be valid
-                    GameBoardArray tempGB = new GameBoardArray(gb.getPlacementString());
+                    GameBoardArray tempGB = GameBoardArray.copy(gb);
                     String possibleSolution = getPossibleSolution(tempGB.updateBoardPositionForced(p), ch, acc+1);
 
                     // don't consider the placement if it has no possible solutions
