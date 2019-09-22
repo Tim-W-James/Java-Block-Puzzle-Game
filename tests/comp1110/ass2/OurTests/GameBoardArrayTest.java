@@ -193,6 +193,56 @@ public class GameBoardArrayTest  {
     }
 
     @Test
+    public void checkUpdateBoardPositionForced() {
+        assertEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
+                "even if it is invalid",
+                new State[][]{
+                        {GRN, WTE, RED, BLE, NLL},
+                        {EMP, RED, EMP, BLE, RED},
+                        {EMP, EMP, EMP, BLE, RED},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, WTE, EMP, EMP},
+                        {EMP, BLE, BLE, EMP, EMP},
+                        {RED, WTE, EMP, EMP, EMP},
+                        {WTE, RED, EMP, EMP, EMP},
+                        {GRN, EMP, EMP, EMP, NLL}   //Expected
+                },
+                gb_TWO.updateBoardPositionForced("a701")
+                );
+        assertEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
+                        "even if it is invalid",
+                new State[][]{
+                        {EMP, EMP, EMP, EMP, NLL},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {EMP, EMP, EMP, EMP, EMP},
+                        {WTE, EMP, EMP, EMP, EMP},
+                        {WTE, EMP, EMP, EMP, EMP},
+                        {WTE, WTE, EMP, WTE, EMP},
+                        {GRN, BLE, BLE, WTE, EMP},
+                        {RED, WTE, WTE, WTE, NLL}   //Expected
+                },
+                gb_THREE.updateBoardPositionForced(new Tile("f200"))
+                );
+        assertEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
+                        "even if it is invalid",
+                "e540f030h000i113",
+                gb_TWO.updateBoardPositionForced("e540").getPlacementString()
+                );
+
+        //Discuss: What should placement string actually look like when it is full board
+        //and you're trying to force update. Create test for that
+
+        /*
+    Tests to make:
+    - updateBoardPositionForced (Tile & piece placement)
+        --Give a tile that is invalid but force it onto the board anyway
+          (assuming the tiles that fall off the board simply
+          don't appear on the game board?)
+     */
+    }
+
+    @Test
     public void checkRemoveFromBoard() {
         assertEquals("Method .removeFromBoard must remove the right tile from both the gameboard and placement string",
                 "f030i113",
@@ -205,14 +255,4 @@ public class GameBoardArrayTest  {
                 "a000b013c113d302e323f400g420h522i613",
                 gb_FOUR.removeFromBoard("j701"));
     }
-
-
-
-    /*
-    Tests to make:
-    - updateBoardPositionForced (Tile & piece placement)
-        --Give a tile that is invalid but force it onto the board anyway
-          (assuming the tiles that fall off the board simply
-          don't appear on the game board?)
-     */
 }
