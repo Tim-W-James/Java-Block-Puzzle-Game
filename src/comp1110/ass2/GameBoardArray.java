@@ -175,7 +175,7 @@ public class GameBoardArray {
             gameBoard[p.getX()][p.getY()] = EMP;
         }
         // 3. update placementString by removing the piecePlacement
-        placementString.replace(t.getPlacement(), "");
+        placementString = placementString.replace(t.getPlacement(), "");
         return placementString;
     }
 
