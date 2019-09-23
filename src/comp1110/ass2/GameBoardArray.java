@@ -167,7 +167,7 @@ public class GameBoardArray {
     // TODO method needs to be checked for correctness
     public String removeFromBoard (Tile t) {
         // 1. check that the Tile actually exists on the board before it can be removed
-        if (t != getTileAt(t.getPosition())) {
+        if (!t.equals(getTileAt(t.getPosition()))) {
             throw new IllegalArgumentException("Tile "+t+" does not exist on the current game board");
         }
         // 2. update the gameBoard by removing the Tile
