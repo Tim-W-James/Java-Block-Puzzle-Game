@@ -55,6 +55,20 @@ public class GameBoardArrayTest  {
         {EMP, EMP, EMP, EMP, EMP}, // x = 7
         {EMP, EMP, EMP, EMP, NLL}  // x = 8
     };
+    // partially filled state -- matches gb_TWO
+    //a000g210e630
+    private State[][] s_TWO = new State[][]{
+            //y=0 y=1  y=2  y=3  y=4
+            {EMP, EMP, EMP, BLE, NLL}, // x = 0
+            {EMP, EMP, EMP, BLE, RED}, // x = 1
+            {EMP, EMP, EMP, BLE, RED}, // x = 2
+            {EMP, EMP, EMP, EMP, EMP}, // x = 3
+            {EMP, EMP, WTE, EMP, EMP}, // x = 4
+            {EMP, BLE, BLE, EMP, EMP}, // x = 5
+            {RED, WTE, EMP, EMP, EMP}, // x = 6
+            {WTE, RED, EMP, EMP, EMP}, // x = 7
+            {GRN, EMP, EMP, EMP, NLL}  // x = 8
+    };
 
     // partially filled state - matches gb_THREE
     private State[][] s_THREE = new State[][]{
@@ -134,7 +148,6 @@ public class GameBoardArrayTest  {
             {EMP, EMP, EMP, EMP, NLL}
     };
 
-
     @Test
     public void checkConstructors() {
 
@@ -183,6 +196,9 @@ public class GameBoardArrayTest  {
                 new Tile("a000"),
                 gb_TWO.getTileAt(1,1)
                 );
+        assertEquals("Method .getTileAt must return corresponding Tile",
+                new Tile("h000"),
+                gb_THREE.getTileAt(p_ONE));
     }
 
     @Test
@@ -211,17 +227,20 @@ public class GameBoardArrayTest  {
                 s_SEVEN,
                 gb_FIVE.updateBoardPosition("d711").getBoardState()
         );
+        assertEquals("Method .updateBoardPosition must return correct game board placement after updating tile",
+                "a000",
+                gb_ONE.updateBoardPosition("a000").getPlacementString());
     }
 
     @Test
     public void checkUpdateBoardPositionForced() {
-        assertArrayEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
-                "even if it is invalid",
+        assertArrayEquals("Method .updateBoardPositionForced must return the correct game board array given a "+
+                "tile to place, even if it is invalid",
                 s_EIGHT,
                 gb_SIX.updateBoardPositionForced("f000").getBoardState()
                 );
-        assertEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
-                        "even if it is invalid",
+        assertEquals("Method .updateBoardPositionForced must return the correct game board array placement even if tile "+
+                        "to place is invalid",
                 "a000f000i000",
                 gb_SIX.updateBoardPositionForced("i000").getPlacementString()
                 );
@@ -240,15 +259,4 @@ public class GameBoardArrayTest  {
                 "a000b013c113d302e323f400g420h522i613",
                 gb_FOUR.removeFromBoard("j701"));
     }
-
-    //Discuss: What should placement string actually look like when it is full board
-    //and you're trying to force update. Create test for that
-
-        /*
-    Tests to make:
-    - updateBoardPositionForced (Tile & piece placement)
-        --Give a tile that is invalid but force it onto the board anyway
-          (assuming the tiles that fall off the board simply
-          don't appear on the game board?)
-     */
 }

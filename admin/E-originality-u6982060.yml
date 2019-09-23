@@ -20,10 +20,8 @@ declaration: >-
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
 collaboration:
-  - name: Nicholas Dale
-    comment: TO UPDATE
   - name: Tim James
-    comment: TO UPDATE
+    comment: Issues with printing of game board array and minor bugs with GBA methods & testing
 
 
 # sign *your* name and uid here
