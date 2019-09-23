@@ -59,8 +59,6 @@ public class GameBoardArray {
     public State getStateAt(Position pos) { return gameBoard[pos.getX()][pos.getY()]; }
     public State getStateAt(int x, int y) { return gameBoard[x][y]; }
 
-
-
     // based on the placementString, returns the appropriate Tile of a given Position
     public Tile getTileAt (Position p) {
         // check position has a tile
@@ -164,7 +162,6 @@ public class GameBoardArray {
     }
 
     // removes a given tile from the board
-    // TODO method needs to be checked for correctness
     public String removeFromBoard (Tile t) {
         // 1. check that the Tile actually exists on the board before it can be removed
         if (!t.equals(getTileAt(t.getPosition()))) {
@@ -178,7 +175,6 @@ public class GameBoardArray {
         placementString = placementString.replace(t.getPlacement(), "");
         return placementString;
     }
-
     public String removeFromBoard (String piecePlacement) { // also supports String input
         removeFromBoard(new Tile(piecePlacement));
         return placementString;
