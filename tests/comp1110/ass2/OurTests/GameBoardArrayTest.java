@@ -27,85 +27,137 @@ public class GameBoardArrayTest  {
             }
     ); //Tile[] (Shape,Position,Direction) constructor
 
-    private  GameBoardArray gb_FOUR = new GameBoardArray("a000b013c113d302e323f400g420h522i613j701");
     //Full game board (based off of .idea/assets/a00.png)
+    private  GameBoardArray gb_FOUR = new GameBoardArray("a000b013c113d302e323f400g420h522i613j701");
+
+    // matches gb_THREE but to be updated by updateBoardPosition
+    private GameBoardArray gb_FIVE = new GameBoardArray(
+            new Tile[]{
+                    new Tile(Shape.H, p_ONE, Direction.NORTH),
+                    new Tile(Shape.I, p_TWO, Direction.WEST),
+                    new Tile(Shape.F, p_THREE, Direction.NORTH)
+            }
+    );
+
+    // to be updated by updateBoardPositionForced
+    private GameBoardArray gb_SIX = new GameBoardArray("a000");
+
+    // empty state - matches gb_ONE
+    private State[][] s_ONE = new State[][]{ // note that positions are inverted when printed in this form
+        //y=0 y=1  y=2  y=3  y=4
+        {EMP, EMP, EMP, EMP, NLL}, // x = 0
+        {EMP, EMP, EMP, EMP, EMP}, // x = 1
+        {EMP, EMP, EMP, EMP, EMP}, // x = 2
+        {EMP, EMP, EMP, EMP, EMP}, // x = 3
+        {EMP, EMP, EMP, EMP, EMP}, // x = 4
+        {EMP, EMP, EMP, EMP, EMP}, // x = 5
+        {EMP, EMP, EMP, EMP, EMP}, // x = 6
+        {EMP, EMP, EMP, EMP, EMP}, // x = 7
+        {EMP, EMP, EMP, EMP, NLL}  // x = 8
+    };
+
+    // partially filled state - matches gb_THREE
+    private State[][] s_THREE = new State[][]{
+            {RED, WTE, WTE, WTE, NLL},
+            {GRN, BLE, BLE, WTE, EMP},
+            {GRN, WTE, EMP, WTE, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, NLL}
+    };
+
+    // filled state - matches gb_FOUR
+    private State[][] s_FOUR = new State[][]{
+            {GRN, GRN, GRN, BLE, NLL},
+            {WTE, RED, GRN, WTE, WTE},
+            {RED, BLE, WTE, RED, RED},
+            {BLE, RED, BLE, BLE, BLE},
+            {WTE, RED, WTE, RED, RED},
+            {WTE, RED, BLE, BLE, GRN},
+            {WTE, BLE, BLE, WTE, GRN},
+            {GRN, WTE, WTE, WTE, RED},
+            {GRN, GRN, WTE, RED, NLL}
+    };
+
+    // partially filled state - matches gb_FIVE after update "a532"
+    private State[][] s_FIVE = new State[][]{
+            {RED, WTE, WTE, WTE, NLL},
+            {GRN, BLE, BLE, WTE, EMP},
+            {GRN, WTE, EMP, WTE, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, RED},
+            {EMP, EMP, EMP, RED, WTE},
+            {EMP, EMP, EMP, EMP, GRN},
+            {EMP, EMP, EMP, EMP, NLL}
+    };
+
+    // partially filled state - matches gb_FIVE after update "a532" and "e600"
+    private State[][] s_SIX = new State[][]{
+            {RED, WTE, WTE, WTE, NLL},
+            {GRN, BLE, BLE, WTE, EMP},
+            {GRN, WTE, EMP, WTE, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, RED},
+            {BLE, RED, EMP, RED, WTE},
+            {BLE, RED, EMP, EMP, GRN},
+            {BLE, EMP, EMP, EMP, NLL}
+    };
+
+    // partially filled state - matches gb_FIVE after update "a532", "e600" and "d711"
+    private State[][] s_SEVEN = new State[][]{
+            {RED, WTE, WTE, WTE, NLL},
+            {GRN, BLE, BLE, WTE, EMP},
+            {GRN, WTE, EMP, WTE, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, RED},
+            {BLE, RED, EMP, RED, WTE},
+            {BLE, RED, EMP, BLE, GRN},
+            {BLE, RED, RED, RED, NLL}
+    };
+
+    // after updateForced on gb_SIX
+    private State[][] s_EIGHT = new State[][]{
+            {WTE, EMP, EMP, EMP, NLL},
+            {WTE, RED, EMP, EMP, EMP},
+            {WTE, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, EMP},
+            {EMP, EMP, EMP, EMP, NLL}
+    };
+
 
     @Test
     public void checkConstructors() {
-    /*
-        for some reason, these tests are comparing answers to
-        string inputs: e.g. [[Lcomp1110.ass2.State;@2a9b652a ??
-     */
 
         //No constructor
         assertArrayEquals("Game board must reflect no constructor",
-                new State[][]{
-                        {EMP, EMP, EMP, EMP, NLL},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, NLL}
-                },  //expected
+                s_ONE, // expected
                 gb_ONE.getBoardState());    //actual
         //String placement constructor
         assertArrayEquals("Game board must correspond to String Placements",
-                new State[][]{
-                        {GRN, GRN, WTE, RED, NLL},
-                        {GRN, WTE, WTE, WTE, RED},
-                        {WTE, BLE, BLE, WTE, GRN},
-                        {WTE, RED, BLE, BLE, GRN},
-                        {WTE, RED, WTE, RED, RED},
-                        {BLE, RED, BLE, BLE, BLE},
-                        {RED, BLE, WTE, RED, RED},
-                        {WTE, RED, GRN, WTE, WTE},
-                        {GRN, GRN, GRN, BLE, NLL}
-                },
+                s_FOUR,
                 gb_FOUR.getBoardState());
         //Tile[] constructor test
         assertArrayEquals("Game board must correspond to Tile[] placements",
-                new State[][]{
-                        {EMP, EMP, EMP, EMP, NLL},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {GRN, WTE, EMP, WTE, EMP},
-                        {GRN, BLE, BLE, WTE, EMP},
-                        {RED, WTE, WTE, WTE, NLL}
-                },
+                s_THREE,
                 gb_THREE.getBoardState());
     }
 
     @Test
     public void checkGetFieldMethods() {
-        /*
-
-        Why is there a strikethrough??
-
-        WARNING: This test fails.
-         */
         assertArrayEquals("Method .getBoardState must return correct game board",
-                new State[][]{
-                        {EMP, EMP, EMP, BLE, NLL},
-                        {EMP, EMP, EMP, BLE, RED},
-                        {EMP, EMP, EMP, BLE, RED},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, WTE, EMP, EMP},
-                        {EMP, BLE, BLE, EMP, EMP},
-                        {RED, WTE, EMP, EMP, EMP},
-                        {WTE, RED, EMP, EMP, EMP},
-                        {GRN, EMP, EMP, EMP, NLL}   //Expected
-                },
-                gb_TWO.getBoardState() //Actual
+                s_FOUR, //expected
+                gb_FOUR.getBoardState() //Actual
                 );
-        /*
-        It seems like the game board returned is being flipped?
-         */
 
         assertEquals("Method .getPlacementString must return accompanying placementString",
                 "a000b013c113d302e323f400g420h522i613j701", //Expected
@@ -133,7 +185,6 @@ public class GameBoardArrayTest  {
                 );
     }
 
-
     @Test
     public void checkValidPosition() {
         assertTrue("Method .checkValidPosition must correctly reveal if tile can go in a given board position",
@@ -148,98 +199,32 @@ public class GameBoardArrayTest  {
 
     @Test
     public void checkUpdateBoardPosition() {
-        assertEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
-                new State[][] {
-                        {EMP, EMP, EMP, EMP, NLL},
-                        {EMP, EMP, EMP, EMP, GRN},
-                        {EMP, EMP, EMP, RED, WTE},
-                        {EMP, EMP, EMP, EMP, RED},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {GRN, WTE, EMP, WTE, EMP},
-                        {GRN, BLE, BLE, WTE, EMP},
-                        {RED, WTE, WTE, WTE, NLL}
-                },
-                gb_THREE.updateBoardPosition(new Tile("a532"))
+        assertArrayEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
+                s_FIVE,
+                gb_FIVE.updateBoardPosition(new Tile("a532")).getBoardState()
                 );
-        assertEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
-                new State[][] {
-                        {EMP, EMP, EMP, EMP, NLL},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {BLE, WTE, EMP, EMP, EMP},
-                        {BLE, EMP, EMP, EMP, NLL}
-                },
-                gb_ONE.updateBoardPosition("i000")
+        assertArrayEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
+                s_SIX,
+                gb_FIVE.updateBoardPosition(new Tile("e600")).getBoardState()
         );
-        assertEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
-                new State[][] {
-                        {BLE, WTE, EMP, BLE, NLL},
-                        {BLE, EMP, EMP, BLE, RED},
-                        {EMP, EMP, EMP, BLE, RED},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, WTE, EMP, EMP},
-                        {EMP, BLE, BLE, EMP, EMP},
-                        {RED, WTE, EMP, EMP, EMP},
-                        {WTE, RED, EMP, EMP, EMP},
-                        {GRN, EMP, EMP, EMP, NLL}
-                },
-                gb_TWO.updateBoardPosition("i700")
+        assertArrayEquals("Method .updateBoardPosition must return the correct game board array given a tile to place",
+                s_SEVEN,
+                gb_FIVE.updateBoardPosition("d711").getBoardState()
         );
     }
 
     @Test
     public void checkUpdateBoardPositionForced() {
-        assertEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
+        assertArrayEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
                 "even if it is invalid",
-                new State[][]{
-                        {GRN, WTE, RED, BLE, NLL},
-                        {EMP, RED, EMP, BLE, RED},
-                        {EMP, EMP, EMP, BLE, RED},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, WTE, EMP, EMP},
-                        {EMP, BLE, BLE, EMP, EMP},
-                        {RED, WTE, EMP, EMP, EMP},
-                        {WTE, RED, EMP, EMP, EMP},
-                        {GRN, EMP, EMP, EMP, NLL}   //Expected
-                },
-                gb_TWO.updateBoardPositionForced("a701")
+                s_EIGHT,
+                gb_SIX.updateBoardPositionForced("f000").getBoardState()
                 );
         assertEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
                         "even if it is invalid",
-                new State[][]{
-                        {EMP, EMP, EMP, EMP, NLL},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {EMP, EMP, EMP, EMP, EMP},
-                        {WTE, EMP, EMP, EMP, EMP},
-                        {WTE, EMP, EMP, EMP, EMP},
-                        {WTE, WTE, EMP, WTE, EMP},
-                        {GRN, BLE, BLE, WTE, EMP},
-                        {RED, WTE, WTE, WTE, NLL}   //Expected
-                },
-                gb_THREE.updateBoardPositionForced(new Tile("f200"))
+                "a000f000i000",
+                gb_SIX.updateBoardPositionForced("i000").getPlacementString()
                 );
-        assertEquals("Method .updateBoardPositionForced must return the correct game board array given a tile to place, "+
-                        "even if it is invalid",
-                "e540f030h000i113",
-                gb_TWO.updateBoardPositionForced("e540").getPlacementString()
-                );
-
-        //Discuss: What should placement string actually look like when it is full board
-        //and you're trying to force update. Create test for that
-
-        /*
-    Tests to make:
-    - updateBoardPositionForced (Tile & piece placement)
-        --Give a tile that is invalid but force it onto the board anyway
-          (assuming the tiles that fall off the board simply
-          don't appear on the game board?)
-     */
     }
 
     @Test
@@ -255,4 +240,15 @@ public class GameBoardArrayTest  {
                 "a000b013c113d302e323f400g420h522i613",
                 gb_FOUR.removeFromBoard("j701"));
     }
+
+    //Discuss: What should placement string actually look like when it is full board
+    //and you're trying to force update. Create test for that
+
+        /*
+    Tests to make:
+    - updateBoardPositionForced (Tile & piece placement)
+        --Give a tile that is invalid but force it onto the board anyway
+          (assuming the tiles that fall off the board simply
+          don't appear on the game board?)
+     */
 }
