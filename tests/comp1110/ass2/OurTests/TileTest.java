@@ -27,6 +27,7 @@ public class TileTest {
 
     @Test
     public void checkConstructors () {
+        // check that tiles are created and compared correctly
         assertEquals("Must match Tile using (String placement) constructor input", tA, new Tile("b132"));
         assertEquals("Must match Tile using (int x, int y) constructor input", tA, new Tile(sA,1,3, dA));
         assertEquals("Must be strictly symmetric", tB, tC);
@@ -34,7 +35,8 @@ public class TileTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void checkInvalidConstructors () { // check an exception is thrown for invalid inputs
+    public void checkInvalidConstructors () {
+        // check an exception is thrown for invalid inputs
         new Tile("12345"); // placement input must be 4 characters long
         new Tile("123"); // placement input must be 4 characters long
         new Tile("z000"); // the first character must be in the range a .. j
@@ -54,6 +56,8 @@ public class TileTest {
 
     @Test
     public void checkGetShapeArrangement () {
+        // check that tiles return the correct arrangement
+
         Position[] posArrA = {
                 new Position(1,4, State.GRN),
                 new Position(2,4, State.GRN),
