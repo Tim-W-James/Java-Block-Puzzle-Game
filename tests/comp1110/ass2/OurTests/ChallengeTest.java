@@ -55,7 +55,35 @@ public class ChallengeTest {
 
 
     @Test (expected = IllegalArgumentException.class)
-    public void testWellFormed() {
+    public void testBadFormed1() {
         Challenge challenge = new Challenge(BADCHALLENGE_1);
     }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testBadFormed2() {
+        Challenge challenge = new Challenge(BADCHALLENGE_2);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testBadFormed3() {
+        Challenge challenge = new Challenge(BADCHALLENGE_3);
+    }
+
+    @Test
+    public void testWellFormed() {
+        var C1 = new Challenge(CHALLENGE_1);
+        var C2 = new Challenge(CHALLENGE_2);
+        var C3 = new Challenge(CHALLENGE_3);
+
+        assertEquals("Challenge 1 is created correctly", CHALLENGE_1,
+                C1.getChallengeStr());
+        assertEquals("Challenge 2 is created correctly", CHALLENGE_2,
+                C2.getChallengeStr());
+        assertEquals("Challenge 3 is created correctly", CHALLENGE_3,
+                C3.getChallengeStr());
+
+    }
+
+
+
 }
