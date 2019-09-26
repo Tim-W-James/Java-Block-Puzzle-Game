@@ -1,10 +1,13 @@
 package comp1110.ass2.OurTests;
 
+import comp1110.ass2.Challenge;
 import comp1110.ass2.State;
+import comp1110.ass2.TestUtility;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
+import static org.junit.Assert.*;
 import static comp1110.ass2.State.*;
 import static comp1110.ass2.State.RED;
 
@@ -27,7 +30,7 @@ public class ChallengeTest {
     };
 
     // Equal to challenge.png or /assets/a00.png
-    // Is a valid challenge
+    // Is a valid challenge == Solution 1
     private State[][] s_FOUR = new State[][]{
             {GRN, GRN, GRN, BLE, NLL},
             {WTE, RED, GRN, WTE, WTE},
@@ -40,9 +43,19 @@ public class ChallengeTest {
             {GRN, GRN, WTE, RED, NLL}
     };
 
+    private String CHALLENGE_1 = "RRRBWBBRB";
+    private String CHALLENGE_2 = "RWWRRRWWW";
+    private String CHALLENGE_3 = "BGGWGGRWB";
 
-    @Test
+    private String BADCHALLENGE_1 = "a000b013c113d302e323f400g420h522i613j701";
+    private String BADCHALLENGE_2 = "a110";
+    private String BADCHALLENGE_3 = "BGGWGGRWZ";
+
+
+
+
+    @Test (expected = IllegalArgumentException.class)
     public void testWellFormed() {
-
+        Challenge challenge = new Challenge(BADCHALLENGE_1);
     }
 }
