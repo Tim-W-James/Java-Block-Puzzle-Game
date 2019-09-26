@@ -1,6 +1,7 @@
 package comp1110.ass2.OurTests;
 
 import comp1110.ass2.Challenge;
+import comp1110.ass2.GameBoardArray;
 import comp1110.ass2.State;
 import comp1110.ass2.TestUtility;
 import org.junit.Rule;
@@ -52,20 +53,28 @@ public class ChallengeTest {
     private String BADCHALLENGE_3 = "BGGWGGRWZ";
 
 
+    private GameBoardArray FinishedGameBoard = new GameBoardArray("a000b013c113d302e323f400g420h522i613j701");
+    private GameBoardArray NotFinishedGameBoard = new GameBoardArray();
+
+
+
 
 
     @Test (expected = IllegalArgumentException.class)
     public void testBadFormed1() {
+        System.out.println("Testing the challenge constructor with the bad string: " + BADCHALLENGE_1);
         Challenge challenge = new Challenge(BADCHALLENGE_1);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void testBadFormed2() {
+        System.out.println("Testing the challenge constructor with the bad string: " + BADCHALLENGE_2);
         Challenge challenge = new Challenge(BADCHALLENGE_2);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void testBadFormed3() {
+        System.out.println("Testing the challenge constructor with the bad string: " + BADCHALLENGE_3);
         Challenge challenge = new Challenge(BADCHALLENGE_3);
     }
 
@@ -81,7 +90,12 @@ public class ChallengeTest {
                 C2.getChallengeStr());
         assertEquals("Challenge 3 is created correctly", CHALLENGE_3,
                 C3.getChallengeStr());
+    }
 
+    @Test
+    public void testBoardChallenge() {
+        var challenge = new Challenge(CHALLENGE_1);
+        assertEquals("Test if challenge 1 states that a given board is correct",true,challenge.isChallengeVld(FinishedGameBoard));
     }
 
 
