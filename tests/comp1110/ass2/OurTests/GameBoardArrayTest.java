@@ -27,7 +27,7 @@ public class GameBoardArrayTest  {
             }
     ); //Tile[] (Shape,Position,Direction) constructor
 
-    //Full game board (based off of .idea/assets/a00.png)
+    //Full game board (based off of assets/a00.png)
     private  GameBoardArray gb_FOUR = new GameBoardArray("a000b013c113d302e323f400g420h522i613j701");
 
     // matches gb_THREE but to be updated by updateBoardPosition
