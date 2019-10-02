@@ -1,9 +1,6 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.GameBoardArray;
-import comp1110.ass2.Position;
-import comp1110.ass2.State;
-import comp1110.ass2.Tile;
+import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,7 +20,9 @@ import java.util.HashSet;
 public class Board extends Application {
 
     // Gameboard
-    private GameBoardArray game = new GameBoardArray();
+    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
+//    private GameBoardArray game = new GameBoardArray();
+
 
     // Size of the board within the window
     private static final int BOARD_WIDTH = 823;
@@ -64,14 +63,23 @@ public class Board extends Application {
             setImage(new Image((URI_BASE + t.getShape().toString().toLowerCase() + ".png")));
 
             // Sets the height and width of the tiles
-            setFitWidth(t.getWidth() * SQUARE_SIZE);
-            setFitHeight(t.getHeight() * SQUARE_SIZE);
+
+            if (t.getDirection() == Direction.NORTH || t.getDirection() == Direction.SOUTH) {
+                setFitWidth(t.getWidth() * SQUARE_SIZE);
+                setFitHeight(t.getHeight() * SQUARE_SIZE);
+            } else {
+                setFitWidth(t.getHeight() * SQUARE_SIZE);
+                setFitHeight(t.getWidth() * SQUARE_SIZE);
+
+            }
 
             System.out.println(t.getHeight() + ", " + t.getWidth());
 
+//            setRotate(t.getDirection().toDegree());
+
             Rotate rotation = new Rotate();
-            rotation.setPivotX(getFitWidth() / 2);
-            rotation.setPivotY(getFitHeight() /2);
+            rotation.setPivotX(0);
+            rotation.setPivotY(0);
             rotation.setAngle(t.getDirection().toDegree());
             getTransforms().add(rotation);
 
@@ -79,6 +87,20 @@ public class Board extends Application {
 
             setLayoutX((t.getPosition().getX()) * SQUARE_SIZE + OFFSET_X);
             setLayoutY((t.getPosition().getY()) * SQUARE_SIZE + OFFSET_Y);
+
+            if (t.getDirection() == Direction.EAST) {
+                setLayoutX(getLayoutX() + SQUARE_SIZE * t.getWidth());
+            }
+            if (t.getDirection() == Direction.SOUTH) {
+                setLayoutX(getLayoutX() + SQUARE_SIZE * t.getWidth());
+                setLayoutY(getLayoutY() + SQUARE_SIZE * t.getHeight());
+            }
+
+            if (t.getDirection() == Direction.WEST) {
+                setLayoutY(getLayoutY() + SQUARE_SIZE * t.getHeight());
+            }
+
+            System.out.println(t.getPosition());
 
         }
 
@@ -167,17 +189,8 @@ public class Board extends Application {
 
 
     void makePlacementFromString(String placement) {
-        Tile toPlace = new Tile(placement);
-        var shapes = toPlace.getShapeArrangement();
-
-        if (game.checkValidPosition(toPlace)) {
-            game.updateBoardPosition(toPlace);
-            renderGameBoard();
-            }
-        else {
-            System.out.println("Position for " + toPlace + " Is invalid");
-        }
-
+        game.updateBoardPosition(placement);
+        renderGameBoard();
     }
 
 
@@ -202,8 +215,7 @@ public class Board extends Application {
 
         setupBackground();
         setupTestControls();
-
-        makePlacementFromString("a110");
+        renderGameBoard();
 
         primaryStage.setScene(scene);
         primaryStage.show();
