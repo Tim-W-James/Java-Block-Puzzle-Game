@@ -20,6 +20,7 @@ import java.util.HashSet;
 // a packaged executable called game.jar can be found at the root directory,
 // to run this on IntelliJ go to Run -> Edit Configurations -> VM options,
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
+// Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
 public class Board extends Application {
 

@@ -52,7 +52,7 @@ public class ChallengeTest {
     private String BADCHALLENGE_2 = "a110";
     private String BADCHALLENGE_3 = "BGGWGGRWZ";
     private String BADCHALLENGE_4 = "";
-    private String BADCHALLENGE_5 = "RRRRRRRRR";
+    private String BADCHALLENGE_5 = "RRRRRRRRRR";
     private String BADCHALLENGE_6 = "";
     private String BADCHALLENGE_7 = "";
 
