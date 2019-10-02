@@ -17,15 +17,11 @@ component: getPossibleSolution (from FocusGame) - helper function for Task 9
 # Write a list of review comments here.
 #
 comments:
-  - Really well commented, makes it very to understand how the function processes
-  the gameboard to derive solutions
-  - Really good use of acc to look at each square and really great way of integrating
-  acc into calculating the x,y coordinates
-  - While there are quite a lot of if statements, you have used them effectively and
-  necessarily, especially the if-continue statements
+  - Really well commented, makes it very to understand how the function processes the gameboard to derive solutions
+  - Really good use of acc to look at each square and really great way of integrating acc into calculating the x,y coordinates
+  - While there are quite a lot of if statements, you have used them effectively and necessarily, especially the if-continue statements
   - Lines 233-236 could use 'returnUnusedTiles' function in Tile class instead
   - implementation of code to get the run time to under 1 minute is AMAZING!!!
-  - Perhaps simplifying your code into two separate methods could make it easier on the eyes
-  but your fantastic runtime says otherwise ^^
+  - Perhaps simplifying your code into two separate methods could make it easier on the eyes but your fantastic runtime says otherwise ^^
 
 
