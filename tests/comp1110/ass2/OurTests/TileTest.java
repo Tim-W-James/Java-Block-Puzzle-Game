@@ -21,9 +21,25 @@ public class TileTest {
     private Tile tC = new Tile("g723");
     private Tile tD = new Tile("h611");
 
+    private Tile tE = new Tile("a110");
+    private Tile tF = new Tile("a110");
+    private Tile tG = new Tile(Shape.A,1,1,Direction.NORTH);
+    private Tile tH = new Tile(Shape.A, new Position(1,1), Direction.NORTH);
+
+
     /*
      instance methods
      */
+
+    @Test
+    public void checkEquals() {
+        assertEquals("Tiles created with identical strings are equal", tE, tF);
+        assertEquals("Tiles created with position object constructor are equal to those created with integer position", tG, tH);
+        assertEquals("Tile created with string equal to tile created with Shape, int, int, Direction", tE, tG);
+        assertEquals("Tile created with string equal to tile created with Shape Position, Direction", tF, tH);
+
+
+    }
 
     @Test
     public void checkConstructors () {
