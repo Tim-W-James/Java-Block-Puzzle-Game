@@ -12,12 +12,12 @@ author:
 
 # Write the class or method being reviewed here.
 #
-component: -
+component: component
 
 # Write a list of review comments here.
 #
 comments:
-  - 
+  - comments
 
 
 
