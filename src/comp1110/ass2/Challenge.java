@@ -26,17 +26,28 @@ public class Challenge {
     }
 
     // check if a given GameBoardArray fits the challenge condition
-    public boolean isChallengeVld (GameBoardArray initBoard) {
+    // isPartial ignores empty states
+    public boolean isChallengeVld (GameBoardArray initBoard, boolean isPartial) {
         GameBoardArray challengeBoard = overlayOnGBA(new GameBoardArray());
 
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 3; l++) {
-                if (initBoard.getBoardState()[3+l][1+i] != challengeBoard.getBoardState()[3+l][1+i])
-                    return false;
+                if (isPartial) {
+                    if (initBoard.getStateAt(3+l,1+i) != State.EMP
+                            && initBoard.getStateAt(3+l,1+i) != challengeBoard.getStateAt(3+l,1+i))
+                        return false;
+                }
+                else {
+                    if (initBoard.getStateAt(3+l,1+i) != challengeBoard.getStateAt(3+l,1+i))
+                        return false;
+                }
             }
         }
 
         return true;
+    }
+    public boolean isChallengeVld (GameBoardArray initBoard) {
+        return isChallengeVld(initBoard, false);
     }
 
     // class method to check if a challenge is well-formed
@@ -61,11 +72,19 @@ public class Challenge {
             for (int l = 0; l < 3; l++) {
                 int x = 3+l;
                 int y = 1+i;
-                result += "(["+x+"]["+y+"]:"+board.getBoardState()[3+l][1+i]+")";
+                result += "(["+x+"]["+y+"]:"+board.getStateAt(3+l,1+i)+")";
             }
             result += "\n";
         }
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Challenge) // must match instance variables
+            return challenge.equals(((Challenge) obj).challenge);
+        else
+            return false;
     }
 }

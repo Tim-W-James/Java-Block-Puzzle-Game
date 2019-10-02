@@ -30,8 +30,23 @@ public class Position {
     @Override
     public String toString() {
         if (s == null)
-            return "[X:"+x+"][Y:"+y+"]";
+            return "[X:"+x+",Y:"+y+"]";
         else
-            return "[X:"+x+"][Y:"+y+"] State:"+s;
+            return "[X:"+x+",Y:"+y+"] State:"+s;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position) { // must match instance variables
+            if (s != null && ((Position) obj).s != null)
+                return (x == ((Position) obj).x
+                        && y == ((Position) obj).y
+                        && s.equals(((Position) obj).s));
+            else
+                return (x == ((Position) obj).x
+                        && y == ((Position) obj).y);
+        }
+        else
+            return false;
     }
 }

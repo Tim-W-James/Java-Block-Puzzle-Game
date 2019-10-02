@@ -103,7 +103,7 @@ public class FocusGame {
     /**
      * Given a string describing a placement of pieces and a string describing
      * a challenge, return a set of all possible next viable piece placements
-     * which cover a specific board cell.
+     * which cover a specific board location.
      *
      * For a piece placement to be viable
      * - it must be valid
@@ -121,59 +121,64 @@ public class FocusGame {
      *                  - 'B' = Blue square
      *                  - 'G' = Green square
      *                  - 'W' = White square
-     * @param col      The cell's column.
-     * @param row      The cell's row.
+     * @param col      The location's column.
+     * @param row      The location's row.
      * @return A set of viable piece placements, or null if there are none.
      */
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
-        // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
+        // store piece placements in sets
+        Set <String> viablePieces = new HashSet<>();
+
+        for (Shape s : Shape.values()) { // iterate across Shapes
+            // add viable pieces
+            // uses getViablePiecePlacements with a Shape input for each Shape
+            viablePieces.addAll(getViablePiecePlacements(placement, challenge, col, row, s, true));
+        }
+
+        // return null if empty
+        if (viablePieces.isEmpty())
+            return null;
+        else
+            return viablePieces;
+    }
+    // getViablePiecePlacements can check for individual shapes
+    private static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row, Shape s, boolean includeSymmetry) {
+        // store piece placements in sets
+        Set<String> possiblePieces = new HashSet<>();
         Set<String> viablePieces = new HashSet<>();
 
-        if (isPlacementStringValid(placement) && Challenge.isChallengeWFormed(challenge)) {
-            Shape[] unused = Tile.returnUnusedTileShapes(placement);
-            GameBoardArray currentBoard = new GameBoardArray(placement);
-
-
-            //1. Look at every single space on the game board array.
-            for (int y = 0; y < 5; y++) {
-                for (int x = 0; x < 9; x++) {
-
-                    //2. If it is empty, for each unused shape, check every orientation from that position
-                    if (currentBoard.getStateAt(x,y) == State.EMP) {
-                        for (Shape s : unused) {
-                            Direction d = Direction.NORTH;
-                            /*N.B. direction shouldn't be fixed as you need to check all
-                            directions of the piece.
-                            Switch statement probably easier?*/
-
-                            Tile candidate = new Tile(s,x,y,d);
-                            /*N.B. created new things on Tile document to get this.
-                            Delete respective functions if scrapping this.*/
-
-                            //3. Check if tile is valid on game board using checkValidPosition
-                            if (currentBoard.checkValidPosition(candidate)) {
-                                //4. If valid, check Shape arrangement of the tile
-                                Position[] posState = candidate.getShapeArrangement();
-                                for (int i = 0; i < posState.length; i++) {
-                                    //5. If tile fulfils even just one square of the challenge area, add it to the set
-                                        /*Probably a better way for this tho*/
-
-                                    if (challenge.contains(String.valueOf(posState[i].getS().toChar()))) {
-                                        /**idk why `contains` won't accept a char**/
-                                        //6. Convert Tile to pieceplacement and add to Set
-                                        viablePieces.add(Tile.tileToPiecePlacement(candidate));
-                                    }
-                                }
+        // build a set of all possible values
+        // don't add shapes that are already in the placement
+        if (!placement.contains(s.toString().toLowerCase())) {
+            for (Direction d : Direction.values()) { // iterate across Directions
+                // don't consider symmetric duplicates
+                if (!includeSymmetry && (s == Shape.F || s == Shape.G) && d == Direction.SOUTH)
+                    break;
+                for (int x = Math.max(0, col - s.getMaxReach(d, false)); x <= col; x++) { // iterate across relevant x Positions
+                    for (int y = Math.max(0, row - s.getMaxReach(d, true)); y <= row; y++) { // iterate across relevant y Positions
+                        Tile t = new Tile(s, x, y, d);
+                        // check the tile contains the relevant Position
+                        if (t.doesTileContainPosition(new Position(col, row))) {
+                            // check that the placement is actually valid
+                            if (isPlacementStringValid(t.getPlacement() + placement)) {
+                                possiblePieces.add(t.getRawPlacement()); // add to the set
                             }
                         }
+                    }
                 }
             }
-            }
-        }
-        else {
-            return null;
         }
 
+        // store information about the game
+        Challenge ch = new Challenge(challenge);
+
+        // build a set of all valid values from possible values
+        for (String p : possiblePieces) {
+            // check the placement accepts the challenge condition
+            // and if outside of the range of the challenge
+            if (col > 5 || row > 3 || ch.isChallengeVld(new GameBoardArray(p), true))
+                viablePieces.add(p);
+        }
 
         return viablePieces;
     }
@@ -195,7 +200,62 @@ public class FocusGame {
      * the challenge.
      */
     public static String getSolution(String challenge) {
-        // FIXME Task 9: determine the solution to the game, given a particular challenge
+        // recursively test possible placements until an accepted placement is found
+        return getPossibleSolution(new GameBoardArray(), challenge, 0);
+    }
+    // recursive function with an int accumulator and game board which is incrementally built
+    private static String getPossibleSolution(GameBoardArray gb, String ch, int acc) {
+        int x;
+        int y;
+
+        // calculate position on board for a respective accumulator
+        // first passes evaluate the challenge area, greatly reducing possible combinations
+        if (acc < 9) {
+            x = acc%3 + 3;
+            y = (int) Math.floor((double) acc/3) + 1;
+        }
+        // skip the challenge area when it has already been evaluated
+        else if (acc > 20 && acc < 24 || acc > 29 && acc < 33 || acc > 38 && acc < 42) {
+            return getPossibleSolution(gb, ch, acc+3);
+        }
+        // assign a x, y value to the accumulator
+        else {
+            x = acc % 9;
+            y = (int) Math.floor((double) acc / 9) - 1;
+        }
+
+        if (acc > 52) // base case, terminates when every square has been checked
+            return gb.getPlacementString();
+
+        if (gb.getStateAt(x, y) != State.EMP) // empty positions are skipped
+            return getPossibleSolution(gb, ch, acc+1);
+
+        for (Shape s : Shape.values()) { // step case, check every square
+            // only check Shapes that aren't already on the game board
+            if (gb.getPlacementString().contains(s.toString().toLowerCase()))
+                continue;
+
+            Set <String> possiblePieces = getViablePiecePlacements(gb.getPlacementString(), ch, x, y, s, false);
+            // skip iteration if no viable pieces are found
+            if (possiblePieces.isEmpty())
+                continue;
+
+            for (String p : possiblePieces) {
+                // return part of a solution if it could lead to the solution
+                if (isPlacementStringValid(gb.getPlacementString()+p)) { // placement must be valid
+                    GameBoardArray tempGB = GameBoardArray.copy(gb);
+                    String possibleSolution = getPossibleSolution(tempGB.updateBoardPositionForced(p), ch, acc+1);
+
+                    // don't consider the placement if it has no possible solutions
+                    if (possibleSolution == null || possibleSolution.length() == 0)
+                        continue;
+
+                    return possibleSolution;
+                }
+            }
+        }
+
+        // when no solutions are found, return null
         return null;
     }
 }

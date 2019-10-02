@@ -7,6 +7,7 @@ public class GameBoardArray {
     // initially all states are empty, except (0,4) and (8,4) which are unused
     // 9*5, 43 used squares
     private State[][] gameBoard;
+    private String placementString = ""; // stores and updates placementString
     private String errorMsg;
 
     public GameBoardArray () { // zero arg constructor
@@ -25,9 +26,15 @@ public class GameBoardArray {
 
     // build board from placements
     public GameBoardArray (String placements) {
-        gameBoard = new GameBoardArray().gameBoard;
-        for (Tile t : Tile.placementToTileArray(placements)) {
-            updateBoardPosition(t);
+        if (placements.length() > 0) {
+            gameBoard = new GameBoardArray().gameBoard;
+            for (Tile t : Tile.placementToTileArray(placements)) {
+                updateBoardPosition(t);
+            }
+            placementString = placements;
+        }
+        else { // empty String input
+            gameBoard = new GameBoardArray().getBoardState();
         }
     }
 
@@ -37,6 +44,7 @@ public class GameBoardArray {
         for (Tile t : placements) {
             updateBoardPosition(t);
         }
+        placementString = Tile.tileArrayToPlacement(placements);
     }
 
 
@@ -45,10 +53,35 @@ public class GameBoardArray {
       */
 
     public State[][] getBoardState() { return gameBoard; }
+    public String getPlacementString() { return placementString; }
 
     // find the state at a given position
     public State getStateAt(Position pos) { return gameBoard[pos.getX()][pos.getY()]; }
     public State getStateAt(int x, int y) { return gameBoard[x][y]; }
+
+    // based on the placementString, returns the appropriate Tile of a given Position
+    public Tile getTileAt (Position p) {
+        // check position has a tile
+        if (getStateAt(p) == EMP || getStateAt(p) == NLL)
+            throw new IllegalArgumentException("No Tile At: "+p);
+        String correctpp = "";
+        // split placement string into array of tiles
+        Tile[] ppTiles = Tile.placementToTileArray(getPlacementString());
+        // Look at all the positions each Tile covers
+        for (Tile t : ppTiles) {
+            for (Position pos : t.getShapeArrangement()) {
+                if (pos.getX() == p.getX() && pos.getY() == p.getY()){
+                    correctpp += t.getPlacement();
+                }
+            }
+        }
+        return new Tile(correctpp);
+    }
+
+    // returns appropriate Tile given X and Y coordinates
+    public Tile getTileAt (int x, int y) {
+        return getTileAt(new Position(x, y));
+    }
 
 
     /**
@@ -89,32 +122,62 @@ public class GameBoardArray {
     }
 
     // updates a board position given a tile
-    public void updateBoardPosition(Tile t) {
+    public GameBoardArray updateBoardPosition(Tile t) {
         // check position is valid
         if (!checkValidPosition(t))
             throw new IllegalArgumentException("Invalid Tile Input: "+errorMsg);
 
         // update each required position in the board
-        for (Position p : t.getShapeArrangement()) {
-            gameBoard[p.getX()][p.getY()] = p.getS();
-        }
+        updateBoardPositionForced(t);
+
+        return this;
     }
-    public void updateBoardPosition(String piecePlacement) { // also accepts String input
+    public GameBoardArray updateBoardPosition(String piecePlacement) { // also accepts String input
         Tile t = new Tile(piecePlacement);
         updateBoardPosition(t);
+
+        return this;
     }
 
     // updates a board position given a tile, without checking if that placement is valid
-    // WARNING: error prone
-    public void updateBoardPositionForced(Tile t) {
+    // WARNING: error prone, also does not update the placement string
+    public GameBoardArray updateBoardPositionForced(Tile t) {
         // update each required position in the board
         for (Position p : t.getShapeArrangement()) {
             gameBoard[p.getX()][p.getY()] = p.getS();
         }
+
+        // add new tile to the placement string,
+        // note that Tile.pieceArrayToPlacement ensures placementString is correctly sorted
+        String temp = placementString += t.getPlacement();
+        placementString = Tile.pieceArrayToPlacement(Tile.placementToPieceArray(temp));
+
+        return this;
     }
-    public void updateBoardPositionForced(String piecePlacement) { // also accepts String input
+    public GameBoardArray updateBoardPositionForced(String piecePlacement) { // also accepts String input
         Tile t = new Tile(piecePlacement);
         updateBoardPositionForced(t);
+
+        return this;
+    }
+
+    // removes a given tile from the board
+    public String removeFromBoard (Tile t) {
+        // 1. check that the Tile actually exists on the board before it can be removed
+        if (!t.equals(getTileAt(t.getPosition()))) {
+            throw new IllegalArgumentException("Tile "+t+" does not exist on the current game board");
+        }
+        // 2. update the gameBoard by removing the Tile
+        for (Position p : t.getShapeArrangement()) {
+            gameBoard[p.getX()][p.getY()] = EMP;
+        }
+        // 3. update placementString by removing the piecePlacement
+        placementString = placementString.replace(t.getPlacement(), "");
+        return placementString;
+    }
+    public String removeFromBoard (String piecePlacement) { // also supports String input
+        removeFromBoard(new Tile(piecePlacement));
+        return placementString;
     }
 
     // prints the array for easy debugging
@@ -144,5 +207,25 @@ public class GameBoardArray {
         }
 
         return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GameBoardArray) // must match instance variables
+            return placementString.equals(((GameBoardArray) obj).placementString);
+        else
+            return false;
+    }
+
+    public static GameBoardArray copy(GameBoardArray gb) {
+        GameBoardArray gbCopy = new GameBoardArray();
+        gbCopy.placementString = gb.placementString;
+
+
+        State[][] boardCopy = new State[gb.gameBoard.length][];
+        for(int i = 0; i < gb.gameBoard.length; i++)
+            boardCopy[i] = gb.gameBoard[i].clone();
+        gbCopy.gameBoard = boardCopy;
+        return gbCopy;
     }
 }
