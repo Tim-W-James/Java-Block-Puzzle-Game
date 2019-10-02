@@ -159,7 +159,7 @@ public class Board extends Application {
     void makePlacementFromString(String placement) {
         Tile toPlace = new Tile(placement);
         var shapes = toPlace.getShapeArrangement();
-3
+
         if (game.checkValidPosition(toPlace)) {
             game.updateBoardPosition(toPlace);
             renderGameBoard();
