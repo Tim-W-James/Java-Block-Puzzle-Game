@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.HashSet;
@@ -55,27 +56,35 @@ public class Board extends Application {
 
 
     class GTile extends ImageView {
-        private String ID;
-        private int direction;
-
+        private Tile t;
 
         GTile(Tile t) {
-            ID = t.getPlacement();
-
-            System.out.println(URI_BASE + t.getShape().toString().toLowerCase() + ".png");
+            this.t = t;
 
             setImage(new Image((URI_BASE + t.getShape().toString().toLowerCase() + ".png")));
 
-            setRotate(t.getDirection().toDegree());
-
             // Sets the height and width of the tiles
-            setFitHeight(t.getHeight() * SQUARE_SIZE);
             setFitWidth(t.getWidth() * SQUARE_SIZE);
+            setFitHeight(t.getHeight() * SQUARE_SIZE);
 
+            System.out.println(t.getHeight() + ", " + t.getWidth());
 
-            setLayoutX((t.getPosition().getX() - 1) * SQUARE_SIZE + OFFSET_X);
-            setLayoutY((t.getPosition().getY() - 1) * SQUARE_SIZE + OFFSET_Y);
+            Rotate rotation = new Rotate();
+            rotation.setPivotX(getFitWidth() / 2);
+            rotation.setPivotY(getFitHeight() /2);
+            rotation.setAngle(t.getDirection().toDegree());
+            getTransforms().add(rotation);
 
+            System.out.println(getTransforms());
+
+            setLayoutX((t.getPosition().getX()) * SQUARE_SIZE + OFFSET_X);
+            setLayoutY((t.getPosition().getY()) * SQUARE_SIZE + OFFSET_Y);
+
+        }
+
+        @Override
+        public String toString() {
+            return "Fit Width/Height: " + getFitWidth() + "," + getFitHeight() + " | " + "Position x,y: " + getLayoutX() + "," + getLayoutY() + "\n" + this.t + "\n";
         }
     }
 
@@ -141,10 +150,10 @@ public class Board extends Application {
         gTiles.getChildren().clear();
         for (Tile t :
                 tiles) {
-            System.out.println("Rendering Tile " + t);
             gTiles.getChildren().add(new GTile(t));
         }
         gTiles.toFront();
+
         System.out.println(gTiles.getChildren());
     }
 
