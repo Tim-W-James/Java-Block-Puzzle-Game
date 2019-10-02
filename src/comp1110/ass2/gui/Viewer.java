@@ -101,36 +101,25 @@ public class Viewer extends Application {
 
     }
 
-    //returns dimensions of tile depending on tile type
+    // returns dimensions of tile depending on tile type
     private int[] tileSize(String placement) {
         char shape = placement.charAt(0);
         switch (shape) {
-            case 'a': {
+            case 'a':
+            case 'd':
+            case 'e':
+            case 'g': {
                 int[] size = {3,2};
                 return size;
             }
-            case 'b': {
+            case 'b':
+            case 'c':
+            case 'j': {
                 int[] size = {4,2};
-                return size;
-            }
-            case 'c': {
-                int[] size = {4,2};
-                return size;
-            }
-            case 'd': {
-                int[] size = {3,2};
-                return size;
-            }
-            case 'e': {
-                int[] size = {3,2};
                 return size;
             }
             case 'f': {
                 int[] size = {3,1};
-                return size;
-            }
-            case 'g': {
-                int[] size = {3,2};
                 return size;
             }
             case 'h': {
@@ -139,10 +128,6 @@ public class Viewer extends Application {
             }
             case 'i': {
                 int[] size = {2,2};
-                return size;
-            }
-            case 'j': {
-                int[] size = {4,2};
                 return size;
             }
             default: {
