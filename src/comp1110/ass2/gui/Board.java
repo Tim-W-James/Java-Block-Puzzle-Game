@@ -29,8 +29,8 @@ Authorship: Nicholas Dale
 public class Board extends Application {
 
     // Gameboard
-    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
-//    private GameBoardArray game = new GameBoardArray();
+//    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
+    private GameBoardArray game = new GameBoardArray();
 
 
     // Size of the board within the window
