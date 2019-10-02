@@ -9,6 +9,10 @@ import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
+/*
+Authorship: Timothy James
+ */
+
 public class TileTest {
     @Rule
     public Timeout globalTimeout = Timeout.millis(500);

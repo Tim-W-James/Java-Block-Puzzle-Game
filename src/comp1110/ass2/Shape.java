@@ -1,5 +1,9 @@
 package comp1110.ass2;
 
+/*
+Authorship: Timothy James, Nicholas Dale
+*/
+
 // encodes the type of shape for a tile
 public enum Shape {
     A('a'),

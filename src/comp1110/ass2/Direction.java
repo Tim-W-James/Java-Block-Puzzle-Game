@@ -1,5 +1,9 @@
 package comp1110.ass2;
 
+/*
+Authorship: Timothy James, Nicholas Dale
+ */
+
 // encodes the direction a tile is facing
 public enum Direction {
     NORTH('0'), //0

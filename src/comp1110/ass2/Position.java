@@ -1,5 +1,9 @@
 package comp1110.ass2;
 
+/*
+Authorship: Timothy James
+*/
+
 // stores a position for a tile
 public class Position {
     private int x; // x is the column

@@ -29,6 +29,11 @@ import java.awt.*;
  * class does not play a game, it just illustrates various piece
  * placements.
  */
+
+/*
+Authorship: Rebecca Gibson, Nicholas Dale
+*/
+
 public class Viewer extends Application {
 
     /* board layout */

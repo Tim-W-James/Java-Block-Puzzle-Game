@@ -2,6 +2,10 @@ package comp1110.ass2;
 
 import static comp1110.ass2.State.*;
 
+/*
+Authorship: Rebecca Gibson, Timothy James
+ */
+
 public class GameBoardArray {
 
     // initially all states are empty, except (0,4) and (8,4) which are unused
@@ -10,6 +14,9 @@ public class GameBoardArray {
     private String placementString = ""; // stores and updates placementString
     private String errorMsg;
 
+    /*
+    Authorship: Timothy James
+     */
     public GameBoardArray () { // zero arg constructor
         gameBoard = new State[][]{
                 {EMP, EMP, EMP, EMP, NLL},
@@ -23,7 +30,6 @@ public class GameBoardArray {
                 {EMP, EMP, EMP, EMP, NLL}
         };
     }
-
     // build board from placements
     public GameBoardArray (String placements) {
         if (placements.length() > 0) {
@@ -37,7 +43,6 @@ public class GameBoardArray {
             gameBoard = new GameBoardArray().getBoardState();
         }
     }
-
     // build board from placements
     public GameBoardArray (Tile[] placements) {
         gameBoard = new GameBoardArray().gameBoard;
@@ -59,6 +64,9 @@ public class GameBoardArray {
     public State getStateAt(Position pos) { return gameBoard[pos.getX()][pos.getY()]; }
     public State getStateAt(int x, int y) { return gameBoard[x][y]; }
 
+    /*
+    Authorship: Rebecca Gibson
+     */
     // based on the placementString, returns the appropriate Tile of a given Position
     public Tile getTileAt (Position p) {
         // check position has a tile
@@ -88,7 +96,10 @@ public class GameBoardArray {
      useful methods to handle changes in the game board
      */
 
-    /* checkValidPosition should check if a tile can go in a given board position
+    /*
+    Authorship: Timothy James
+    *
+    checkValidPosition should check if a tile can go in a given board position
      * according to the rules:
      *  - piece must be entirely on the board
      *  - piece must not overlap each other
@@ -121,6 +132,9 @@ public class GameBoardArray {
         return checkValidPosition(t);
     }
 
+    /*
+    Authorship: Timothy James
+     */
     // updates a board position given a tile
     public GameBoardArray updateBoardPosition(Tile t) {
         // check position is valid
@@ -161,6 +175,9 @@ public class GameBoardArray {
         return this;
     }
 
+    /*
+    Authorship: Rebecca Gibson
+     */
     // removes a given tile from the board
     public String removeFromBoard (Tile t) {
         // 1. check that the Tile actually exists on the board before it can be removed
@@ -180,6 +197,9 @@ public class GameBoardArray {
         return placementString;
     }
 
+    /*
+    Authorship: Timothy James
+     */
     // prints the array for easy debugging
     @Override
     public String toString() {
@@ -209,6 +229,9 @@ public class GameBoardArray {
         return result;
     }
 
+    /*
+    Authorship: Timothy James
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof GameBoardArray) // must match instance variables
@@ -217,6 +240,9 @@ public class GameBoardArray {
             return false;
     }
 
+    /*
+    Authorship: Timothy James
+     */
     public static GameBoardArray copy(GameBoardArray gb) {
         GameBoardArray gbCopy = new GameBoardArray();
         gbCopy.placementString = gb.placementString;

@@ -1,9 +1,12 @@
 package comp1110.ass2;
 
 import java.util.Arrays;
-
 import static comp1110.ass2.Direction.*;
 import static comp1110.ass2.State.*;
+
+/*
+Authorship: Rebecca Gibson, Timothy James, Nicholas Dale
+*/
 
 // Tile stores information from a piece placement string,
 // provides more intuitive methods for dealing with tiles
@@ -20,6 +23,9 @@ public class Tile implements Comparable<Tile> {
             "\t- the third character is in the range 0 .. 4 (row)\n" +
             "\t- the fourth character is in the range 0 .. 3 (direction)";
 
+    /*
+    Authorship: Timothy James
+     */
     public Tile (String piecePlacement) {
         // ensure placement is valid
         if (FocusGame.isPiecePlacementWellFormed(piecePlacement)) {
@@ -60,6 +66,9 @@ public class Tile implements Comparable<Tile> {
 
     public String getRawPlacement() { return rawPlacement; }
 
+    /*
+    Authorship: Nicholas Dale
+     */
     public double getWidth() {
         int minX, maxX;
         var pos = this.getShapeArrangement();
@@ -611,6 +620,9 @@ public class Tile implements Comparable<Tile> {
             return false;
     }
 
+    /*
+    Authorship: Nicholas Dale
+     */
     @Override
     public int hashCode() {
         int hash = this.rawPlacement.chars().reduce(0, Integer::sum);

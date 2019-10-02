@@ -1,5 +1,9 @@
 package comp1110.ass2;
 
+/*
+Authorship: Timothy James
+ */
+
 public class Challenge {
     // 9 characters long with only characters that correspond to a state
     private String challenge;

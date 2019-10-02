@@ -8,6 +8,10 @@ import org.junit.rules.Timeout;
 import static comp1110.ass2.State.*;
 import static org.junit.Assert.*;
 
+/*
+Authorship: Rebecca Gibson, Timothy James
+ */
+
 public class GameBoardArrayTest  {
 
     @Rule

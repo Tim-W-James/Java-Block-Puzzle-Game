@@ -12,6 +12,10 @@ import static org.junit.Assert.*;
 import static comp1110.ass2.State.*;
 import static comp1110.ass2.State.RED;
 
+/*
+Authorship: Nicholas Dale
+ */
+
 public class ChallengeTest {
     @Rule
     public Timeout globalTimeout = Timeout.millis(500);

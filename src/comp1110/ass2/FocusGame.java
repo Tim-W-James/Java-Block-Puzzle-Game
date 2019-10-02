@@ -25,6 +25,10 @@ public class FocusGame {
      * @return True if the piece placement is well-formed
      */
 
+    /*
+    Authorship: Rebecca Gibson
+    */
+
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // check each character falls within valid ascii values
         return (piecePlacement.length() == 4 &&
@@ -43,6 +47,11 @@ public class FocusGame {
      * @param placement A string describing a placement of one or more pieces
      * @return True if the placement is well-formed
      */
+
+    /*
+    Authorship: Rebecca Gibson, Timothy James
+    */
+
     public static boolean isPlacementStringWellFormed(String placement) {
         // check length is valid
         if (placement.length() % 4 != 0 ||
@@ -83,6 +92,11 @@ public class FocusGame {
      * @param placement A placement string
      * @return True if the placement sequence is valid
      */
+
+    /*
+    Authorship: Timothy James
+    */
+
     public static boolean isPlacementStringValid(String placement) {
         // check placement is well-formed
         if (!isPlacementStringWellFormed(placement))
@@ -125,6 +139,11 @@ public class FocusGame {
      * @param row      The location's row.
      * @return A set of viable piece placements, or null if there are none.
      */
+
+    /*
+    Authorship: Rebecca Gibson, Timothy James
+    */
+
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // store piece placements in sets
         Set <String> viablePieces = new HashSet<>();
@@ -199,6 +218,11 @@ public class FocusGame {
      * @return A placement string describing a canonical encoding of the solution to
      * the challenge.
      */
+
+    /*
+    Authorship: Timothy James
+    */
+
     public static String getSolution(String challenge) {
         // recursively test possible placements until an accepted placement is found
         return getPossibleSolution(new GameBoardArray(), challenge, 0);

@@ -22,6 +22,10 @@ import java.util.HashSet;
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
+/*
+Authorship: Nicholas Dale
+*/
+
 public class Board extends Application {
 
     // Gameboard

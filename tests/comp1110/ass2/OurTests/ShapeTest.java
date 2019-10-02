@@ -8,6 +8,10 @@ import org.junit.rules.Timeout;
 
 import static org.junit.Assert.*;
 
+/*
+Authorship: Timothy James, Nicholas Dale
+ */
+
 public class ShapeTest {
 
     @Rule
