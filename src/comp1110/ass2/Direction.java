@@ -16,4 +16,8 @@ public enum Direction {
     public char toChar() {
         return direction;
     }
+
+    public double toDegree() {
+        return (int) direction * 90;
+    }
 }

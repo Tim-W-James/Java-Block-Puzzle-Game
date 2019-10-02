@@ -60,6 +60,42 @@ public class Tile implements Comparable<Tile> {
 
     public String getRawPlacement() { return rawPlacement; }
 
+    public double getWidth() {
+        int minX, maxX;
+        var pos = this.getShapeArrangement();
+        minX = pos[0].getX();
+        maxX = pos[0].getX();
+
+        for (Position s :
+                pos) {
+            int x = s.getX();
+            if (x < minX)
+                minX = x;
+            if (x > maxX)
+                maxX = x;
+        }
+
+        return (maxX - minX + 1);
+    }
+
+    public double getHeight() {
+        int minY, maxY;
+        var pos = this.getShapeArrangement();
+        minY = pos[0].getY();
+        maxY = pos[0].getY();
+
+        for (Position s :
+                pos) {
+            int y = s.getY();
+            if (y < minY)
+                minY = y;
+            if (y > maxY)
+                maxY = y;
+        }
+
+        return (maxY - minY + 1);
+    }
+
     // returns an array of positions a tile has, given a shape and direction,
     // relative to [0][0], with [x][y] origin position offset
     public Position[] getShapeArrangement () {

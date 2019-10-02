@@ -25,16 +25,20 @@ public class Board extends Application {
     private GameBoardArray game = new GameBoardArray();
 
     // Size of the board within the window
-    private static final int BOARD_WIDTH = 933;
-    private static final int BOARD_HEIGHT = 700;
+    private static final int BOARD_WIDTH = 823;
+    private static final int BOARD_HEIGHT = 530;
 
-    // Window size
-    private static final int WINDOW_WIDTH = 1000;
-    private static final int WINDOW_HEIGHT = 750;
+    // Size of the grid within the board (SqSz * # squares)
+    private static final int GAME_GRID_WIDTH = 720;
+    private static final int GAME_GRID_HEIGHT = 400;
 
-    // Offset of the board within the window
-    private static final int BACKGROUND_X = 33;
-    private static final int BACKGROUND_Y = 25;
+    // Overall Window Size
+    private static final int WINDOW_WIDTH = 823;
+    private static final int WINDOW_HEIGHT = 600;
+
+    // Offset between board and game grid
+    private static final int OFFSET_X = (BOARD_WIDTH - GAME_GRID_WIDTH) / 2;
+    private static final int OFFSET_Y = 91;
 
     private static final int SQUARE_SIZE = 80;
 
@@ -64,46 +68,13 @@ public class Board extends Application {
 
             setRotate(t.getDirection().toDegree());
 
-
-            var pos = t.getShapeArrangement();
-            int minX;
-            int minY;
-            int maxX;
-            int maxY;
-
-            minX = pos[0].getX();
-            maxX = pos[0].getX();
-            minY = pos[0].getY();
-            maxY = pos[0].getY();
-
-            for (Position s :
-                    pos) {
-                System.out.println(s);
-                int x = s.getX();
-                int y = s.getY();
-
-                if (x < minX)
-                    minX = x;
-                if (x > maxX)
-                    maxX = x;
-                if (y < minY)
-                    minY = y;
-                if (y > maxY)
-                    maxY = y;
-
-            }
-
-            int shapeX = maxX - minX + 1;
-            int shapeY = maxY - minY + 1;
-            System.out.println(shapeX + "," + shapeY);
+            // Sets the height and width of the tiles
+            setFitHeight(t.getHeight() * SQUARE_SIZE);
+            setFitWidth(t.getWidth() * SQUARE_SIZE);
 
 
-            setFitHeight(shapeY * SQUARE_SIZE);
-            setFitWidth(shapeX * SQUARE_SIZE);
-
-
-            setLayoutX(t.getPosition().getX() * SQUARE_SIZE);
-            setLayoutY(t.getPosition().getY() * SQUARE_SIZE);
+            setLayoutX((t.getPosition().getX() - 1) * SQUARE_SIZE + OFFSET_X);
+            setLayoutY((t.getPosition().getY() - 1) * SQUARE_SIZE + OFFSET_Y);
 
         }
     }
@@ -115,8 +86,6 @@ public class Board extends Application {
         board.setImage(new Image(URI_BASE + "board" + ".png"));
         board.setFitWidth(BOARD_WIDTH);
         board.setFitHeight(BOARD_HEIGHT);
-        board.setLayoutX(BACKGROUND_X);
-        board.setLayoutY(BACKGROUND_Y);
 
         background.getChildren().add(board);
         board.toBack();
@@ -163,13 +132,6 @@ public class Board extends Application {
                     tilesToRender.add(game.getTileAt(i, j));
                 }
             }
-        }
-        // Debugging
-        System.out.println("Found " + tilesToRender.size() + " Tiles");
-        for (Tile t :
-                tilesToRender) {
-            System.out.println(t);
-
         }
 
         makeTiles(tilesToRender);
@@ -225,7 +187,7 @@ public class Board extends Application {
         primaryStage.setTitle("IQ Focus by thu11g");
         Scene scene = new Scene(root,WINDOW_WIDTH,WINDOW_HEIGHT);
 
-//        root.getChildren().add(background);
+        root.getChildren().add(background);
         root.getChildren().add(controls);
         root.getChildren().add(gTiles);
 
