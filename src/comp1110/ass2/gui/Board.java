@@ -58,9 +58,12 @@ public class Board extends Application {
         GTile(Tile t) {
             ID = t.getPlacement();
 
-            t.getDirection();
             setImage(new Image(URI_BASE + t.getShape() + ".png"));
+            setFitHeight(t.getShape().getMaxReach());
+            setFitWidth(t.getShape().getMaxReach());
 
+            setLayoutX(100);
+            setLayoutY(100);
 
 
         }
@@ -137,9 +140,11 @@ public class Board extends Application {
         gTiles.getChildren().clear();
         for (Tile t :
                 tiles) {
+            System.out.println("Rendering Tile " + t);
             gTiles.getChildren().add(new GTile(t));
         }
         gTiles.toFront();
+        System.out.println(gTiles.getChildren());
     }
 
     private void addTile(Tile t) {
@@ -181,8 +186,9 @@ public class Board extends Application {
         primaryStage.setTitle("IQ Focus by thu11g");
         Scene scene = new Scene(root,WINDOW_WIDTH,WINDOW_HEIGHT);
 
-        root.getChildren().add(background);
+//        root.getChildren().add(background);
         root.getChildren().add(controls);
+        root.getChildren().add(gTiles);
 
         setupBackground();
         setupTestControls();
