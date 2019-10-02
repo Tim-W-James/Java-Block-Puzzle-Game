@@ -61,8 +61,46 @@ public class Board extends Application {
             System.out.println(URI_BASE + t.getShape().toString().toLowerCase() + ".png");
 
             setImage(new Image((URI_BASE + t.getShape().toString().toLowerCase() + ".png")));
-            setFitHeight(t.getShape().getMaxReach() * SQUARE_SIZE);
-            setFitWidth(t.getShape().getMaxReach() * SQUARE_SIZE);
+
+            setRotate(t.getDirection().toDegree());
+
+
+            var pos = t.getShapeArrangement();
+            int minX;
+            int minY;
+            int maxX;
+            int maxY;
+
+            minX = pos[0].getX();
+            maxX = pos[0].getX();
+            minY = pos[0].getY();
+            maxY = pos[0].getY();
+
+            for (Position s :
+                    pos) {
+                System.out.println(s);
+                int x = s.getX();
+                int y = s.getY();
+
+                if (x < minX)
+                    minX = x;
+                if (x > maxX)
+                    maxX = x;
+                if (y < minY)
+                    minY = y;
+                if (y > maxY)
+                    maxY = y;
+
+            }
+
+            int shapeX = maxX - minX + 1;
+            int shapeY = maxY - minY + 1;
+            System.out.println(shapeX + "," + shapeY);
+
+
+            setFitHeight(shapeY * SQUARE_SIZE);
+            setFitWidth(shapeX * SQUARE_SIZE);
+
 
             setLayoutX(t.getPosition().getX() * SQUARE_SIZE);
             setLayoutY(t.getPosition().getY() * SQUARE_SIZE);
@@ -193,6 +231,8 @@ public class Board extends Application {
 
         setupBackground();
         setupTestControls();
+
+        makePlacementFromString("a110");
 
         primaryStage.setScene(scene);
         primaryStage.show();
