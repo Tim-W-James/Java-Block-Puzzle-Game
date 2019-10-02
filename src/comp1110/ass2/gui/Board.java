@@ -36,6 +36,8 @@ public class Board extends Application {
     private static final int BACKGROUND_X = 33;
     private static final int BACKGROUND_Y = 25;
 
+    private static final int SQUARE_SIZE = 80;
+
 
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
@@ -57,6 +59,8 @@ public class Board extends Application {
             ID = t.getPlacement();
 
             t.getDirection();
+            setImage(new Image(URI_BASE + t.getShape() + ".png"));
+
 
 
         }
@@ -135,6 +139,7 @@ public class Board extends Application {
                 tiles) {
             gTiles.getChildren().add(new GTile(t));
         }
+        gTiles.toFront();
     }
 
     private void addTile(Tile t) {
@@ -153,24 +158,6 @@ public class Board extends Application {
         if (game.checkValidPosition(toPlace)) {
             game.updateBoardPosition(toPlace);
             renderGameBoard();
-
-//            for (Position shape:
-//                    shapes) {
-//                System.out.println(shape);
-//
-//                Image image = new Image((URI_BASE + stateToString(shape)) + ".png");
-//                ImageView iv1 = new ImageView();
-//                iv1.setImage(image);
-//                iv1.setFitHeight(SQUARE_SIZE);
-//                iv1.setFitWidth(SQUARE_SIZE);
-//
-//                iv1.setSmooth(true);
-//                iv1.setCache(true);
-//
-//                iv1.setTranslateX(shape.getX() * SQUARE_SIZE + 48);
-//                iv1.setTranslateY(shape.getY() * SQUARE_SIZE + 83);
-//
-//                rootBackground.getChildren().add(iv1);
             }
         else {
             System.out.println("Position for " + toPlace + " Is invalid");
