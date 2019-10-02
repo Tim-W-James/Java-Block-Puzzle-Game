@@ -37,6 +37,16 @@ public class TileTest {
         assertEquals("Tiles created with position object constructor are equal to those created with integer position", tG, tH);
         assertEquals("Tile created with string equal to tile created with Shape, int, int, Direction", tE, tG);
         assertEquals("Tile created with string equal to tile created with Shape Position, Direction", tF, tH);
+    }
+
+    @Test
+    public void checkHash() {
+        assertEquals("Equal tiles have equal hashes", tE.hashCode(), tF.hashCode());
+        assertEquals("Equal tiles created with different constructors (first, second) have different hashes", tE.hashCode(),tG.hashCode());
+
+        assertNotEquals("Different tiles have different hashes",tA, tB);
+        assertNotEquals("Different tiles have different hashes",tC, tD);
+        assertNotEquals("Different tiles have different hashes",tA, tE);
 
 
     }

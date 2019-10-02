@@ -574,4 +574,10 @@ public class Tile implements Comparable<Tile> {
         else
             return false;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = this.rawPlacement.chars().reduce(0, Integer::sum);
+        return hash;
+    }
 }
