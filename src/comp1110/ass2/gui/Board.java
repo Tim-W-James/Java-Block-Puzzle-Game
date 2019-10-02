@@ -58,13 +58,14 @@ public class Board extends Application {
         GTile(Tile t) {
             ID = t.getPlacement();
 
-            setImage(new Image(URI_BASE + t.getShape() + ".png"));
-            setFitHeight(t.getShape().getMaxReach());
-            setFitWidth(t.getShape().getMaxReach());
+            System.out.println(URI_BASE + t.getShape().toString().toLowerCase() + ".png");
 
-            setLayoutX(100);
-            setLayoutY(100);
+            setImage(new Image((URI_BASE + t.getShape().toString().toLowerCase() + ".png")));
+            setFitHeight(t.getShape().getMaxReach() * SQUARE_SIZE);
+            setFitWidth(t.getShape().getMaxReach() * SQUARE_SIZE);
 
+            setLayoutX(t.getPosition().getX() * SQUARE_SIZE);
+            setLayoutY(t.getPosition().getY() * SQUARE_SIZE);
 
         }
     }
