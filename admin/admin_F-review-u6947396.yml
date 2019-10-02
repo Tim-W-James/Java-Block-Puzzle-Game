@@ -1,0 +1,29 @@
+# Write your name and UID here.
+#
+reviewer:
+    name: Timothy James
+    uid: u6947396
+
+# Write the name of the author of the code here.
+#
+author:
+    name: Nicholas Dale
+    uid: u6430146
+
+
+# Write the class or method being reviewed here.
+#
+component: Part one - Task 4 - gui.Viewer.java
+
+# Write a list of review comments here.
+#
+comments:
+  - The most efficient feature is the makePlacement() method, which makes good use of existing classes such as GameBoardArray to display and align tiles with the board, along with printing helpful information to the console.
+  - Documentation is brief but clear, though is missing on some methods.
+  - Style and composition make the code easily readable, with mostly clear naming that follows code conventions. Good use of foreach loops in particular.
+  - With tiles being composed of individual squares, rather than using the provided images of full tiles, the code is not particuarly futureproofed for later GUI which will require draggable tiles.
+  - Overall, a very useful function for part one, allowing for various methods and classes to easily be visualized and perfectly filling the task criteria.
+ 
+
+
+
