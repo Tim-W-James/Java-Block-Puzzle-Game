@@ -20,8 +20,9 @@ comments:
   - Good use of exceptions, especially since you included the position in the error
   - Some of the variable names aren't perfect, such as correctpp - this could be improved to follow lowerCamelCase. Small detail though.
   - A large amount of comments which is good, though some of them explain code that doesn't need to be explained explicitly. E.g. the comment on line 76.
-  - I believe that you could return the tile immediately one you confirm it inside the if statement, instead of waiting for the loop to finish.
+  - I believe that you could return the tile immediately one you confirm it inside the if statement, instead of waiting for the loop to finish. Because you only need to find one tile, you could just have a return on line 82, and then if it fails for whatever reason throw the exception.
   - You could have the method that takes the int x and int y be the primary method, and then call it from the position method which ^Might^ slightly increase code speed.
+  - Good use of foreach loops. Also good use of our other methods and objects.
   - Overall a very helpful method, sorry for being so nitpicky.
 
 
