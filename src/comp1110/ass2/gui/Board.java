@@ -111,28 +111,13 @@ public class Board extends Application {
             }
 
 //            System.out.println(t.getPosition());
-
         }
 
-        /**
-         * Snaps tile to game grid
-         */
-        private void snapToGameGrid () {
-
-        }
-
-        /**
-         * Move the tile back to its starting position
-         */
-        private void sendToHome() {
-
-        }
-
-        /**
-         * Rotate the tile and update any necessary coordinates
-         */
-        private void rotate() {
-
+        private double distance(double x, double y) {
+            double a_squared = (Math.pow(getLayoutX()-x, 2));
+            double b_squared = (Math.pow(getLayoutY()-y, 2));
+            double c_squared = a_squared + b_squared;
+            return Math.sqrt(c_squared);
         }
 
         @Override
@@ -146,8 +131,6 @@ public class Board extends Application {
         private double mouseY;
         DraggableTile(Tile t){
             super(t);
-
-
         }
     }
 
@@ -229,16 +212,10 @@ public class Board extends Application {
     }
 
     private GTile findNearestTile(double x, double y) {
+         return null;
     }
 
     private void highlightNearestPiece(double x, double y) {
-
-    }
-
-    /**
-     * Adds each tile to the RHS of the game board ready for placement
-     */
-    private void makeTiles() {
 
     }
 
