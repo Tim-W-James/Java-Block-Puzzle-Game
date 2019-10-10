@@ -227,6 +227,9 @@ public class Board extends Application {
         makeTiles(tilesToRender);
     }
 
+    /**
+     * Adds each tile to the RHS of the game board ready for placement
+     */
     private void makeTiles(HashSet<Tile> tiles) {
         gTiles.getChildren().clear();
         for (Tile t :
@@ -250,18 +253,14 @@ public class Board extends Application {
     //
     //}
 
-    /**
-     * Adds each tile to the RHS of the game board ready for placement
-     */
-    private void makeTiles() {
 
-    }
+
 
     /**
      * Reset board to the beginning state
      */
     private void resetBoard() {
-        gTiles.getChildren().removeAll(gTiles);
+        gTiles.getChildren().removeAll(gTiles);     //lol mate this removes all the tiles
 
     }
 
