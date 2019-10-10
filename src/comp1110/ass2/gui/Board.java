@@ -114,6 +114,27 @@ public class Board extends Application {
 
         }
 
+        /**
+         * Snaps tile to game grid
+         */
+        private void snapToGameGrid () {
+
+        }
+
+        /**
+         * Move the tile back to its starting position
+         */
+        private void sendToHome() {
+
+        }
+
+        /**
+         * Rotate the tile and update any necessary coordinates
+         */
+        private void rotate() {
+
+        }
+
         @Override
         public String toString() {
             return "Fit Width/Height: " + getFitWidth() + "," + getFitHeight() + " | " + "Position x,y: " + getLayoutX() + "," + getLayoutY() + "\n" + this.t + "\n";
@@ -125,6 +146,8 @@ public class Board extends Application {
         private double mouseY;
         DraggableTile(Tile t){
             super(t);
+
+
         }
     }
 
@@ -206,10 +229,16 @@ public class Board extends Application {
     }
 
     private GTile findNearestTile(double x, double y) {
-         return null;
     }
 
     private void highlightNearestPiece(double x, double y) {
+
+    }
+
+    /**
+     * Adds each tile to the RHS of the game board ready for placement
+     */
+    private void makeTiles() {
 
     }
 
