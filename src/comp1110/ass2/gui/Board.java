@@ -261,6 +261,7 @@ public class Board extends Application {
      * Reset board to the beginning state
      */
     private void resetBoard() {
+        gTiles.getChildren().removeAll(gTiles);
 
     }
 
