@@ -29,8 +29,8 @@ Authorship: Nicholas Dale
 public class Board extends Application {
 
     // Gameboard
-//    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
-    private GameBoardArray game = new GameBoardArray();
+    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
+//    private GameBoardArray game = new GameBoardArray();
 
 
     // Size of the board within the window
@@ -83,6 +83,7 @@ public class Board extends Application {
             }
 
             System.out.println(t.getHeight() + ", " + t.getWidth());
+            System.out.println(t.getShape().getMaxReach(t.getDirection(),true) + ", " + t.getShape().getMaxReach(t.getDirection(),false));
 
 //            setRotate(t.getDirection().toDegree());
 
@@ -92,7 +93,7 @@ public class Board extends Application {
             rotation.setAngle(t.getDirection().toDegree());
             getTransforms().add(rotation);
 
-            System.out.println(getTransforms());
+//            System.out.println(getTransforms());
 
             setLayoutX((t.getPosition().getX()) * SQUARE_SIZE + OFFSET_X);
             setLayoutY((t.getPosition().getY()) * SQUARE_SIZE + OFFSET_Y);
@@ -109,8 +110,16 @@ public class Board extends Application {
                 setLayoutY(getLayoutY() + SQUARE_SIZE * t.getHeight());
             }
 
-            System.out.println(t.getPosition());
+//            System.out.println(t.getPosition());
 
+        }
+
+        class DraggableTile extends GTile {
+            private double mouseX;
+            private double mouseY;
+            DraggableTile(Tile t){
+                super(t);
+            }
         }
 
         @Override
@@ -193,6 +202,14 @@ public class Board extends Application {
     }
 
     private void removeTile(Tile t) {
+
+    }
+
+    private GTile findNearestTile(double x, double y) {
+         return null;
+    }
+
+    private void highlightNearestPiece(double x, double y) {
 
     }
 
