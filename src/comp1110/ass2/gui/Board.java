@@ -22,6 +22,17 @@ import java.util.HashSet;
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
+// TODO GUI layout (board, pieces, challenge area)
+// TODO Drag and drop
+// TODO Drag and drop snap
+// TODO Rotation
+// TODO Drag and drop check valid
+// TODO Drag and drop highlight
+// TODO Generate challenge
+// TODO Display challenge
+// TODO Reset
+// TODO Check solution
+
 /*
 Authorship: Nicholas Dale
 */
@@ -42,8 +53,8 @@ public class Board extends Application {
     private static final int GAME_GRID_HEIGHT = 400;
 
     // Overall Window Size
-    private static final int WINDOW_WIDTH = 823;
-    private static final int WINDOW_HEIGHT = 600;
+    private static final int WINDOW_WIDTH = 933;
+    private static final int WINDOW_HEIGHT = 700;
 
     // Offset between board and game grid
     private static final int OFFSET_X = (BOARD_WIDTH - GAME_GRID_WIDTH) / 2;
@@ -111,6 +122,28 @@ public class Board extends Application {
             }
 
 //            System.out.println(t.getPosition());
+
+        }
+
+        /**
+         * Snaps tile to game grid
+         */
+        private void snapToGameGrid () {
+
+        }
+
+        /**
+         * Move the tile back to its starting position
+         */
+        private void sendToHome() {
+
+        }
+
+        /**
+         * Rotate the tile and update any necessary coordinates
+         */
+        private void rotate() {
+
         }
 
         private double distance(double x, double y) {
@@ -131,6 +164,8 @@ public class Board extends Application {
         private double mouseY;
         DraggableTile(Tile t){
             super(t);
+
+
         }
     }
 
@@ -212,10 +247,25 @@ public class Board extends Application {
     }
 
     private GTile findNearestTile(double x, double y) {
-         return null;
+        return null;
+
     }
 
     private void highlightNearestPiece(double x, double y) {
+
+    }
+
+    /**
+     * Adds each tile to the RHS of the game board ready for placement
+     */
+    private void makeTiles() {
+
+    }
+
+    /**
+     * Reset board to the beginning state
+     */
+    private void resetBoard() {
 
     }
 
