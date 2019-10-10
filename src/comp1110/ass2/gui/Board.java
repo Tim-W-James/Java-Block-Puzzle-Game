@@ -114,17 +114,17 @@ public class Board extends Application {
 
         }
 
-        class DraggableTile extends GTile {
-            private double mouseX;
-            private double mouseY;
-            DraggableTile(Tile t){
-                super(t);
-            }
-        }
-
         @Override
         public String toString() {
             return "Fit Width/Height: " + getFitWidth() + "," + getFitHeight() + " | " + "Position x,y: " + getLayoutX() + "," + getLayoutY() + "\n" + this.t + "\n";
+        }
+    }
+
+    class DraggableTile extends GTile {
+        private double mouseX;
+        private double mouseY;
+        DraggableTile(Tile t){
+            super(t);
         }
     }
 
