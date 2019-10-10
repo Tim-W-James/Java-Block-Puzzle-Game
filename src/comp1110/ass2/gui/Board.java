@@ -34,12 +34,12 @@ public class Board extends Application {
 
 
     // Size of the board within the window
-    private static final int BOARD_WIDTH = 823;
-    private static final int BOARD_HEIGHT = 530;
+    private static final int BOARD_WIDTH = 617;
+    private static final int BOARD_HEIGHT = 398;
 
     // Size of the grid within the board (SqSz * # squares)
-    private static final int GAME_GRID_WIDTH = 720;
-    private static final int GAME_GRID_HEIGHT = 400;
+    private static final int GAME_GRID_WIDTH = 540;
+    private static final int GAME_GRID_HEIGHT = 300;
 
     // Overall Window Size
     private static final int WINDOW_WIDTH = 933;
@@ -49,7 +49,7 @@ public class Board extends Application {
     private static final int OFFSET_X = (BOARD_WIDTH - GAME_GRID_WIDTH) / 2;
     private static final int OFFSET_Y = 91;
 
-    private static final int SQUARE_SIZE = 80;
+    private static final int SQUARE_SIZE = 60;
 
 
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
