@@ -2,7 +2,7 @@
 # statement.
  
 declaration: >-
-  Stage G represents the culmunation of the entire assignment.  We declare that
+  Stage G represents the culmination of the entire assignment.  We declare that
   the work toward our submission for all stages of this assignment was
   distributed among the group members as follows:
 
@@ -10,7 +10,7 @@ declaration: >-
 # be 100 or 99 (33/33/33 is fine).  (Remove entries if you have fewer than three
 # members).
 contributions:
-  - uid: 
+  - uid: u6982060
     contribution: 
   - uid:
     contribution:
@@ -20,8 +20,8 @@ contributions:
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members)
 signatures:
-  - name:
-    uid:
+  - name: Rebecca Gibson
+    uid: u6982060
   - name:
     uid:
   - name:

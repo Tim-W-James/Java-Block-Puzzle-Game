@@ -212,6 +212,9 @@ public class Board extends Application {
      * Place initial tiles
      */
     private void setupInitialTileArea() {
+        HashSet<Tile> allTiles = new HashSet<>();
+        makeTiles(allTiles);
+
 
     }
 
