@@ -148,6 +148,13 @@ public class Board extends Application {
 
         }
 
+        private double distance(double x, double y) {
+            double a_squared = (Math.pow(getLayoutX()-x, 2));
+            double b_squared = (Math.pow(getLayoutY()-y, 2));
+            double c_squared = a_squared + b_squared;
+            return Math.sqrt(c_squared);
+        }
+
         @Override
         public String toString() {
             return "Fit Width/Height: " + getFitWidth() + "," + getFitHeight() + " | " + "Position x,y: " + getLayoutX() + "," + getLayoutY() + "\n" + this.t + "\n";
@@ -238,16 +245,12 @@ public class Board extends Application {
     }
 
     private void removeTile(Tile t) {
-
+        gTiles.getChildren().remove(t);
     }
 
-    private GTile findNearestTile(double x, double y) {
-        return null;
-    }
-
-    private void highlightNearestPiece(double x, double y) {
-
-    }
+    //private void highlightNearestPiece(double x, double y) {
+    //
+    //}
 
     /**
      * Adds each tile to the RHS of the game board ready for placement
@@ -260,6 +263,7 @@ public class Board extends Application {
      * Reset board to the beginning state
      */
     private void resetBoard() {
+        gTiles.getChildren().removeAll(gTiles);
 
     }
 
