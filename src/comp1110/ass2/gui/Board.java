@@ -22,6 +22,17 @@ import java.util.HashSet;
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
+// TODO GUI layout (board, pieces, challenge area)
+// TODO Drag and drop
+// TODO Drag and drop snap
+// TODO Rotation
+// TODO Drag and drop check valid
+// TODO Drag and drop highlight
+// TODO Generate challenge
+// TODO Display challenge
+// TODO Reset
+// TODO Check solution
+
 /*
 Authorship: Nicholas Dale
 */
