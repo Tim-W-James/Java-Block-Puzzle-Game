@@ -243,12 +243,12 @@ public class Board extends Application {
     }
 
     private void removeTile(Tile t) {
-
+        gTiles.getChildren().remove(t);
     }
 
-    private void highlightNearestPiece(double x, double y) {
-
-    }
+    //private void highlightNearestPiece(double x, double y) {
+    //
+    //}
 
     /**
      * Adds each tile to the RHS of the game board ready for placement
