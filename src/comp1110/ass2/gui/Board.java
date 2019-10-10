@@ -246,11 +246,6 @@ public class Board extends Application {
 
     }
 
-    private GTile findNearestTile(double x, double y) {
-        return null;
-
-    }
-
     private void highlightNearestPiece(double x, double y) {
 
     }
