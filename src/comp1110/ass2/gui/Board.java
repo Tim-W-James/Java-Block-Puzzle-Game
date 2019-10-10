@@ -42,8 +42,8 @@ public class Board extends Application {
     private static final int GAME_GRID_HEIGHT = 400;
 
     // Overall Window Size
-    private static final int WINDOW_WIDTH = 823;
-    private static final int WINDOW_HEIGHT = 600;
+    private static final int WINDOW_WIDTH = 933;
+    private static final int WINDOW_HEIGHT = 700;
 
     // Offset between board and game grid
     private static final int OFFSET_X = (BOARD_WIDTH - GAME_GRID_WIDTH) / 2;
@@ -229,6 +229,7 @@ public class Board extends Application {
     }
 
     private GTile findNearestTile(double x, double y) {
+        return null;
     }
 
     private void highlightNearestPiece(double x, double y) {
