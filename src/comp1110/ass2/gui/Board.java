@@ -58,10 +58,12 @@ public class Board extends Application {
 
     // Offset between board and game grid
     private static final int OFFSET_X = (BOARD_WIDTH - GAME_GRID_WIDTH) / 2;
-    private static final int OFFSET_Y = 91;
+    private static final int OFFSET_Y = (BOARD_HEIGHT - GAME_GRID_HEIGHT + (BOARD_HEIGHT/9)) / 2;
 
     private static final int SQUARE_SIZE = 60;
 
+    private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 20;
+    private static final int TILE_AREA_STARTING_Y = 100;
 
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
