@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -39,7 +40,9 @@ Authorship: Nicholas Dale
 
 public class Board extends Application {
 
-    // Gameboard
+    /**
+     * The GameBoardArray contains most of the logic behind the game
+     */
     private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
 //    private GameBoardArray game = new GameBoardArray();
 
@@ -85,28 +88,22 @@ public class Board extends Application {
             setImage(new Image((URI_BASE + t.getShape().toString().toLowerCase() + ".png")));
 
             // Sets the height and width of the tiles
-
             if (t.getDirection() == Direction.NORTH || t.getDirection() == Direction.SOUTH) {
                 setFitWidth(t.getWidth() * SQUARE_SIZE);
                 setFitHeight(t.getHeight() * SQUARE_SIZE);
             } else {
                 setFitWidth(t.getHeight() * SQUARE_SIZE);
                 setFitHeight(t.getWidth() * SQUARE_SIZE);
-
             }
 
             System.out.println(t.getHeight() + ", " + t.getWidth());
             System.out.println(t.getShape().getMaxReach(t.getDirection(),true) + ", " + t.getShape().getMaxReach(t.getDirection(),false));
-
-//            setRotate(t.getDirection().toDegree());
 
             Rotate rotation = new Rotate();
             rotation.setPivotX(0);
             rotation.setPivotY(0);
             rotation.setAngle(t.getDirection().toDegree());
             getTransforms().add(rotation);
-
-//            System.out.println(getTransforms());
 
             setLayoutX((t.getPosition().getX()) * SQUARE_SIZE + OFFSET_X);
             setLayoutY((t.getPosition().getY()) * SQUARE_SIZE + OFFSET_Y);
@@ -182,6 +179,8 @@ public class Board extends Application {
         background.getChildren().add(board);
         board.toBack();
 
+
+
     }
 
     /* Create controls for testing */
@@ -206,6 +205,13 @@ public class Board extends Application {
         controls.getChildren().add(hb);
         controls.toFront();
 
+
+    }
+
+    /**
+     * Place initial tiles
+     */
+    private void setupInitialTileArea() {
 
     }
 
@@ -287,6 +293,7 @@ public class Board extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("IQ Focus by thu11g");
         Scene scene = new Scene(root,WINDOW_WIDTH,WINDOW_HEIGHT);
+        scene.setFill(Color.LIGHTGRAY);
 
         root.getChildren().add(background);
         root.getChildren().add(controls);
