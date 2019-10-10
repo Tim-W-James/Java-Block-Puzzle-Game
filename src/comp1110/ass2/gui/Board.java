@@ -242,6 +242,13 @@ public class Board extends Application {
 
     }
 
+    /**
+     * Reset board to the beginning state
+     */
+    private void resetBoard() {
+
+    }
+
 
     void makePlacementFromString(String placement) {
         game.updateBoardPosition(placement);
