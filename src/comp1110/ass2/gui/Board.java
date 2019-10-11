@@ -212,9 +212,15 @@ public class Board extends Application {
      * Place initial tiles
      */
     private void setupInitialTileArea() {
-        HashSet<Tile> allTiles = new HashSet<>();
+        HashSet<Tile> allTiles = new HashSet<>();   //maybe include all the tiles here then? refer to Tile docco
         makeTiles(allTiles);
 
+        /*
+        To make the tile appear, convert it into instances of a DraggableTile and add it to
+        gTile group.
+
+        Write methods in GTIle if you want to manipulate the graphic tile
+         */
 
     }
 
@@ -242,6 +248,11 @@ public class Board extends Application {
      * Adds each tile to the RHS of the game board ready for placement
      */
     private void makeTiles(HashSet<Tile> tiles) {
+        /*
+
+        For every associated tile on GBA, it converts to Graphic TIle
+         */
+
         gTiles.getChildren().clear();
         for (Tile t :
                 tiles) {
