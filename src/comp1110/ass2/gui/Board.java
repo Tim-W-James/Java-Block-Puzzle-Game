@@ -20,6 +20,8 @@ import javafx.stage.Stage;
 
 import java.util.HashSet;
 
+import static comp1110.ass2.Shape.*;
+
 // a packaged executable called game.jar can be found at the root directory,
 // to run this on IntelliJ go to Run -> Edit Configurations -> VM options,
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
@@ -66,9 +68,10 @@ public class Board extends Application {
     private static final int OFFSET_Y = (BOARD_HEIGHT - GAME_GRID_HEIGHT + (BOARD_HEIGHT/9)) / 2;
 
     private static final int SQUARE_SIZE = 60;
+    private static final double OFFBOARD_SQUARE_SIZE = 0.5*SQUARE_SIZE;
 
     private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 100;
-    private static final int TILE_AREA_STARTING_Y = 10;
+    private static final int TILE_AREA_STARTING_Y = 5;  //I don't think this value actually does anything tbh
 
     private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
     private static final int TILE_AREA_FINISH_Y = WINDOW_HEIGHT;
@@ -169,49 +172,65 @@ public class Board extends Application {
         private double mouseY;
         private double homeX;
         private double homeY;
-        private int offset;
+        private double offset;
+        private int previousTileHeight;
+        private boolean inGame;
 
-        DraggableTile(Tile t){
+        DraggableTile(Tile t, boolean inGame){
             super(t);
+            this.inGame = inGame;
 
+            //Translations
             switch (t.getShape()) {
                 case A:
                     offset = 0;
+                    previousTileHeight = 0;
                     break;
                 case B:
                     offset = 1;
+                    previousTileHeight = A.getMaxReach(Direction.NORTH,true);
                     break;
                 case C:
                     offset = 2;
+                    previousTileHeight = B.getMaxReach(Direction.NORTH,true);
                     break;
                 case D:
                     offset = 3;
+                    previousTileHeight = C.getMaxReach(Direction.NORTH,true);
                     break;
                 case E:
                     offset = 4;
+                    previousTileHeight = D.getMaxReach(Direction.NORTH,true);
                     break;
                 case F:
-                    offset = 10;
+                    offset = 5.5; //should be 5 but it gets overlapped for some reason
+                    previousTileHeight = E.getMaxReach(Direction.NORTH,true);
                     break;
                 case G:
-                    offset = 6;
+                    offset = 12; //should be 6 but it gets overlapped because the maxReach for F is 1 so it goes all weird
+                    previousTileHeight = F.getMaxReach(Direction.NORTH,true);
                     break;
                 case H:
                     offset = 7;
+                    previousTileHeight = G.getMaxReach(Direction.NORTH,true);
                     break;
                 case I:
-                    offset = 8;
+                    offset = 6.7; //should be 8
+                    previousTileHeight = H.getMaxReach(Direction.NORTH,true);
                     break;
                 case J:
                     offset = 9;
+                    previousTileHeight = I.getMaxReach(Direction.NORTH,true);
                     break;
             }
 
+
             homeX = TILE_AREA_STARTING_X;
-            homeY = TILE_AREA_STARTING_Y + offset*t.getHeight()*SQUARE_SIZE;
-            //You need to get height of the previuos tile so that it's ordered properly
+            homeY = TILE_AREA_STARTING_Y + (offset*(previousTileHeight+0.05)*OFFBOARD_SQUARE_SIZE);
+            setLayoutX(homeX);
+            setLayoutY(homeY);
 
-
+            //Rotations
             switch (t.getDirection().toChar()) {
                 case 0:
                     setRotate(0);
@@ -227,8 +246,25 @@ public class Board extends Application {
                     break;
             }
 
-            setLayoutX(homeX);
-            setLayoutY(homeY);
+            //Scaling
+            if (!inGame){
+                setScaleX(0.5);
+                setScaleY(0.5);
+            } else {
+                setScaleX(1);
+                setScaleY(1);
+            }
+
+            this.setOnMousePressed(event -> {
+                mouseX = event.getSceneX(); //gets X coordinates
+                mouseY = event.getSceneY(); //gets Y coordinates
+
+                if (mouseX >= 0) //if mouse X and mouse Y falls within dimensions of off game board tile, switch to true
+                    this.inGame = true;
+
+                toFront();
+            });
+
 
         }
 
@@ -284,40 +320,35 @@ public class Board extends Application {
         /*
         Converting each Tile A to J into a GTile
          */
-        DraggableTile A = new DraggableTile(new Tile("a000"));
+        DraggableTile A = new DraggableTile(new Tile("a000"), false);
         allTiles.add(A);
-        DraggableTile B = new DraggableTile(new Tile("b000"));
+        DraggableTile B = new DraggableTile(new Tile("b000"), false);
         allTiles.add(B);
-        DraggableTile C = new DraggableTile(new Tile("c000"));
+        DraggableTile C = new DraggableTile(new Tile("c000"), false);
         allTiles.add(C);
-        DraggableTile D = new DraggableTile(new Tile("d000"));
+        DraggableTile D = new DraggableTile(new Tile("d000"), false);
         allTiles.add(D);
-        DraggableTile E = new DraggableTile(new Tile("e000"));
+        DraggableTile E = new DraggableTile(new Tile("e000"), false);
         allTiles.add(E);
-        DraggableTile F = new DraggableTile(new Tile("f000"));
+        DraggableTile F = new DraggableTile(new Tile("f000"), false);
         allTiles.add(F);
-        DraggableTile G = new DraggableTile(new Tile("g000"));
+        DraggableTile G = new DraggableTile(new Tile("g000"), false);
         allTiles.add(G);
-        DraggableTile H = new DraggableTile(new Tile("h000"));
+        DraggableTile H = new DraggableTile(new Tile("h000"), false);
         allTiles.add(H);
-        DraggableTile I = new DraggableTile(new Tile("i000"));
+        DraggableTile I = new DraggableTile(new Tile("i000"), false);
         allTiles.add(I);
-        DraggableTile J = new DraggableTile(new Tile("j000"));
+        DraggableTile J = new DraggableTile(new Tile("j000"), false);
         allTiles.add(J);
 
-        //gTiles.getChildren().addAll(A);
+        //gTiles.getChildren().add(A);
+
         gTiles.getChildren().addAll(allTiles);
 
 
         //the point is to use the method makeTiles so you don't have to do this tediousness?!!
         //makeTiles(allTiles);
 
-        /*
-        To make the tile appear, convert it into instances of a DraggableTile and add it to
-        gTile group.
-
-        Write methods in GTIle if you want to manipulate the graphic tile
-         */
 
     }
 
