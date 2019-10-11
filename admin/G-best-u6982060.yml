@@ -10,15 +10,17 @@
 #
 
 declaration: >-
-  Stage G represents the culmunation of the entire assignment.  We declare that
-  everything we have submitted for for all stages of this assignment was
-  entirely our own work, with the following exceptions:
+  I submit the work below for assessment as my best work. I declare that this
+  is entirely my own work, with the following documented exceptions:
 
 # Use this to list names of people who you collaborated with, and a
 # comment about what you collaborated on.
 #
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
+collaboration:
+  - name:
+    comment: >-
 
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
@@ -27,21 +29,23 @@ declaration: >-
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
+code:
+  - comment:
+    url:
+    licence:
 
-# Use this to list any assets (artwork, sound, etc) that you used.
-# Provide a comment explaining your use of that asset and the URL
-# and license for the asset
-#
-# Add as many "url+licence+comment" entries as necessary
-# (or remove it altogether if you haven't used any external assets)
+# I wish to submit the following classes as entirely my own (remove this if
+# you want to just submit methods):
+class:
+   - 
+   - 
 
+# I wish to submit the following methods as entirely my own (remove this if
+# you want to just submit classes):
+method:
+   - 
+   - 
 
-# Sign *your* name and uids here. (Remove entries if you have fewer
-# than three members.)
-signatures:
-  - name: Nicholas Dale
-    uid: u6430146
-  - name: Rebecca Gibson
-    uid: u6982060
-  - name: Timothy James
-    uid: u6947396
+# sign *your* name and uid here
+name:
+uid:
