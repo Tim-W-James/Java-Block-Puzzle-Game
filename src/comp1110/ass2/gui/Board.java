@@ -13,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
@@ -67,6 +69,9 @@ public class Board extends Application {
 
     private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 20;
     private static final int TILE_AREA_STARTING_Y = 100;
+
+    private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
+    private static final int TILE_AREA_FINISH_Y = WINDOW_HEIGHT;
 
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
@@ -260,11 +265,6 @@ public class Board extends Application {
         gTiles.getChildren().remove(t);
     }
 
-    //private void highlightNearestPiece(double x, double y) {
-    //
-    //}
-
-
 
 
     /**
@@ -305,6 +305,7 @@ public class Board extends Application {
         setupBackground();
         setupTestControls();
         renderGameBoard();
+        setupInitialTileArea();
 
         primaryStage.setScene(scene);
         primaryStage.show();
