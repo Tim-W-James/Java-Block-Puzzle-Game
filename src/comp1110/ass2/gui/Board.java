@@ -67,8 +67,8 @@ public class Board extends Application {
 
     private static final int SQUARE_SIZE = 60;
 
-    private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 20;
-    private static final int TILE_AREA_STARTING_Y = 100;
+    private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 100;
+    private static final int TILE_AREA_STARTING_Y = 10;
 
     private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
     private static final int TILE_AREA_FINISH_Y = WINDOW_HEIGHT;
@@ -112,6 +112,7 @@ public class Board extends Application {
 
             setLayoutX((t.getPosition().getX()) * SQUARE_SIZE + OFFSET_X);
             setLayoutY((t.getPosition().getY()) * SQUARE_SIZE + OFFSET_Y);
+
 
             if (t.getDirection() == Direction.EAST) {
                 setLayoutX(getLayoutX() + SQUARE_SIZE * t.getWidth());
@@ -166,11 +167,71 @@ public class Board extends Application {
     class DraggableTile extends GTile {
         private double mouseX;
         private double mouseY;
+        private double homeX;
+        private double homeY;
+        private int offset;
+
         DraggableTile(Tile t){
             super(t);
 
+            switch (t.getShape()) {
+                case A:
+                    offset = 0;
+                    break;
+                case B:
+                    offset = 1;
+                    break;
+                case C:
+                    offset = 2;
+                    break;
+                case D:
+                    offset = 3;
+                    break;
+                case E:
+                    offset = 4;
+                    break;
+                case F:
+                    offset = 10;
+                    break;
+                case G:
+                    offset = 6;
+                    break;
+                case H:
+                    offset = 7;
+                    break;
+                case I:
+                    offset = 8;
+                    break;
+                case J:
+                    offset = 9;
+                    break;
+            }
+
+            homeX = TILE_AREA_STARTING_X;
+            homeY = TILE_AREA_STARTING_Y + offset*t.getHeight()*SQUARE_SIZE;
+            //You need to get height of the previuos tile so that it's ordered properly
+
+
+            switch (t.getDirection().toChar()) {
+                case 0:
+                    setRotate(0);
+                    break;
+                case 1:
+                    setRotate(90);
+                    break;
+                case 2:
+                    setRotate(180);
+                    break;
+                case 3:
+                    setRotate(270);
+                    break;
+            }
+
+            setLayoutX(homeX);
+            setLayoutY(homeY);
 
         }
+
     }
 
     private void setupBackground() {
@@ -217,8 +278,39 @@ public class Board extends Application {
      * Place initial tiles
      */
     private void setupInitialTileArea() {
-        HashSet<Tile> allTiles = new HashSet<>();   //maybe include all the tiles here then? refer to Tile docco
-        makeTiles(allTiles);
+        HashSet<DraggableTile> allTiles = new HashSet<>();   //maybe include all the tiles here then? refer to Tile docco
+
+        //NOTE: Position values for tile shouldn't matter while it is in setup
+        /*
+        Converting each Tile A to J into a GTile
+         */
+        DraggableTile A = new DraggableTile(new Tile("a000"));
+        allTiles.add(A);
+        DraggableTile B = new DraggableTile(new Tile("b000"));
+        allTiles.add(B);
+        DraggableTile C = new DraggableTile(new Tile("c000"));
+        allTiles.add(C);
+        DraggableTile D = new DraggableTile(new Tile("d000"));
+        allTiles.add(D);
+        DraggableTile E = new DraggableTile(new Tile("e000"));
+        allTiles.add(E);
+        DraggableTile F = new DraggableTile(new Tile("f000"));
+        allTiles.add(F);
+        DraggableTile G = new DraggableTile(new Tile("g000"));
+        allTiles.add(G);
+        DraggableTile H = new DraggableTile(new Tile("h000"));
+        allTiles.add(H);
+        DraggableTile I = new DraggableTile(new Tile("i000"));
+        allTiles.add(I);
+        DraggableTile J = new DraggableTile(new Tile("j000"));
+        allTiles.add(J);
+
+        //gTiles.getChildren().addAll(A);
+        gTiles.getChildren().addAll(allTiles);
+
+
+        //the point is to use the method makeTiles so you don't have to do this tediousness?!!
+        //makeTiles(allTiles);
 
         /*
         To make the tile appear, convert it into instances of a DraggableTile and add it to
