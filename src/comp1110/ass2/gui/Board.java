@@ -19,6 +19,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 import java.util.HashSet;
+import java.util.Random;
 
 import static comp1110.ass2.Shape.*;
 
@@ -65,10 +66,10 @@ public class Board extends Application {
 
     // Offset between board and game grid
     private static final int OFFSET_X = (BOARD_WIDTH - GAME_GRID_WIDTH) / 2;
-    private static final int OFFSET_Y = (BOARD_HEIGHT - GAME_GRID_HEIGHT + (BOARD_HEIGHT/9)) / 2;
+    private static final int OFFSET_Y = (BOARD_HEIGHT - GAME_GRID_HEIGHT + (BOARD_HEIGHT / 9)) / 2;
 
     private static final int SQUARE_SIZE = 60;
-    private static final double OFFBOARD_SQUARE_SIZE = 0.5*SQUARE_SIZE;
+    private static final double OFFBOARD_SQUARE_SIZE = 0.5 * SQUARE_SIZE;
 
     private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 100;
     private static final int TILE_AREA_STARTING_Y = 5;  //I don't think this value actually does anything tbh
@@ -76,10 +77,12 @@ public class Board extends Application {
     private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
     private static final int TILE_AREA_FINISH_Y = WINDOW_HEIGHT;
 
-    private static final int CHALLENGE_AREA_WIDTH = SQUARE_SIZE*3;
-    private static final int CHALLENGE_AREA_HEIGHT = SQUARE_SIZE*3;
-    private static final int CHALLENGE_AREA_X = OFFSET_X+SQUARE_SIZE*3; //Maybe make a universal margin constant
-    private static final int CHALLENGE_AREA_Y = BOARD_HEIGHT+60; //Maybe make a universal margin constant
+    private static final int CHALLENGE_AREA_WIDTH = SQUARE_SIZE * 3;
+    private static final int CHALLENGE_AREA_HEIGHT = SQUARE_SIZE * 3;
+    private static final int CHALLENGE_AREA_X = OFFSET_X + SQUARE_SIZE * 3; //Maybe make a universal margin constant
+    private static final int CHALLENGE_AREA_Y = BOARD_HEIGHT + 60; //Maybe make a universal margin constant
+
+    private static String challengeString;
 
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
@@ -90,7 +93,6 @@ public class Board extends Application {
     private final Group challenge = new Group();
 
     private TextField textField;
-
 
 
     class GTile extends ImageView {
@@ -114,7 +116,7 @@ public class Board extends Application {
             }
 
             System.out.println(t.getHeight() + ", " + t.getWidth());
-            System.out.println(t.getShape().getMaxReach(t.getDirection(),true) + ", " + t.getShape().getMaxReach(t.getDirection(),false));
+            System.out.println(t.getShape().getMaxReach(t.getDirection(), true) + ", " + t.getShape().getMaxReach(t.getDirection(), false));
 
             Rotate rotation = new Rotate();
             rotation.setPivotX(0);
@@ -155,7 +157,7 @@ public class Board extends Application {
          */
 
 
-        GTile(Position square)  {
+        GTile(Position square) {
             String objTileID;
 
             switch (square.getS()) {
@@ -175,18 +177,18 @@ public class Board extends Application {
                     objTileID = "sq-b";
             }
 
-            setImage(new Image(URI_BASE+objTileID+".png"));
+            setImage(new Image(URI_BASE + objTileID + ".png"));
             setFitHeight(SQUARE_SIZE);
             setFitWidth(SQUARE_SIZE);
 
-            setLayoutX(CHALLENGE_AREA_X+(square.getX()*SQUARE_SIZE));
-            setLayoutY(CHALLENGE_AREA_Y+(square.getY()*SQUARE_SIZE));
+            setLayoutX(CHALLENGE_AREA_X + (square.getX() * SQUARE_SIZE));
+            setLayoutY(CHALLENGE_AREA_Y + (square.getY() * SQUARE_SIZE));
         }
 
         /**
          * Snaps tile to game grid
          */
-        private void snapToGameGrid () {
+        private void snapToGameGrid() {
 
         }
 
@@ -205,8 +207,8 @@ public class Board extends Application {
         }
 
         private double distance(double x, double y) {
-            double a_squared = (Math.pow(getLayoutX()-x, 2));
-            double b_squared = (Math.pow(getLayoutY()-y, 2));
+            double a_squared = (Math.pow(getLayoutX() - x, 2));
+            double b_squared = (Math.pow(getLayoutY() - y, 2));
             double c_squared = a_squared + b_squared;
             return Math.sqrt(c_squared);
         }
@@ -226,7 +228,7 @@ public class Board extends Application {
         private int previousTileHeight;
         private boolean inGame;
 
-        DraggableTile(Tile t, boolean inGame){
+        DraggableTile(Tile t, boolean inGame) {
             super(t);
             this.inGame = inGame;
 
@@ -238,45 +240,45 @@ public class Board extends Application {
                     break;
                 case B:
                     offset = 1;
-                    previousTileHeight = A.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = A.getMaxReach(Direction.NORTH, true);
                     break;
                 case C:
                     offset = 2;
-                    previousTileHeight = B.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = B.getMaxReach(Direction.NORTH, true);
                     break;
                 case D:
                     offset = 3;
-                    previousTileHeight = C.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = C.getMaxReach(Direction.NORTH, true);
                     break;
                 case E:
                     offset = 4;
-                    previousTileHeight = D.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = D.getMaxReach(Direction.NORTH, true);
                     break;
                 case F:
                     offset = 5.5; //should be 5 but it gets overlapped for some reason
-                    previousTileHeight = E.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = E.getMaxReach(Direction.NORTH, true);
                     break;
                 case G:
                     offset = 12; //should be 6 but it gets overlapped because the maxReach for F is 1 so it goes all weird
-                    previousTileHeight = F.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = F.getMaxReach(Direction.NORTH, true);
                     break;
                 case H:
                     offset = 7;
-                    previousTileHeight = G.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = G.getMaxReach(Direction.NORTH, true);
                     break;
                 case I:
                     offset = 6.7; //should be 8
-                    previousTileHeight = H.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = H.getMaxReach(Direction.NORTH, true);
                     break;
                 case J:
                     offset = 9;
-                    previousTileHeight = I.getMaxReach(Direction.NORTH,true);
+                    previousTileHeight = I.getMaxReach(Direction.NORTH, true);
                     break;
             }
 
 
             homeX = TILE_AREA_STARTING_X;
-            homeY = TILE_AREA_STARTING_Y + (offset*(previousTileHeight+0.05)*OFFBOARD_SQUARE_SIZE);
+            homeY = TILE_AREA_STARTING_Y + (offset * (previousTileHeight + 0.05) * OFFBOARD_SQUARE_SIZE);
             setLayoutX(homeX);
             setLayoutY(homeY);
 
@@ -297,7 +299,7 @@ public class Board extends Application {
             }
 
             //Scaling
-            if (!inGame){
+            if (!inGame) {
                 setScaleX(0.5);
                 setScaleY(0.5);
             } else {
@@ -330,8 +332,6 @@ public class Board extends Application {
 
         background.getChildren().add(board);
         board.toBack();
-
-
 
 
     }
@@ -451,7 +451,6 @@ public class Board extends Application {
     }
 
 
-
     /**
      * Reset board to the beginning state
      */
@@ -467,44 +466,69 @@ public class Board extends Application {
     }
 
 
-
-
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
     private void setupChallengeArea() {
 
-        Rectangle challengeArea = new Rectangle(CHALLENGE_AREA_X,CHALLENGE_AREA_Y,CHALLENGE_AREA_WIDTH,CHALLENGE_AREA_HEIGHT);
+        Rectangle border = new Rectangle(CHALLENGE_AREA_X-5, CHALLENGE_AREA_Y-5, CHALLENGE_AREA_WIDTH+10, CHALLENGE_AREA_HEIGHT+10);
+        Rectangle challengeArea = new Rectangle(CHALLENGE_AREA_X, CHALLENGE_AREA_Y, CHALLENGE_AREA_WIDTH, CHALLENGE_AREA_HEIGHT);
         challengeArea.setFill(Color.GRAY);
         challengeArea.setStroke(Color.BLACK);
 
         background.getChildren().add(challengeArea);
+        background.getChildren().add(border);
         challengeArea.toBack();
 
         challenge.getChildren().clear();
 
-        //TODO randomly generate challenge when 'new challenge' button is hit
-        //Use this as a test for now
-        String challengeString = Solution.SOLUTIONS[0].objective; //RRRBWBBRB
+        //randomly generate challenge when 'new challenge' button is hit
+        challengeString = generateChallenge();
 
         for (int i = 0; i < challengeString.length(); i++) {
             if (i >= 0 && i <= 2) {
-                GTile challengeSquare = new GTile(new Position(i%3,0, State.charToState(challengeString.charAt(i))));
+                GTile challengeSquare = new GTile(new Position(i % 3, 0, State.charToState(challengeString.charAt(i))));
                 gTiles.getChildren().add(challengeSquare);
             } else if (i >= 3 && i <= 5) {
-                GTile challengeSquare = new GTile(new Position(i%3,1, State.charToState(challengeString.charAt(i))));
+                GTile challengeSquare = new GTile(new Position(i % 3, 1, State.charToState(challengeString.charAt(i))));
                 gTiles.getChildren().add(challengeSquare);
             } else {
-                GTile challengeSquare = new GTile(new Position(i%3,2, State.charToState(challengeString.charAt(i))));
+                GTile challengeSquare = new GTile(new Position(i % 3, 2, State.charToState(challengeString.charAt(i))));
                 gTiles.getChildren().add(challengeSquare);
             }
         }
 
+    }
 
-        /*
-        challenge.getChildren().add(CHALLENGE TILE)
-         */
+    private String generateChallenge() {
+        Random r = new Random();
+        int random = r.nextInt(Solution.SOLUTIONS.length);
+
+        //CHECK: I'm doing recursion properly here right??
+        //if the current challenge is the same as the newly generated one, generate a new challenge again
+        if (challengeString == Solution.SOLUTIONS[random].objective)
+            return generateChallenge();
+        else
+            return Solution.SOLUTIONS[random].objective;
+
+    }
+
+    private void makeControls() {
+        Button button = new Button("New Challenge");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                challengeString = generateChallenge();
+                setupChallengeArea();
+                System.out.println("The new challenge is " + challengeString);
+            }
+        });
+        button.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
+        button.setLayoutY(CHALLENGE_AREA_Y+SQUARE_SIZE);
+        button.toFront();
+
+        controls.getChildren().add(button);
     }
 
 
@@ -527,6 +551,7 @@ public class Board extends Application {
         renderGameBoard();
         setupInitialTileArea();
         setupChallengeArea();
+        makeControls();
 
         primaryStage.setScene(scene);
         primaryStage.show();
