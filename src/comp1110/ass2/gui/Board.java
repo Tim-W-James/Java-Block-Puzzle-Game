@@ -6,9 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -20,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import static comp1110.ass2.Shape.*;
 
@@ -94,6 +93,16 @@ public class Board extends Application {
 
     private TextField textField;
 
+    //Difficulty slider
+    //private final Slider difficulty = new Slider();
+
+    //Challenge controls
+    private final static ToggleGroup group = new ToggleGroup();
+    private final static RadioButton b1 = new RadioButton("Starter");
+    private final static RadioButton b2 = new RadioButton("Junior");
+    private final static RadioButton b3 = new RadioButton("Expert");
+    private final static RadioButton b4 = new RadioButton("Master");
+    private final static RadioButton b5 = new RadioButton("Wizard");
 
     class GTile extends ImageView {
         private Tile t;
@@ -499,11 +508,32 @@ public class Board extends Application {
             }
         }
 
+
     }
 
     private String generateChallenge() {
         Random r = new Random();
-        int random = r.nextInt(Solution.SOLUTIONS.length);
+        //int random = r.nextInt(Solution.SOLUTIONS.length);
+        int random;
+
+
+        /*
+        N.B. need to decrement by one since you will be indexing from array
+         */
+        //double check calculations
+        if (group.getSelectedToggle() == b1) {
+            random = r.nextInt (23);
+        } else if (group.getSelectedToggle() == b2) {
+            random = 24+(int)(Math.random()*(47-24+1));
+            //this bit would need to be a range
+        } else if (group.getSelectedToggle() == b3) {
+            random = 48+(int)(Math.random()*(71-48+1));
+        } else if (group.getSelectedToggle() == b4) {
+            random = 72+(int)(Math.random()*(95-72+1));
+        } else {
+            random = 95+(int)(Math.random()*(119-95+1));
+        }
+
 
         //CHECK: I'm doing recursion properly here right??
         //if the current challenge is the same as the newly generated one, generate a new challenge again
@@ -514,21 +544,62 @@ public class Board extends Application {
 
     }
 
-    private void makeControls() {
+    private void makeChallengeControls() {
         Button button = new Button("New Challenge");
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 challengeString = generateChallenge();
                 setupChallengeArea();
-                System.out.println("The new challenge is " + challengeString);
+                System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
+                //TODO add toString() for the ToggleGroup
+
+
             }
         });
         button.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
-        button.setLayoutY(CHALLENGE_AREA_Y+SQUARE_SIZE);
+        button.setLayoutY(CHALLENGE_AREA_Y);
         button.toFront();
 
+        Set<RadioButton> difficulties = new HashSet<>();
+        //ToggleGroup group = new ToggleGroup();
+
+
+        difficulties.add(b1);
+        b1.setToggleGroup(group);
+        b1.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
+        b1.setLayoutY(CHALLENGE_AREA_Y+40);
+        //EVERY TIME A NEW GAME OCCURS set Starter as default
+        b1.setSelected(true);
+
+        difficulties.add(b2);
+        b2.setToggleGroup(group);
+        b2.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
+        b2.setLayoutY(CHALLENGE_AREA_Y+65);
+
+
+        difficulties.add(b3);
+        b3.setToggleGroup(group);
+        b3.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
+        b3.setLayoutY(CHALLENGE_AREA_Y+90);
+
+
+        difficulties.add(b4);
+        b4.setToggleGroup(group);
+        b4.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
+        b4.setLayoutY(CHALLENGE_AREA_Y+115);
+
+
+        difficulties.add(b5);
+        b5.setToggleGroup(group);
+        b5.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
+        b5.setLayoutY(CHALLENGE_AREA_Y+140);
+
         controls.getChildren().add(button);
+        controls.getChildren().addAll(difficulties);
+
+
+
     }
 
 
@@ -551,7 +622,7 @@ public class Board extends Application {
         renderGameBoard();
         setupInitialTileArea();
         setupChallengeArea();
-        makeControls();
+        makeChallengeControls();
 
         primaryStage.setScene(scene);
         primaryStage.show();
