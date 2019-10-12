@@ -76,12 +76,18 @@ public class Board extends Application {
     private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
     private static final int TILE_AREA_FINISH_Y = WINDOW_HEIGHT;
 
+    private static final int CHALLENGE_AREA_WIDTH = SQUARE_SIZE*3;
+    private static final int CHALLENGE_AREA_HEIGHT = SQUARE_SIZE*3;
+    private static final int CHALLENGE_AREA_X = OFFSET_X+SQUARE_SIZE*3; //Maybe make a universal margin constant
+    private static final int CHALLENGE_AREA_Y = BOARD_HEIGHT+60; //Maybe make a universal margin constant
+
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
     private final Group root = new Group();
     private final Group background = new Group();
     private final Group controls = new Group();
     private final Group gTiles = new Group();
+    private final Group challenge = new Group();
 
     private TextField textField;
 
@@ -90,6 +96,9 @@ public class Board extends Application {
     class GTile extends ImageView {
         private Tile t;
 
+        /**
+         * Constructor to build a PLAYING tile
+         */
         GTile(Tile t) {
             this.t = t;
 
@@ -131,6 +140,47 @@ public class Board extends Application {
 
 //            System.out.println(t.getPosition());
 
+        }
+
+        /**
+         * Constructor to build individual square pieces that make up the CHALLENGE
+         */
+
+        /*
+        Using Position's int x and int y parameters to specify where they should be placed on the
+        challenge board by treating them as coordinates:
+            (0,0) (1,0) (2,0)
+            (0,1) (1,1) (2,1)
+            (0,2) (1,2) (2,2)
+         */
+
+
+        GTile(Position square)  {
+            String objTileID;
+
+            switch (square.getS()) {
+                case WTE:
+                    objTileID = "sq-w";
+                    break;
+                case BLE:
+                    objTileID = "sq-b";
+                    break;
+                case RED:
+                    objTileID = "sq-r";
+                    break;
+                case GRN:
+                    objTileID = "sq-g";
+                    break;
+                default:
+                    objTileID = "sq-b";
+            }
+
+            setImage(new Image(URI_BASE+objTileID+".png"));
+            setFitHeight(SQUARE_SIZE);
+            setFitWidth(SQUARE_SIZE);
+
+            setLayoutX(CHALLENGE_AREA_X+(square.getX()*SQUARE_SIZE));
+            setLayoutY(CHALLENGE_AREA_Y+(square.getY()*SQUARE_SIZE));
         }
 
         /**
@@ -422,6 +472,27 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
+    private void setupChallengeArea() {
+
+        Rectangle challengeArea = new Rectangle(CHALLENGE_AREA_X,CHALLENGE_AREA_Y,CHALLENGE_AREA_WIDTH,CHALLENGE_AREA_HEIGHT);
+        challengeArea.setFill(Color.LIGHTGRAY);
+        challengeArea.setStroke(Color.BLACK);
+
+        background.getChildren().add(challengeArea);
+        challengeArea.toBack();
+
+        challenge.getChildren().clear();
+
+        String challengeString;
+
+
+
+        /*
+        challenge.getChildren().add(CHALLENGE NUMBER)
+         */
+    }
+
+
     // FIXME Task 10: Implement hints
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
@@ -440,6 +511,7 @@ public class Board extends Application {
         setupTestControls();
         renderGameBoard();
         setupInitialTileArea();
+        setupChallengeArea();
 
         primaryStage.setScene(scene);
         primaryStage.show();
