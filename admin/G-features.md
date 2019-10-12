@@ -9,5 +9,3 @@ of our project implements the following features:
  - Generates simple challenges (Task 8)
  - Implements hints (Task 10)
  - Implements interesting starting challenges (Task 11)
-
-additional features...
