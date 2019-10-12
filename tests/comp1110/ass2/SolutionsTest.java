@@ -15,7 +15,7 @@ public class SolutionsTest {
     @Rule
     public Timeout globalTimeout = Timeout.millis(120000);
 
-    // TODO remove debug print
+
     private void test(String objective, Set<Set<String>> expected) {
         String out = FocusGame.getSolution(objective);
         assertTrue("No solutions returned for objective " + objective + ", expected one of " + expected, out != null);
@@ -31,13 +31,11 @@ public class SolutionsTest {
                 found = true;
             }
         }
-        System.out.println(objective);
         assertTrue("For objective " + objective + ", was expecting one of " + expected + ", but got " + outstr, found);
     }
 
     @Test
     public void test_starter() {
-        System.out.println("Starter");
         for (int i = 0; i < (SOLUTIONS.length / 5); i++) {
             Set<Set<String>> exp = new LinkedHashSet<>();
             for (String sol : SOLUTIONS[i].placements) {
@@ -53,7 +51,6 @@ public class SolutionsTest {
 
     @Test
     public void test_junior() {
-        System.out.println("Junior");
         for (int i = (SOLUTIONS.length / 5); i < (2 * (SOLUTIONS.length / 5)); i++) {
             Set<Set<String>> exp = new LinkedHashSet<>();
             for (String sol : SOLUTIONS[i].placements) {
@@ -69,7 +66,6 @@ public class SolutionsTest {
 
     @Test
     public void test_expert() {
-        System.out.println("Expert");
         for (int i = (2 * (SOLUTIONS.length / 5)); i < (3 * (SOLUTIONS.length / 5)); i++) {
             Set<Set<String>> exp = new LinkedHashSet<>();
             for (String sol : SOLUTIONS[i].placements) {
@@ -85,7 +81,6 @@ public class SolutionsTest {
 
     @Test
     public void test_master() {
-        System.out.println("Master");
         for (int i = (3 * (SOLUTIONS.length / 5)); i < (4 * (SOLUTIONS.length / 5)); i++) {
             Set<Set<String>> exp = new LinkedHashSet<>();
             for (String sol : SOLUTIONS[i].placements) {
@@ -101,7 +96,6 @@ public class SolutionsTest {
 
     @Test
     public void test_wizard() {
-        System.out.println("Wizard");
         for (int i = (4 * (SOLUTIONS.length / 5)); i < SOLUTIONS.length; i++) {
             Set<Set<String>> exp = new LinkedHashSet<>();
             for (String sol : SOLUTIONS[i].placements) {

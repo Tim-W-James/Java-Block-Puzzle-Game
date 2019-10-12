@@ -26,6 +26,7 @@ public class Solution {
   }
 
   public static final Solution[] SOLUTIONS = {
+          // starter
           new Solution("RRRBWBBRB",
                   "a000b013c113d302e323f400g420h522i613j701"),
           new Solution("RWWRRRWWW",
@@ -74,6 +75,7 @@ public class Solution {
                   "a532b111c302d520e330f510g210h000i030j701"),
           new Solution("BGRWWWWWW",
                   "a000b013c302d510e623f521g120h222i210j701"),
+          // junior
           new Solution("WBWWBWGGG",
                   "a723b130c330d613e100f120g310h601i400j003"),
           new Solution("WGBWGBWGB",
@@ -122,6 +124,7 @@ public class Solution {
                   "a112b301c711d013e130f000g511h601i400j332"),
           new Solution("BWWBWGBWW",
                   "a503b232c711d521e211f401g011h601i133j000"),
+          // expert
           new Solution("RRRRRRRRR",
                   "a300b532c122d513e232f000g611h601i030j010"),
           new Solution("RRRRRWRWW",
@@ -170,6 +173,7 @@ public class Solution {
                   "a003b532c601d232e701f330g100h301i030j112"),
           new Solution("GGGGGGGGG",
                   "a520b130c330d002e020f400g721h101i700j410"),
+          // master
           new Solution("GGRBGRBBR",
                   "a613b010c703d411e221f500g030h201i003j432"),
           new Solution("BGBGBRGRR",
@@ -218,6 +222,7 @@ public class Solution {
                   "a000b400c703d303e013f140g420h213i612j432"),
           new Solution("RBRRBRRBR",
                   "a012b532c032d513e311f240g611h601i003j200"),
+          // wizard
           new Solution("WWWWWWWWW",
                   "a022b132c430d003e611f511g110h400i200j701"),
           new Solution("RRBBBBGGB",
