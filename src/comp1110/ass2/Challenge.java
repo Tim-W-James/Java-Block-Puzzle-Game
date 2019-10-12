@@ -67,6 +67,20 @@ public class Challenge {
         return true;
     }
 
+    // returns a placement that will help the user towards the solution
+    public String generateHint(String currentPlacements) {
+        for (String p : Tile.placementToPieceArray(FocusGame.getSolution(this.challenge))) {
+            if (!currentPlacements.contains(p))
+                return p;
+        }
+        return null;
+    }
+
+    public static void main(String[] args) {
+        Challenge c = new Challenge("RRRBWBBRB");
+        System.out.println(c.generateHint("a000"));
+    }
+
     @Override
     public String toString() {
         String result = "";

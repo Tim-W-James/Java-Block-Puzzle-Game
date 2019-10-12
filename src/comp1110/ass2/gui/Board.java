@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -27,7 +28,7 @@ import static comp1110.ass2.Shape.*;
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
-// TODO GUI layout (board, pieces, challenge area)
+// TODO Position Tiles on the side of screen in a clear, clean way (make sure they are not touching each other)
 // TODO Drag and drop
 // TODO Drag and drop snap
 // TODO Rotation
@@ -35,8 +36,10 @@ import static comp1110.ass2.Shape.*;
 // TODO Drag and drop highlight
 // TODO Generate challenge
 // TODO Display challenge
-// TODO Reset
-// TODO Check solution
+// TODO Reset button
+// TODO Check if the user has found a solution
+// TODO Generating a new challenge should reset the board
+// TODO Remove text box for letting the user enter placement strings (drag and drop only)
 
 /*
 Authorship: Nicholas Dale
@@ -50,6 +53,8 @@ public class Board extends Application {
     private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
 //    private GameBoardArray game = new GameBoardArray();
 
+    private GTile hint;
+    private boolean isSLASHDown = false;
 
     // Size of the board within the window
     private static final int BOARD_WIDTH = 617;
@@ -412,8 +417,8 @@ public class Board extends Application {
 
     }
 
-    void renderGameBoard() {
-        State[][] ToDraw = game.getBoardState();
+    void renderGameBoard(GameBoardArray g) {
+        State[][] ToDraw = g.getBoardState();
 
         var tilesToRender = new HashSet<Tile>();
 
@@ -424,7 +429,7 @@ public class Board extends Application {
                 State state = row[j];
 
                 if (state != State.EMP && state != State.NLL) {
-                    tilesToRender.add(game.getTileAt(i, j));
+                    tilesToRender.add(g.getTileAt(i, j));
                 }
             }
         }
@@ -451,11 +456,12 @@ public class Board extends Application {
         System.out.println(gTiles.getChildren());
     }
 
+    // make sure these accommodate for the gameboardarray if you are using them in that manner - Tim
     private void addTile(Tile t) {
         gTiles.getChildren().add(new GTile(t));
     }
 
-    private void removeTile(Tile t) {
+    private void removeTile(Tile t) { // this does not work, as it is attempting to remove a Tile, not GTile - Tim
         gTiles.getChildren().remove(t);
     }
 
@@ -471,7 +477,7 @@ public class Board extends Application {
 
     void makePlacementFromString(String placement) {
         game.updateBoardPosition(placement);
-        renderGameBoard();
+        renderGameBoard(game);
     }
 
 
@@ -607,9 +613,6 @@ public class Board extends Application {
 
     }
 
-
-    // FIXME Task 10: Implement hints
-
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
     @Override
@@ -624,7 +627,7 @@ public class Board extends Application {
 
         setupBackground();
         setupTestControls();
-        renderGameBoard();
+        renderGameBoard(game);
         setupInitialTileArea();
         setupChallengeArea();
         makeChallengeControls();
@@ -632,5 +635,22 @@ public class Board extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.SLASH && !isSLASHDown) { // update hints while "/" is pressed
+                String h = new Challenge(challengeString).generateHint(game.getPlacementString());
+                if (h != null) {
+                    hint = new GTile(new Tile(h));
+                    hint.setOpacity(0.5);
+                    root.getChildren().add(hint);
+                }
+                isSLASHDown = true;
+            }
+        });
+        scene.setOnKeyReleased(e -> {
+            if (e.getCode() == KeyCode.SLASH) { // remove hints when "/" is released
+                root.getChildren().remove(hint);
+                isSLASHDown = false;
+            }
+        });
     }
 }
