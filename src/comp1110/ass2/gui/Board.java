@@ -494,6 +494,10 @@ public class Board extends Application {
 
         //randomly generate challenge when 'new challenge' button is hit
         challengeString = generateChallenge();
+        //TODO there's a bug where the default challenge that is shown does not comply to the following rules
+        //i.e. default selected Button is Starter, but it can generate other difficulty challenges instead (upon setup)
+        //Possible solution: just set a particular string as the default (but that overrides it)
+
 
         for (int i = 0; i < challengeString.length(); i++) {
             if (i >= 0 && i <= 2) {
@@ -571,6 +575,7 @@ public class Board extends Application {
         b1.setLayoutY(CHALLENGE_AREA_Y+40);
         //EVERY TIME A NEW GAME OCCURS set Starter as default
         b1.setSelected(true);
+        //generateChallenge();
 
         difficulties.add(b2);
         b2.setToggleGroup(group);
