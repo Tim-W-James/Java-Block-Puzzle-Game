@@ -220,9 +220,9 @@ public class Solution {
                   "a132b300c002d523e321f011g111h511i632j701"),
           new Solution("RWWRWBWWB",
                   "a000b400c703d303e013f140g420h213i612j432"),
+          // wizard
           new Solution("RBRRBRRBR",
                   "a012b532c032d513e311f240g611h601i003j200"),
-          // wizard
           new Solution("WWWWWWWWW",
                   "a022b132c430d003e611f511g110h400i200j701"),
           new Solution("RRBBBBGGB",
