@@ -333,6 +333,7 @@ public class Board extends Application {
 
 
 
+
     }
 
     /* Create controls for testing */
@@ -475,7 +476,7 @@ public class Board extends Application {
     private void setupChallengeArea() {
 
         Rectangle challengeArea = new Rectangle(CHALLENGE_AREA_X,CHALLENGE_AREA_Y,CHALLENGE_AREA_WIDTH,CHALLENGE_AREA_HEIGHT);
-        challengeArea.setFill(Color.LIGHTGRAY);
+        challengeArea.setFill(Color.GRAY);
         challengeArea.setStroke(Color.BLACK);
 
         background.getChildren().add(challengeArea);
@@ -483,12 +484,26 @@ public class Board extends Application {
 
         challenge.getChildren().clear();
 
-        String challengeString;
+        //TODO randomly generate challenge when 'new challenge' button is hit
+        //Use this as a test for now
+        String challengeString = Solution.SOLUTIONS[0].objective; //RRRBWBBRB
 
+        for (int i = 0; i < challengeString.length(); i++) {
+            if (i >= 0 && i <= 2) {
+                GTile challengeSquare = new GTile(new Position(i%3,0, State.charToState(challengeString.charAt(i))));
+                gTiles.getChildren().add(challengeSquare);
+            } else if (i >= 3 && i <= 5) {
+                GTile challengeSquare = new GTile(new Position(i%3,1, State.charToState(challengeString.charAt(i))));
+                gTiles.getChildren().add(challengeSquare);
+            } else {
+                GTile challengeSquare = new GTile(new Position(i%3,2, State.charToState(challengeString.charAt(i))));
+                gTiles.getChildren().add(challengeSquare);
+            }
+        }
 
 
         /*
-        challenge.getChildren().add(CHALLENGE NUMBER)
+        challenge.getChildren().add(CHALLENGE TILE)
          */
     }
 
