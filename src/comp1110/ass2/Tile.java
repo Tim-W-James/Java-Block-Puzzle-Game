@@ -105,6 +105,11 @@ public class Tile implements Comparable<Tile> {
         return (maxY - minY + 1);
     }
 
+
+    /*
+    Authorship: Tim James
+    */
+
     // returns an array of positions a tile has, given a shape and direction,
     // relative to [0][0], with [x][y] origin position offset
     public Position[] getShapeArrangement () {
@@ -467,6 +472,10 @@ public class Tile implements Comparable<Tile> {
      class methods to convert from piece placement String
       */
 
+    /*
+    Authorship: Tim James
+    */
+
     public static Shape placementToShape (String piecePlacement) {
         if (!FocusGame.isPiecePlacementWellFormed(piecePlacement)) // check input is valid
             throw new IllegalArgumentException("Invalid Placement Input for "+piecePlacement+","+invalidTileMsg);
@@ -585,6 +594,10 @@ public class Tile implements Comparable<Tile> {
     public static String tileToPiecePlacement(Tile t) {
         return t.getPlacement();
     }
+
+    /*
+    Authorship: Rebecca Gibson
+    */
 
     //Returns an array of unused shapes yet to be used
     public static Shape[] returnUnusedTileShapes(String placement) {
