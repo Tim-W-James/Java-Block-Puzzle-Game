@@ -73,12 +73,14 @@ public class Board extends Application {
     private static final int SQUARE_SIZE = 60;
     private static final double OFFBOARD_SQUARE_SIZE = 0.5 * SQUARE_SIZE;
 
+    // Area where the tiles are placed at the start of a game
     private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 100;
     private static final int TILE_AREA_STARTING_Y = 5;  //I don't think this value actually does anything tbh
 
     private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
     private static final int TILE_AREA_FINISH_Y = WINDOW_HEIGHT;
 
+    // Area where the challenge stuff lives
     private static final int CHALLENGE_AREA_WIDTH = SQUARE_SIZE * 3;
     private static final int CHALLENGE_AREA_HEIGHT = SQUARE_SIZE * 3;
     private static final int CHALLENGE_AREA_X = OFFSET_X + SQUARE_SIZE * 3; //Maybe make a universal margin constant
@@ -228,11 +230,14 @@ public class Board extends Application {
         }
 
         /**
-         * Move the tile back to its starting position
+         * Returns the grid position of the gamegrid
+         * @param x
+         * @param y
          */
-        private void sendToHome() {
+        private void getGameGridSquare(double x, double y){
 
         }
+
 
         /**
          * Rotate the tile and update any necessary coordinates
@@ -241,6 +246,9 @@ public class Board extends Application {
 
         }
 
+        /**
+         * Sends the tile to its starting position
+         */
         void sendToDefaultPlacement() {
             double offset;
             int previousTileHeight;
@@ -368,10 +376,10 @@ public class Board extends Application {
     }
 
     /**
-     * Returns nearest tile to a given x,y position
-     * @param x
-     * @param y
-     * @return
+     * Returns nearest tile to a given x,y position. Positions are in GUI NOT GameBoard
+     * @param x an arbitrary x position on the GUI. If called from within a tile, call it with getLayoutX()
+     * @param y an arbitrary y position on the GUI. If called from within a tile, call it with getLayoutY()
+     * @return a DraggableTile object representing the closest tile to the given coordinates
      */
     private DraggableTile findNearestTile(double x, double y) {
         ArrayList<DraggableTile> allTiles = new ArrayList<>();
