@@ -74,7 +74,7 @@ public class Board extends Application {
     private static final double OFFBOARD_SQUARE_SIZE = 0.5 * SQUARE_SIZE;
 
     // Area where the tiles are placed at the start of a game
-    private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 100;
+    private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 70;
     private static final int TILE_AREA_STARTING_Y = 5;  //I don't think this value actually does anything tbh
 
     private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
@@ -257,6 +257,48 @@ public class Board extends Application {
 
             switch (t.getShape()) {
                 case A:
+                    homeY = 0;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                case B:
+                    homeY = OFFBOARD_SQUARE_SIZE*3-15;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                case C:
+                    homeY = OFFBOARD_SQUARE_SIZE*6-35;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                case D:
+                    homeY = OFFBOARD_SQUARE_SIZE*9-55;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                case E:
+                    homeY = OFFBOARD_SQUARE_SIZE*12-70;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                case F:
+                    homeY = OFFBOARD_SQUARE_SIZE*15-75;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                    //F is derpy for some reason
+
+                case G:
+                    homeY = OFFBOARD_SQUARE_SIZE*17-100;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                case H:
+                    homeY = OFFBOARD_SQUARE_SIZE*20-125;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                case I:
+                    homeY = OFFBOARD_SQUARE_SIZE*23-150;
+                    homeX = TILE_AREA_STARTING_X+OFFBOARD_SQUARE_SIZE*2;
+                    break;
+                default:
+                    homeY = OFFBOARD_SQUARE_SIZE*26-175;
+                    homeX = TILE_AREA_STARTING_X;
+                    break;
+                /*case A:
                     offset = 0;
                     previousTileHeight = 0;
                     break;
@@ -295,13 +337,15 @@ public class Board extends Application {
                 default:
                     offset = 9;
                     previousTileHeight = I.getMaxReach(Direction.NORTH, true);
-                    break;
+                    break;*/
             }
 
-            homeX = TILE_AREA_STARTING_X;
-            homeY = TILE_AREA_STARTING_Y + (offset * (previousTileHeight + 0.05) * OFFBOARD_SQUARE_SIZE);
+            //homeX = TILE_AREA_STARTING_X;
+            //homeY = TILE_AREA_STARTING_Y + (offset * (previousTileHeight + 0.05) * OFFBOARD_SQUARE_SIZE);
+            //homeY = TILE_AREA_STARTING_Y+(offset*3.5*OFFBOARD_SQUARE_SIZE);
+            //homeY = TILE_AREA_STARTING_Y+(offset)
             setLayoutX(homeX);
-            setLayoutY(homeY);
+            setLayoutY(homeY-25);
         }
 
         /**
@@ -418,21 +462,25 @@ public class Board extends Application {
 
     private void setupBackground() {
         background.getChildren().clear();
-
+        //Board background
         ImageView board = new ImageView();
         board.setImage(new Image(URI_BASE + "board" + ".png"));
         board.setFitWidth(BOARD_WIDTH);
         board.setFitHeight(BOARD_HEIGHT);
-
-        background.getChildren().add(board);
         board.toBack();
 
+        //Tiles background
+        Rectangle tileBg = new Rectangle(BOARD_WIDTH,0,WINDOW_WIDTH-BOARD_WIDTH,WINDOW_HEIGHT);
+        tileBg.setFill(Color.AQUAMARINE);
+        tileBg.toBack();
+
+        background.getChildren().addAll(board,tileBg);
 
     }
 
     /* Create controls for testing */
     private void setupTestControls() {
-        Label label1 = new Label("Placement:");
+        /*Label label1 = new Label("Placement:");
         textField = new TextField();
         textField.setPrefWidth(300);
         Button button = new Button("Refresh");
@@ -442,9 +490,10 @@ public class Board extends Application {
                 makePlacementFromString(textField.getText());
                 textField.clear();
             }
-        });
+        });*/
 
-        Button reset = new Button("Reset");
+        Button reset = new Button("Reset Board");
+
         reset.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -454,20 +503,22 @@ public class Board extends Application {
 
                 renderGameBoard(game);
                 setupInitialTileArea();
-                setupChallengeArea();
+                //setupChallengeArea();
+                //don't include because it'll reset the challenge
                 System.out.println("GameBoard has been reset");
             }
         });
-//        reset.setLayoutX(20);
-//        reset.setLayoutY(BOARD_HEIGHT + 20);
         reset.toFront();
 
 
         HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField, button,reset);
+        //Could possibly get rid of this now that we don't need textfield stuff
+
+        //hb.getChildren().addAll(label1, textField, button,reset);
+        hb.getChildren().add(reset);
         hb.setSpacing(10);
-        hb.setLayoutX(130);
-        hb.setLayoutY(BOARD_HEIGHT + 10);
+        hb.setLayoutX(GAME_GRID_WIDTH/2);
+        hb.setLayoutY(15);
 
         controls.getChildren().add(hb);
         controls.toFront();
@@ -502,6 +553,7 @@ public class Board extends Application {
 
 
     }
+
 
     void renderGameBoard(GameBoardArray g) {
         State[][] ToDraw = g.getBoardState();
@@ -616,12 +668,11 @@ public class Board extends Application {
         /*
         N.B. need to decrement by one since you will be indexing from array
          */
-        //double check calculations
+
         if (group.getSelectedToggle() == b1) {
             random = r.nextInt (23);
         } else if (group.getSelectedToggle() == b2) {
             random = 24+(int)(Math.random()*(47-24+1));
-            //this bit would need to be a range
         } else if (group.getSelectedToggle() == b3) {
             random = 48+(int)(Math.random()*(71-48+1));
         } else if (group.getSelectedToggle() == b4) {
@@ -630,9 +681,7 @@ public class Board extends Application {
             random = 95+(int)(Math.random()*(119-95+1));
         }
 
-
-        //CHECK: I'm doing recursion properly here right??
-        //if the current challenge is the same as the newly generated one, generate a new challenge again
+        //if current challenge is the same as the newly generated one, generate a new challenge again
         if (challengeString == Solution.SOLUTIONS[random].objective)
             return generateChallenge();
         else
@@ -648,8 +697,7 @@ public class Board extends Application {
                 challengeString = generateChallenge();
                 setupChallengeArea();
                 System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
-                //TODO add toString() for the ToggleGroup
-
+                //TODO add toString() for the ToggleGroup??
 
             }
         });
