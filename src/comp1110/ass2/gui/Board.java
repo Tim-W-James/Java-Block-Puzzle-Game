@@ -126,7 +126,7 @@ public class Board extends Application {
                 sendToDefaultPlacement();
             }
 
-            //Scaling
+            // Scaling
             if (!inGame) {
                 setScaleX(0.5);
                 setScaleY(0.5);
@@ -241,7 +241,7 @@ public class Board extends Application {
 
         }
 
-        private void sendToDefaultPlacement() {
+        void sendToDefaultPlacement() {
             double offset;
             int previousTileHeight;
             double homeX;
@@ -294,8 +294,6 @@ public class Board extends Application {
             homeY = TILE_AREA_STARTING_Y + (offset * (previousTileHeight + 0.05) * OFFBOARD_SQUARE_SIZE);
             setLayoutX(homeX);
             setLayoutY(homeY);
-
-
         }
 
         /**
@@ -306,6 +304,17 @@ public class Board extends Application {
          */
         public double getDistance(double x, double y) {
             return Math.sqrt((Math.pow((getLayoutX() - x),2)) + (Math.pow((getLayoutY() - y),2)));
+        }
+
+        void setInGame(boolean inGame) {
+            this.inGame = inGame;
+            if (!inGame) {
+                setScaleX(0.5);
+                setScaleY(0.5);
+            } else {
+                setScaleX(1);
+                setScaleY(1);
+            }
         }
 
         @Override
@@ -338,8 +347,17 @@ public class Board extends Application {
             });
 
             this.setOnMouseReleased(event -> {
-                setLayoutX(findNearestTile(getLayoutX(),getLayoutY()).getLayoutX());
-                setLayoutY(findNearestTile(getLayoutX(),getLayoutY()).getLayoutY());
+
+                // If out of GameGrid send to default placement, otherwise snap
+                if (getLayoutX() > BOARD_WIDTH || getLayoutY() > BOARD_HEIGHT) {
+                    setInGame(false);
+                    sendToDefaultPlacement();
+                } else {
+//                    setLayoutX(findNearestTile(getLayoutX(),getLayoutY()).getLayoutX());
+//                    setLayoutY(findNearestTile(getLayoutX(),getLayoutY()).getLayoutY());
+
+                    setInGame(true);
+                }
 
             });
 
