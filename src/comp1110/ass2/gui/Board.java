@@ -9,14 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -97,6 +98,8 @@ public class Board extends Application {
     private final Group challenge = new Group();
 
     private TextField textField;
+
+    private HashSet<DraggableTile> allTiles = new HashSet<>();
 
     //Difficulty slider
     //private final Slider difficulty = new Slider();
@@ -363,8 +366,28 @@ public class Board extends Application {
                 textField.clear();
             }
         });
+
+        Button reset = new Button("Reset");
+        reset.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                game.resetGameBoardArray();
+                allTiles.clear();
+                resetGTiles();
+
+                renderGameBoard(game);
+                setupInitialTileArea();
+                setupChallengeArea();
+                System.out.println("GameBoard has been reset");
+            }
+        });
+//        reset.setLayoutX(20);
+//        reset.setLayoutY(BOARD_HEIGHT + 20);
+        reset.toFront();
+
+
         HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField, button);
+        hb.getChildren().addAll(label1, textField, button,reset);
         hb.setSpacing(10);
         hb.setLayoutX(130);
         hb.setLayoutY(BOARD_HEIGHT + 10);
@@ -379,36 +402,22 @@ public class Board extends Application {
      * Place initial tiles
      */
     private void setupInitialTileArea() {
-        HashSet<DraggableTile> allTiles = new HashSet<>();   //maybe include all the tiles here then? refer to Tile docco
-
         //NOTE: Position values for tile shouldn't matter while it is in setup
         /*
         Converting each Tile A to J into a GTile
          */
         DraggableTile A = new DraggableTile(new Tile("a000"), false);
-        allTiles.add(A);
         DraggableTile B = new DraggableTile(new Tile("b000"), false);
-        allTiles.add(B);
         DraggableTile C = new DraggableTile(new Tile("c000"), false);
-        allTiles.add(C);
         DraggableTile D = new DraggableTile(new Tile("d000"), false);
-        allTiles.add(D);
         DraggableTile E = new DraggableTile(new Tile("e000"), false);
-        allTiles.add(E);
         DraggableTile F = new DraggableTile(new Tile("f000"), false);
-        allTiles.add(F);
         DraggableTile G = new DraggableTile(new Tile("g000"), false);
-        allTiles.add(G);
         DraggableTile H = new DraggableTile(new Tile("h000"), false);
-        allTiles.add(H);
         DraggableTile I = new DraggableTile(new Tile("i000"), false);
-        allTiles.add(I);
         DraggableTile J = new DraggableTile(new Tile("j000"), false);
-        allTiles.add(J);
 
-        //gTiles.getChildren().add(A);
-
-        gTiles.getChildren().addAll(allTiles);
+        gTiles.getChildren().addAll(A,B,C,D,E,F,G,H,I,J);
 
 
         //the point is to use the method makeTiles so you don't have to do this tediousness?!!
@@ -469,7 +478,7 @@ public class Board extends Application {
     /**
      * Reset board to the beginning state
      */
-    private void resetBoard() {
+    private void resetGTiles() {
         gTiles.getChildren().removeAll(gTiles);     //lol mate this removes all the tiles
 
     }
@@ -508,13 +517,13 @@ public class Board extends Application {
         for (int i = 0; i < challengeString.length(); i++) {
             if (i >= 0 && i <= 2) {
                 GTile challengeSquare = new GTile(new Position(i % 3, 0, State.charToState(challengeString.charAt(i))));
-                gTiles.getChildren().add(challengeSquare);
+                challenge.getChildren().add(challengeSquare);
             } else if (i >= 3 && i <= 5) {
                 GTile challengeSquare = new GTile(new Position(i % 3, 1, State.charToState(challengeString.charAt(i))));
-                gTiles.getChildren().add(challengeSquare);
+                challenge.getChildren().add(challengeSquare);
             } else {
                 GTile challengeSquare = new GTile(new Position(i % 3, 2, State.charToState(challengeString.charAt(i))));
-                gTiles.getChildren().add(challengeSquare);
+                challenge.getChildren().add(challengeSquare);
             }
         }
 
@@ -624,6 +633,7 @@ public class Board extends Application {
         root.getChildren().add(background);
         root.getChildren().add(controls);
         root.getChildren().add(gTiles);
+        root.getChildren().add(challenge);
 
         setupBackground();
         setupTestControls();
