@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -17,10 +18,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static comp1110.ass2.Shape.*;
 
@@ -114,6 +112,17 @@ public class Board extends Application {
 
     class GTile extends ImageView {
         private Tile t;
+        boolean inGame = false;
+
+        /**
+         * Constructor for gTile with inGame value
+         * @param t
+         * @param inGame
+         */
+        GTile(Tile t, boolean inGame) {
+            this(t);
+            this.inGame = inGame;
+        }
 
         /**
          * Constructor to build a PLAYING tile
@@ -163,16 +172,13 @@ public class Board extends Application {
 
         /**
          * Constructor to build individual square pieces that make up the CHALLENGE
-         */
 
-        /*
         Using Position's int x and int y parameters to specify where they should be placed on the
         challenge board by treating them as coordinates:
             (0,0) (1,0) (2,0)
             (0,1) (1,1) (2,1)
             (0,2) (1,2) (2,2)
          */
-
 
         GTile(Position square) {
             String objTileID;
@@ -243,11 +249,10 @@ public class Board extends Application {
         private double homeY;
         private double offset;
         private int previousTileHeight;
-        private boolean inGame;
+
 
         DraggableTile(Tile t, boolean inGame) {
-            super(t);
-            this.inGame = inGame;
+            super(t,inGame);
 
             //Translations
             switch (t.getShape()) {
@@ -337,6 +342,55 @@ public class Board extends Application {
 
         }
 
+        /**
+         * Returns distance between an x,y point and the top left of this tile
+         * @param x horizontal coordinate
+         * @param y vertical coordinate
+         * @return distance
+         */
+        public double getDistance(int x, int y) {
+            return Math.sqrt(Math.pow((getLayoutX() - x),2) + Math.pow((getLayoutY() - y),2));
+        }
+
+
+    }
+
+    /**
+     * Returns nearest tile to a given x,y position
+     * @param x
+     * @param y
+     * @return
+     */
+    private DraggableTile findNearestTile(int x, int y) {
+        ArrayList<DraggableTile> allTiles = new ArrayList<>();
+        for (Node current :
+                gTiles.getChildren()) {
+            if (current instanceof DraggableTile) {
+                allTiles.add((DraggableTile) current);
+            }
+        }
+
+        DraggableTile candidate = null;
+        double shortestDistance = 500;
+
+        for (DraggableTile t :
+                allTiles) {
+            double distance = t.getDistance(x,y);
+            if (candidate == null) {
+                candidate = t;
+            } else {
+                if (distance < shortestDistance) {
+                    candidate = t;
+                    shortestDistance = distance;
+                }
+            }
+        }
+
+        if (candidate != null) {
+            return candidate;
+        } else {
+            throw new NoSuchElementException("No tiles exist in gTiles");
+        }
     }
 
     private void setupBackground() {
