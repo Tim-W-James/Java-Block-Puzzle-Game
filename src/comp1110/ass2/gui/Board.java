@@ -326,6 +326,7 @@ public class Board extends Application {
                 mouseY = event.getSceneY(); //gets Y coordinates
                 this.toFront();
 
+
 //                if (mouseX >= 0) //if mouse X and mouse Y falls within dimensions of off game board tile, switch to true
 //                    this.inGame = true;
 //
@@ -372,8 +373,8 @@ public class Board extends Application {
             if (candidate == null) {
                 candidate = t;
             } else {
-                System.out.println("Changing distance of " + distance + " To distance of " + shortestDistance);
-                if (distance < shortestDistance) {
+                System.out.println("Changing shortest distance of " + shortestDistance + " To distance of " + distance);
+                if (distance < shortestDistance && distance != 0) {
                     candidate = t;
                     shortestDistance = distance;
                 }
