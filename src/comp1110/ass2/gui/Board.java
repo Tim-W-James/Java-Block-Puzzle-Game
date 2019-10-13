@@ -38,6 +38,7 @@ import static comp1110.ass2.Shape.*;
 // TODO Check if the user has found a solution
 // TODO Generating a new challenge should reset the board
 // TODO Remove text box for letting the user enter placement strings (drag and drop only)
+// TODO instructions???
 
 /*
 Authorship: Nicholas Dale
@@ -48,8 +49,8 @@ public class Board extends Application {
     /**
      * The GameBoardArray contains most of the logic behind the game
      */
-    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
-//    private GameBoardArray game = new GameBoardArray();
+   // private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
+    private GameBoardArray game = new GameBoardArray();
 
     private GTile hint;
     private boolean isSLASHDown = false;
@@ -250,8 +251,6 @@ public class Board extends Application {
          * Sends the tile to its starting position
          */
         void sendToDefaultPlacement() {
-            double offset;
-            int previousTileHeight;
             double homeX;
             double homeY;
 
@@ -261,89 +260,44 @@ public class Board extends Application {
                     homeX = TILE_AREA_STARTING_X;
                     break;
                 case B:
-                    homeY = OFFBOARD_SQUARE_SIZE*3-15;
+                    homeY = OFFBOARD_SQUARE_SIZE * 3 - 15;
                     homeX = TILE_AREA_STARTING_X;
                     break;
                 case C:
-                    homeY = OFFBOARD_SQUARE_SIZE*6-35;
+                    homeY = OFFBOARD_SQUARE_SIZE * 6 - 35;
                     homeX = TILE_AREA_STARTING_X;
                     break;
                 case D:
-                    homeY = OFFBOARD_SQUARE_SIZE*9-55;
+                    homeY = OFFBOARD_SQUARE_SIZE * 9 - 55;
                     homeX = TILE_AREA_STARTING_X;
                     break;
                 case E:
-                    homeY = OFFBOARD_SQUARE_SIZE*12-70;
+                    homeY = OFFBOARD_SQUARE_SIZE * 12 - 70;
                     homeX = TILE_AREA_STARTING_X;
                     break;
                 case F:
-                    homeY = OFFBOARD_SQUARE_SIZE*15-75;
+                    homeY = OFFBOARD_SQUARE_SIZE * 15 - 75;
                     homeX = TILE_AREA_STARTING_X;
                     break;
-                    //F is derpy for some reason
-
+                //F is derpy for some reason
+                //Scratch that: they're all derpy
                 case G:
-                    homeY = OFFBOARD_SQUARE_SIZE*17-100;
+                    homeY = OFFBOARD_SQUARE_SIZE * 17 - 100;
                     homeX = TILE_AREA_STARTING_X;
                     break;
                 case H:
-                    homeY = OFFBOARD_SQUARE_SIZE*20-125;
+                    homeY = OFFBOARD_SQUARE_SIZE * 20 - 125;
                     homeX = TILE_AREA_STARTING_X;
                     break;
                 case I:
-                    homeY = OFFBOARD_SQUARE_SIZE*23-150;
-                    homeX = TILE_AREA_STARTING_X+OFFBOARD_SQUARE_SIZE*2;
+                    homeY = OFFBOARD_SQUARE_SIZE * 23 - 150;
+                    homeX = TILE_AREA_STARTING_X + OFFBOARD_SQUARE_SIZE * 2;
                     break;
                 default:
-                    homeY = OFFBOARD_SQUARE_SIZE*26-175;
+                    homeY = OFFBOARD_SQUARE_SIZE * 26 - 175;
                     homeX = TILE_AREA_STARTING_X;
                     break;
-                /*case A:
-                    offset = 0;
-                    previousTileHeight = 0;
-                    break;
-                case B:
-                    offset = 1;
-                    previousTileHeight = A.getMaxReach(Direction.NORTH, true);
-                    break;
-                case C:
-                    offset = 2;
-                    previousTileHeight = B.getMaxReach(Direction.NORTH, true);
-                    break;
-                case D:
-                    offset = 3;
-                    previousTileHeight = C.getMaxReach(Direction.NORTH, true);
-                    break;
-                case E:
-                    offset = 4;
-                    previousTileHeight = D.getMaxReach(Direction.NORTH, true);
-                    break;
-                case F:
-                    offset = 5.5; //should be 5 but it gets overlapped for some reason
-                    previousTileHeight = E.getMaxReach(Direction.NORTH, true);
-                    break;
-                case G:
-                    offset = 12; //should be 6 but it gets overlapped because the maxReach for F is 1 so it goes all weird
-                    previousTileHeight = F.getMaxReach(Direction.NORTH, true);
-                    break;
-                case H:
-                    offset = 7;
-                    previousTileHeight = G.getMaxReach(Direction.NORTH, true);
-                    break;
-                case I:
-                    offset = 6.7; //should be 8
-                    previousTileHeight = H.getMaxReach(Direction.NORTH, true);
-                    break;
-                default:
-                    offset = 9;
-                    previousTileHeight = I.getMaxReach(Direction.NORTH, true);
-                    break;*/
             }
-
-            //homeX = TILE_AREA_STARTING_X;
-            //homeY = TILE_AREA_STARTING_Y + (offset * (previousTileHeight + 0.05) * OFFBOARD_SQUARE_SIZE);
-            //homeY = TILE_AREA_STARTING_Y+(offset*3.5*OFFBOARD_SQUARE_SIZE);
-            //homeY = TILE_AREA_STARTING_Y+(offset)
             setLayoutX(homeX);
             setLayoutY(homeY-25);
         }
@@ -386,31 +340,20 @@ public class Board extends Application {
                 mouseX = event.getX(); //gets X coordinates
                 mouseY = event.getY(); //gets Y coordinates
                 this.toFront();
-
-
-//                if (mouseX >= 0) //if mouse X and mouse Y falls within dimensions of off game board tile, switch to true
-//                    this.inGame = true;
-//
             });
 
             this.setOnMouseDragged(event -> {
                 setLayoutX(event.getSceneX() - mouseX);
                 setLayoutY(event.getSceneY() - mouseY);
+                setInGame(true);    //resizes when dragged for easier placement
             });
 
             this.setOnMouseReleased(event -> {
-
                 // If out of GameGrid send to default placement, otherwise snap
                 if (getLayoutX() > BOARD_WIDTH || getLayoutY() > BOARD_HEIGHT) {
                     setInGame(false);
                     sendToDefaultPlacement();
-                } else {
-//                    setLayoutX(findNearestTile(getLayoutX(),getLayoutY()).getLayoutX());
-//                    setLayoutY(findNearestTile(getLayoutX(),getLayoutY()).getLayoutY());
-
-                    setInGame(true);
                 }
-
             });
 
 
@@ -469,12 +412,17 @@ public class Board extends Application {
         board.setFitHeight(BOARD_HEIGHT);
         board.toBack();
 
+        //Challenge area on board
+        Rectangle challengeArea = new Rectangle(OFFSET_X+SQUARE_SIZE*3,OFFSET_Y+SQUARE_SIZE+3,SQUARE_SIZE*3,SQUARE_SIZE*3);
+        challengeArea.setOpacity(0.5);
+        challengeArea.setFill(Color.BLACK);
+
         //Tiles background
         Rectangle tileBg = new Rectangle(BOARD_WIDTH,0,WINDOW_WIDTH-BOARD_WIDTH,WINDOW_HEIGHT);
         tileBg.setFill(Color.AQUAMARINE);
         tileBg.toBack();
 
-        background.getChildren().addAll(board,tileBg);
+        background.getChildren().addAll(board,tileBg,challengeArea);
 
     }
 
@@ -546,12 +494,6 @@ public class Board extends Application {
         DraggableTile J = new DraggableTile(new Tile("j000"), false);
 
         gTiles.getChildren().addAll(A,B,C,D,E,F,G,H,I,J);
-
-
-        //the point is to use the method makeTiles so you don't have to do this tediousness?!!
-        //makeTiles(allTiles);
-
-
     }
 
 
@@ -699,6 +641,7 @@ public class Board extends Application {
                 System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
                 //TODO add toString() for the ToggleGroup??
 
+
             }
         });
         button.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
@@ -770,6 +713,10 @@ public class Board extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+
+
+
+        //Is it possible to put all this in another function just for a cleaner look in the main method?
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.SLASH && !isSLASHDown) { // update hints while "/" is pressed
                 String h = new Challenge(challengeString).generateHint(game.getPlacementString());
