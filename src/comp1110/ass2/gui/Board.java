@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -299,11 +298,14 @@ public class Board extends Application {
 
         }
 
-        private double distance(double x, double y) {
-            double a_squared = (Math.pow(getLayoutX() - x, 2));
-            double b_squared = (Math.pow(getLayoutY() - y, 2));
-            double c_squared = a_squared + b_squared;
-            return Math.sqrt(c_squared);
+        /**
+         * Returns distance between an x,y point and the top left of this tile
+         * @param x horizontal coordinate
+         * @param y vertical coordinate
+         * @return distance
+         */
+        public double getDistance(double x, double y) {
+            return Math.sqrt((Math.pow((getLayoutX() - x),2)) + (Math.pow((getLayoutY() - y),2)));
         }
 
         @Override
@@ -322,24 +324,25 @@ public class Board extends Application {
             this.setOnMousePressed(event -> {
                 mouseX = event.getSceneX(); //gets X coordinates
                 mouseY = event.getSceneY(); //gets Y coordinates
+                this.toFront();
 
-                if (mouseX >= 0) //if mouse X and mouse Y falls within dimensions of off game board tile, switch to true
-                    this.inGame = true;
+//                if (mouseX >= 0) //if mouse X and mouse Y falls within dimensions of off game board tile, switch to true
+//                    this.inGame = true;
+//
+            });
 
-                toFront();
+            this.setOnMouseDragged(event -> {
+                setLayoutX(event.getSceneX() - mouseX);
+                setLayoutY(event.getSceneY() - mouseY);
+            });
+
+            this.setOnMouseReleased(event -> {
+                setLayoutX(findNearestTile(getLayoutX(),getLayoutY()).getLayoutX());
+                setLayoutY(findNearestTile(getLayoutX(),getLayoutY()).getLayoutY());
+
             });
 
 
-        }
-
-        /**
-         * Returns distance between an x,y point and the top left of this tile
-         * @param x horizontal coordinate
-         * @param y vertical coordinate
-         * @return distance
-         */
-        public double getDistance(int x, int y) {
-            return Math.sqrt(Math.pow((getLayoutX() - x),2) + Math.pow((getLayoutY() - y),2));
         }
 
 
@@ -351,7 +354,7 @@ public class Board extends Application {
      * @param y
      * @return
      */
-    private DraggableTile findNearestTile(int x, int y) {
+    private DraggableTile findNearestTile(double x, double y) {
         ArrayList<DraggableTile> allTiles = new ArrayList<>();
         for (Node current :
                 gTiles.getChildren()) {
@@ -361,7 +364,7 @@ public class Board extends Application {
         }
 
         DraggableTile candidate = null;
-        double shortestDistance = 500;
+        double shortestDistance = 1000;
 
         for (DraggableTile t :
                 allTiles) {
@@ -369,6 +372,7 @@ public class Board extends Application {
             if (candidate == null) {
                 candidate = t;
             } else {
+                System.out.println("Changing distance of " + distance + " To distance of " + shortestDistance);
                 if (distance < shortestDistance) {
                     candidate = t;
                     shortestDistance = distance;
@@ -377,6 +381,8 @@ public class Board extends Application {
         }
 
         if (candidate != null) {
+            System.out.println(shortestDistance);
+            System.out.println(candidate);
             return candidate;
         } else {
             throw new NoSuchElementException("No tiles exist in gTiles");
