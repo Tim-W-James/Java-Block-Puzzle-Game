@@ -322,8 +322,8 @@ public class Board extends Application {
             super(t,inGame);
 
             this.setOnMousePressed(event -> {
-                mouseX = event.getSceneX(); //gets X coordinates
-                mouseY = event.getSceneY(); //gets Y coordinates
+                mouseX = event.getX(); //gets X coordinates
+                mouseY = event.getY(); //gets Y coordinates
                 this.toFront();
 
 
