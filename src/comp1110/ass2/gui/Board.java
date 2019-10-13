@@ -122,6 +122,19 @@ public class Board extends Application {
         GTile(Tile t, boolean inGame) {
             this(t);
             this.inGame = inGame;
+
+            if (! inGame) {
+                sendToDefaultPlacement();
+            }
+
+            //Scaling
+            if (!inGame) {
+                setScaleX(0.5);
+                setScaleY(0.5);
+            } else {
+                setScaleX(1);
+                setScaleY(1);
+            }
         }
 
         /**
@@ -229,32 +242,12 @@ public class Board extends Application {
 
         }
 
-        private double distance(double x, double y) {
-            double a_squared = (Math.pow(getLayoutX() - x, 2));
-            double b_squared = (Math.pow(getLayoutY() - y, 2));
-            double c_squared = a_squared + b_squared;
-            return Math.sqrt(c_squared);
-        }
+        private void sendToDefaultPlacement() {
+            double offset;
+            int previousTileHeight;
+            double homeX;
+            double homeY;
 
-        @Override
-        public String toString() {
-            return "Fit Width/Height: " + getFitWidth() + "," + getFitHeight() + " | " + "Position x,y: " + getLayoutX() + "," + getLayoutY() + "\n" + this.t + "\n";
-        }
-    }
-
-    class DraggableTile extends GTile {
-        private double mouseX;
-        private double mouseY;
-        private double homeX;
-        private double homeY;
-        private double offset;
-        private int previousTileHeight;
-
-
-        DraggableTile(Tile t, boolean inGame) {
-            super(t,inGame);
-
-            //Translations
             switch (t.getShape()) {
                 case A:
                     offset = 0;
@@ -292,42 +285,39 @@ public class Board extends Application {
                     offset = 6.7; //should be 8
                     previousTileHeight = H.getMaxReach(Direction.NORTH, true);
                     break;
-                case J:
+                default:
                     offset = 9;
                     previousTileHeight = I.getMaxReach(Direction.NORTH, true);
                     break;
             }
-
 
             homeX = TILE_AREA_STARTING_X;
             homeY = TILE_AREA_STARTING_Y + (offset * (previousTileHeight + 0.05) * OFFBOARD_SQUARE_SIZE);
             setLayoutX(homeX);
             setLayoutY(homeY);
 
-            //Rotations
-            switch (t.getDirection().toChar()) {
-                case 0:
-                    setRotate(0);
-                    break;
-                case 1:
-                    setRotate(90);
-                    break;
-                case 2:
-                    setRotate(180);
-                    break;
-                case 3:
-                    setRotate(270);
-                    break;
-            }
 
-            //Scaling
-            if (!inGame) {
-                setScaleX(0.5);
-                setScaleY(0.5);
-            } else {
-                setScaleX(1);
-                setScaleY(1);
-            }
+        }
+
+        private double distance(double x, double y) {
+            double a_squared = (Math.pow(getLayoutX() - x, 2));
+            double b_squared = (Math.pow(getLayoutY() - y, 2));
+            double c_squared = a_squared + b_squared;
+            return Math.sqrt(c_squared);
+        }
+
+        @Override
+        public String toString() {
+            return "Fit Width/Height: " + getFitWidth() + "," + getFitHeight() + " | " + "Position x,y: " + getLayoutX() + "," + getLayoutY() + "\n" + this.t + "\n";
+        }
+    }
+
+    class DraggableTile extends GTile {
+        private double mouseX;
+        private double mouseY;
+
+        DraggableTile(Tile t, boolean inGame) {
+            super(t,inGame);
 
             this.setOnMousePressed(event -> {
                 mouseX = event.getSceneX(); //gets X coordinates
