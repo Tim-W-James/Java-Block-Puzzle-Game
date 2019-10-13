@@ -254,4 +254,22 @@ public class GameBoardArray {
         gbCopy.gameBoard = boardCopy;
         return gbCopy;
     }
+
+    /**
+     * Function to reset a gameboard, used because making a new one left references to old and I couldn't figure it out
+     */
+    public void resetGameBoardArray() {
+        gameBoard = new State[][]{
+                {EMP, EMP, EMP, EMP, NLL},
+                {EMP, EMP, EMP, EMP, EMP},
+                {EMP, EMP, EMP, EMP, EMP},
+                {EMP, EMP, EMP, EMP, EMP},
+                {EMP, EMP, EMP, EMP, EMP},
+                {EMP, EMP, EMP, EMP, EMP},
+                {EMP, EMP, EMP, EMP, EMP},
+                {EMP, EMP, EMP, EMP, EMP},
+                {EMP, EMP, EMP, EMP, NLL}
+        };
+        placementString = "";
+    }
 }
