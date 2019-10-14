@@ -432,8 +432,7 @@ public class Board extends Application {
             this.setOnScroll(event -> {
                 if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD) {
                     lastRotationTime = System.currentTimeMillis();
-                    direction = (direction + 1) % 4;
-                    rotate();
+                    rotate(90);
                     event.consume();
                 }
             });
