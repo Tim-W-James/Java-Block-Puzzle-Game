@@ -228,6 +228,14 @@ public class Board extends Application {
         }
 
         /**
+         * Rotate the tile by 90 degrees and update any necessary coordinates
+         */
+        void rotate(int rotation) {
+            setRotate((getRotate() + rotation) % 360);
+            System.out.println("The tile " + this + " is rotated " + rotation + " degrees");
+        }
+
+        /**
          * Snaps tile to game grid
          * This method updates GameBoardArray
          */
@@ -243,9 +251,11 @@ public class Board extends Application {
                 int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
                 int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
 
-//                System.out.println("Guessing tile is at: " + tileX + "," + tileY);
-//                System.out.println("Based on input coords: " + x + "," + y);
-//                System.out.println("And adjusted coords: " + ajX + "," + ajY);
+/*
+                System.out.println("Guessing tile is at: " + tileX + "," + tileY);
+                System.out.println("Based on input coords: " + x + "," + y);
+                System.out.println("And adjusted coords: " + ajX + "," + ajY);
+*/
                 pos = new Position(tileX,tileY);
             }
 
@@ -379,7 +389,6 @@ public class Board extends Application {
 
     class DraggableTile extends GTile {
         private double mouseX, mouseY;
-        int direction = 0; //where 0=North..3= West
         long lastRotationTime = System.currentTimeMillis();
 
 
@@ -410,8 +419,7 @@ public class Board extends Application {
             this.setOnMouseEntered(event -> {
                 setOnKeyPressed(e -> {
                     if (e.getCode() == KeyCode.R) {
-                        direction = (direction + 1) % 4;
-                        rotate();
+                        rotate(90);
                     }
                 });
             });
@@ -432,24 +440,7 @@ public class Board extends Application {
 
         }
 
-        /**
-         * Rotate the tile by 90 degrees and update any necessary coordinates
-         */
-        private void rotate() {
-            if (direction == 1) {
-                setRotate(90);
-            } else if (direction == 2) {
-                setRotate(180);
-            } else if (direction == 3) {
-                setRotate(270);
-            }
-            System.out.println("The tile " + this + " is rotated " + direction*90 + " degrees");
-        }
-
         //N.B. maybe use a key 'r' and every time that is pressed, the tile is rotated 90 degrees clockwise
-
-
-
     }
 
     /**
@@ -633,6 +624,8 @@ public class Board extends Application {
     }
 
     private void removeTile(Tile t) { // this does not work, as it is attempting to remove a Tile, not GTile - Tim
+
+
         gTiles.getChildren().remove(t);
     }
 
@@ -641,7 +634,7 @@ public class Board extends Application {
      * Reset board to the beginning state
      */
     private void resetGTiles() {
-        gTiles.getChildren().removeAll(gTiles);     //lol mate this removes all the tiles
+        gTiles.getChildren().removeAll(gTiles);
 
     }
 
