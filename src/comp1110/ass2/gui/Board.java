@@ -112,9 +112,14 @@ public class Board extends Application {
     private final static RadioButton b4 = new RadioButton("Master");
     private final static RadioButton b5 = new RadioButton("Wizard");
 
+    private static final long ROTATION_THRESHOLD = 100;
+
     class GTile extends ImageView {
         private Tile t;
         boolean inGame = false;
+
+
+        //What's the difference between this GTile and the next?? Which one are we actually using?
 
         /**
          * Constructor for gTile with inGame value
@@ -124,7 +129,6 @@ public class Board extends Application {
         GTile(Tile t, boolean inGame) {
             this(t);
             this.inGame = inGame;
-
             if (! inGame) {
                 sendToDefaultPlacement();
             }
@@ -145,7 +149,7 @@ public class Board extends Application {
         GTile(Tile t) {
             this.t = t;
 
-            setImage(new Image((URI_BASE + t.getShape().toString().toLowerCase() + ".png")));
+            setImage(new Image(URI_BASE + t.getShape().toString().toLowerCase() + ".png"));
 
             // Sets the height and width of the tiles
             if (t.getDirection() == Direction.NORTH || t.getDirection() == Direction.SOUTH) {
@@ -240,12 +244,7 @@ public class Board extends Application {
         }
 
 
-        /**
-         * Rotate the tile and update any necessary coordinates
-         */
-        private void rotate() {
 
-        }
 
         /**
          * Sends the tile to its starting position
@@ -330,8 +329,10 @@ public class Board extends Application {
     }
 
     class DraggableTile extends GTile {
-        private double mouseX;
-        private double mouseY;
+        private double mouseX, mouseY;
+        int direction = 0; //where 0=North..3= West
+        long lastRotationTime = System.currentTimeMillis();
+
 
         DraggableTile(Tile t, boolean inGame) {
             super(t,inGame);
@@ -350,14 +351,55 @@ public class Board extends Application {
 
             this.setOnMouseReleased(event -> {
                 // If out of GameGrid send to default placement, otherwise snap
-                if (getLayoutX() > BOARD_WIDTH || getLayoutY() > BOARD_HEIGHT) {
+                if (getLayoutX() > GAME_GRID_WIDTH || getLayoutY() > BOARD_HEIGHT) {
                     setInGame(false);
                     sendToDefaultPlacement();
+                }
+            });
+            //doesn't work because it can't tell if you're referring to 'this' tile when you press R
+            //Can anyone figure this out??
+            this.setOnMouseEntered(event -> {
+                setOnKeyPressed(e -> {
+                    if (e.getCode() == KeyCode.R) {
+                        direction = (direction + 1) % 4;
+                        rotate();
+                    }
+                });
+            });
+
+            //Scroll to Rotate
+            /*
+            N.B. the first two lines (and their respective variables)
+            were taken from Dinosaurs assignment. Do we need to state that in SoO???
+             */
+            this.setOnScroll(event -> {
+                if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD){
+                    lastRotationTime = System.currentTimeMillis();
+                    direction = (direction + 1) % 4;
+                    rotate();
+                    event.consume();
                 }
             });
 
 
         }
+
+        /**
+         * Rotate the tile by 90 degrees and update any necessary coordinates
+         */
+        private void rotate() {
+            if (direction == 1) {
+                setRotate(90);
+            } else if (direction == 2) {
+                setRotate(180);
+            } else if (direction == 3) {
+                setRotate(270);
+            }
+            System.out.println("The tile " + this + " is rotated " + direction*90 + " degrees");
+        }
+
+        //N.B. maybe use a key 'r' and every time that is pressed, the tile is rotated 90 degrees clockwise
+
 
 
     }
@@ -734,5 +776,7 @@ public class Board extends Application {
                 isSLASHDown = false;
             }
         });
+
+
     }
 }
