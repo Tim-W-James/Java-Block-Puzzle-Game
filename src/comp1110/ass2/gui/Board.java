@@ -27,16 +27,18 @@ import static comp1110.ass2.Shape.*;
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
 // TODO Position Tiles on the side of screen in a clear, clean way (make sure they are not touching each other)
+// TODO Drag and drop
 // TODO Drag and drop snap
 // TODO Rotation
 // TODO Drag and drop check valid
 // TODO Drag and drop highlight
 // TODO Generate challenge
 // TODO Display challenge
+// TODO Reset button
 // TODO Check if the user has found a solution
 // TODO Generating a new challenge should reset the board
 // TODO Remove text box for letting the user enter placement strings (drag and drop only)
-// TODO Make challenge not change on reset
+// TODO instructions???
 
 /*
 Authorship: Nicholas Dale
@@ -47,7 +49,7 @@ public class Board extends Application {
     /**
      * The GameBoardArray contains most of the logic behind the game
      */
-//    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
+   // private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
     private GameBoardArray game = new GameBoardArray();
 
     private GTile hint;
@@ -73,7 +75,7 @@ public class Board extends Application {
     private static final double OFFBOARD_SQUARE_SIZE = 0.5 * SQUARE_SIZE;
 
     // Area where the tiles are placed at the start of a game
-    private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 100;
+    private static final int TILE_AREA_STARTING_X = BOARD_WIDTH + 70;
     private static final int TILE_AREA_STARTING_Y = 5;  //I don't think this value actually does anything tbh
 
     private static final int TILE_AREA_FINISH_X = WINDOW_WIDTH;
@@ -110,9 +112,14 @@ public class Board extends Application {
     private final static RadioButton b4 = new RadioButton("Master");
     private final static RadioButton b5 = new RadioButton("Wizard");
 
+    private static final long ROTATION_THRESHOLD = 100;
+
     class GTile extends ImageView {
         private Tile t;
         boolean inGame = false;
+
+
+        //What's the difference between this GTile and the next?? Which one are we actually using?
 
         /**
          * Constructor for gTile with inGame value
@@ -122,7 +129,6 @@ public class Board extends Application {
         GTile(Tile t, boolean inGame) {
             this(t);
             this.inGame = inGame;
-
             if (! inGame) {
                 sendToDefaultPlacement();
             }
@@ -143,7 +149,7 @@ public class Board extends Application {
         GTile(Tile t) {
             this.t = t;
 
-            setImage(new Image((URI_BASE + t.getShape().toString().toLowerCase() + ".png")));
+            setImage(new Image(URI_BASE + t.getShape().toString().toLowerCase() + ".png"));
 
             // Sets the height and width of the tiles
             if (t.getDirection() == Direction.NORTH || t.getDirection() == Direction.SOUTH) {
@@ -287,69 +293,61 @@ public class Board extends Application {
              return getGameGridSquare(getLayoutX(),getLayoutY());
         }
 
-        /**
-         * Rotate the tile and update any necessary coordinates
-         */
-        private void rotate() {
 
-        }
 
         /**
          * Sends the tile to its starting position
          */
         void sendToDefaultPlacement() {
-            double offset;
-            int previousTileHeight;
             double homeX;
             double homeY;
 
             switch (t.getShape()) {
                 case A:
-                    offset = 0;
-                    previousTileHeight = 0;
+                    homeY = 0;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
                 case B:
-                    offset = 1;
-                    previousTileHeight = A.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 3 - 15;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
                 case C:
-                    offset = 2;
-                    previousTileHeight = B.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 6 - 35;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
                 case D:
-                    offset = 3;
-                    previousTileHeight = C.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 9 - 55;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
                 case E:
-                    offset = 4;
-                    previousTileHeight = D.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 12 - 70;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
                 case F:
-                    offset = 5.5; //should be 5 but it gets overlapped for some reason
-                    previousTileHeight = E.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 15 - 75;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
+                //F is derpy for some reason
+                //Scratch that: they're all derpy
                 case G:
-                    offset = 12; //should be 6 but it gets overlapped because the maxReach for F is 1 so it goes all weird
-                    previousTileHeight = F.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 17 - 100;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
                 case H:
-                    offset = 7;
-                    previousTileHeight = G.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 20 - 125;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
                 case I:
-                    offset = 6.7; //should be 8
-                    previousTileHeight = H.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 23 - 150;
+                    homeX = TILE_AREA_STARTING_X + OFFBOARD_SQUARE_SIZE * 2;
                     break;
                 default:
-                    offset = 9;
-                    previousTileHeight = I.getMaxReach(Direction.NORTH, true);
+                    homeY = OFFBOARD_SQUARE_SIZE * 26 - 175;
+                    homeX = TILE_AREA_STARTING_X;
                     break;
             }
-
-            homeX = TILE_AREA_STARTING_X;
-            homeY = TILE_AREA_STARTING_Y + (offset * (previousTileHeight + 0.05) * OFFBOARD_SQUARE_SIZE);
             setLayoutX(homeX);
-            setLayoutY(homeY);
+            setLayoutY(homeY-25);
         }
 
         /**
@@ -380,8 +378,10 @@ public class Board extends Application {
     }
 
     class DraggableTile extends GTile {
-        private double mouseX;
-        private double mouseY;
+        private double mouseX, mouseY;
+        int direction = 0; //where 0=North..3= West
+        long lastRotationTime = System.currentTimeMillis();
+
 
         DraggableTile(Tile t, boolean inGame) {
             super(t,inGame);
@@ -390,40 +390,62 @@ public class Board extends Application {
                 mouseX = event.getX(); //gets X coordinates
                 mouseY = event.getY(); //gets Y coordinates
                 this.toFront();
-
-
-//                if (mouseX >= 0) //if mouse X and mouse Y falls within dimensions of off game board tile, switch to true
-//                    this.inGame = true;
-//
             });
 
             this.setOnMouseDragged(event -> {
                 setLayoutX(event.getSceneX() - mouseX);
                 setLayoutY(event.getSceneY() - mouseY);
+                setInGame(true);    //resizes when dragged for easier placement
             });
 
             this.setOnMouseReleased(event -> {
-
                 // If out of GameGrid send to default placement, otherwise snap
-                if (getLayoutX() > BOARD_WIDTH || getLayoutY() > BOARD_HEIGHT) {
+                if (getLayoutX() > GAME_GRID_WIDTH || getLayoutY() > BOARD_HEIGHT) {
                     setInGame(false);
                     sendToDefaultPlacement();
-                } else {
-//                    setLayoutX(findNearestTile(getLayoutX(),getLayoutY()).getLayoutX());
-//                    setLayoutY(findNearestTile(getLayoutX(),getLayoutY()).getLayoutY());
-
-                    snapToGameGrid();
-                    setInGame(true);
-                    renderGameBoard(game);
-
-
-
                 }
-
+            });
+            //doesn't work because it can't tell if you're referring to 'this' tile when you press R
+            //Can anyone figure this out??
+            this.setOnMouseEntered(event -> {
+                setOnKeyPressed(e -> {
+                    if (e.getCode() == KeyCode.R) {
+                        direction = (direction + 1) % 4;
+                        rotate();
+                    }
+                });
             });
 
+            //Scroll to Rotate
+            /*
+            N.B. the first two lines (and their respective variables)
+            were taken from Dinosaurs assignment. Do we need to state that in SoO???
+             */
+            this.setOnScroll(event -> {
+                if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD){
+                    lastRotationTime = System.currentTimeMillis();
+                    direction = (direction + 1) % 4;
+                    rotate();
+                    event.consume();
+                }
+            });
 
+        /**
+         * Rotate the tile by 90 degrees and update any necessary coordinates
+         */
+        private void rotate() {
+            if (direction == 1) {
+                setRotate(90);
+            } else if (direction == 2) {
+                setRotate(180);
+            } else if (direction == 3) {
+                setRotate(270);
+            }
+            System.out.println("The tile " + this + " is rotated " + direction*90 + " degrees");
         }
+
+        //N.B. maybe use a key 'r' and every time that is pressed, the tile is rotated 90 degrees clockwise
+
 
 
     }
@@ -471,21 +493,30 @@ public class Board extends Application {
 
     private void setupBackground() {
         background.getChildren().clear();
-
+        //Board background
         ImageView board = new ImageView();
         board.setImage(new Image(URI_BASE + "board" + ".png"));
         board.setFitWidth(BOARD_WIDTH);
         board.setFitHeight(BOARD_HEIGHT);
-
-        background.getChildren().add(board);
         board.toBack();
 
+        //Challenge area on board
+        Rectangle challengeArea = new Rectangle(OFFSET_X+SQUARE_SIZE*3,OFFSET_Y+SQUARE_SIZE+3,SQUARE_SIZE*3,SQUARE_SIZE*3);
+        challengeArea.setOpacity(0.5);
+        challengeArea.setFill(Color.BLACK);
+
+        //Tiles background
+        Rectangle tileBg = new Rectangle(BOARD_WIDTH,0,WINDOW_WIDTH-BOARD_WIDTH,WINDOW_HEIGHT);
+        tileBg.setFill(Color.AQUAMARINE);
+        tileBg.toBack();
+
+        background.getChildren().addAll(board,tileBg,challengeArea);
 
     }
 
     /* Create controls for testing */
     private void setupTestControls() {
-        Label label1 = new Label("Placement:");
+        /*Label label1 = new Label("Placement:");
         textField = new TextField();
         textField.setPrefWidth(300);
         Button button = new Button("Refresh");
@@ -495,7 +526,7 @@ public class Board extends Application {
                 makePlacementFromString(textField.getText());
                 textField.clear();
             }
-        });
+        });*/
 
         Button reset = new Button("Reset");
         reset.setOnAction(new EventHandler<ActionEvent>() {
@@ -507,7 +538,8 @@ public class Board extends Application {
 
                 renderGameBoard(game);
                 setupInitialTileArea();
-                setupChallengeArea();
+                //setupChallengeArea();
+                //don't include because it'll reset the challenge
                 System.out.println("GameBoard has been reset");
             }
         });
@@ -517,10 +549,13 @@ public class Board extends Application {
 
 
         HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField, button,reset);
+        //Could possibly get rid of this now that we don't need textfield stuff
+
+        //hb.getChildren().addAll(label1, textField, button,reset);
+        hb.getChildren().add(reset);
         hb.setSpacing(10);
-        hb.setLayoutX(130);
-        hb.setLayoutY(BOARD_HEIGHT + 10);
+        hb.setLayoutX(GAME_GRID_WIDTH/2);
+        hb.setLayoutY(15);
 
         controls.getChildren().add(hb);
         controls.toFront();
@@ -548,13 +583,8 @@ public class Board extends Application {
         DraggableTile J = new DraggableTile(new Tile("j000"), false);
 
         gTiles.getChildren().addAll(A,B,C,D,E,F,G,H,I,J);
-
-
-        //the point is to use the method makeTiles so you don't have to do this tediousness?!!
-        //makeTiles(allTiles);
-
-
     }
+
 
     void renderGameBoard(GameBoardArray g) {
         State[][] ToDraw = g.getBoardState();
@@ -620,6 +650,23 @@ public class Board extends Application {
     }
 
 
+    private void setupInstructions() {
+        Button button = new Button("How to Play");
+        button.setLayoutX(15);
+        button.setLayoutY(BOARD_HEIGHT + 5);
+
+        Stage popup = new Stage();
+
+        popup.setTitle("How to Play");
+        button.setOnAction(event -> popup.show());
+
+
+        root.getChildren().addAll(button);
+
+    }
+
+
+
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
@@ -669,7 +716,7 @@ public class Board extends Application {
         /*
         N.B. need to decrement by one since you will be indexing from array
          */
-        //double check calculations
+
         if (group.getSelectedToggle() == b1) {
             random = r.nextInt (23);
         } else if (group.getSelectedToggle() == b2) {
@@ -683,9 +730,7 @@ public class Board extends Application {
             random = 95+(int)(Math.random()*(119-95+1));
         }
 
-
-        //CHECK: I'm doing recursion properly here right??
-        //if the current challenge is the same as the newly generated one, generate a new challenge again
+        //if current challenge is the same as the newly generated one, generate a new challenge again
         if (challengeString == Solution.SOLUTIONS[random].objective)
             return generateChallenge();
         else
@@ -701,7 +746,7 @@ public class Board extends Application {
                 challengeString = generateChallenge();
                 setupChallengeArea();
                 System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
-                //TODO add toString() for the ToggleGroup
+                //TODO add toString() for the ToggleGroup??
 
 
             }
@@ -771,10 +816,15 @@ public class Board extends Application {
         setupInitialTileArea();
         setupChallengeArea();
         makeChallengeControls();
+        setupInstructions();
 
         primaryStage.setScene(scene);
         primaryStage.show();
 
+
+
+
+        //Is it possible to put all this in another function just for a cleaner look in the main method?
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.SLASH && !isSLASHDown) { // update hints while "/" is pressed
                 String h = new Challenge(challengeString).generateHint(game.getPlacementString());
@@ -792,5 +842,7 @@ public class Board extends Application {
                 isSLASHDown = false;
             }
         });
+
+
     }
 }
