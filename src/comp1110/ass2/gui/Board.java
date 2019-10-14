@@ -384,7 +384,7 @@ public class Board extends Application {
 
 
         DraggableTile(Tile t, boolean inGame) {
-            super(t,inGame);
+            super(t, inGame);
 
             this.setOnMousePressed(event -> {
                 mouseX = event.getX(); //gets X coordinates
@@ -422,13 +422,15 @@ public class Board extends Application {
             were taken from Dinosaurs assignment. Do we need to state that in SoO???
              */
             this.setOnScroll(event -> {
-                if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD){
+                if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD) {
                     lastRotationTime = System.currentTimeMillis();
                     direction = (direction + 1) % 4;
                     rotate();
                     event.consume();
                 }
             });
+
+        }
 
         /**
          * Rotate the tile by 90 degrees and update any necessary coordinates
