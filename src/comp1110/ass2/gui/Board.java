@@ -232,7 +232,31 @@ public class Board extends Application {
          */
         void rotate(int rotation) {
             setRotate((getRotate() + rotation) % 360);
-            System.out.println("The tile " + this + " is rotated " + rotation + " degrees");
+            Direction d = t.getDirection();
+            Direction newDirection;
+            switch (d) {
+                case NORTH:
+                    newDirection = Direction.EAST;
+                    break;
+                case EAST:
+                    newDirection = Direction.SOUTH;
+                    break;
+                case SOUTH:
+                    newDirection = Direction.WEST;
+                     break;
+                case WEST:
+                    newDirection = Direction.NORTH;
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected direction value: " + d);
+            }
+
+            this.t = new Tile(t.getShape(),t.getPosition(),newDirection);
+            System.out.println("The tile " + this.t + " is rotated " + rotation + " degrees");
+        }
+
+        void rotate() {
+            rotate(90);
         }
 
         /**
@@ -419,7 +443,7 @@ public class Board extends Application {
             this.setOnMouseEntered(event -> {
                 setOnKeyPressed(e -> {
                     if (e.getCode() == KeyCode.R) {
-                        rotate(90);
+                        rotate();
                     }
                 });
             });
@@ -432,7 +456,7 @@ public class Board extends Application {
             this.setOnScroll(event -> {
                 if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD) {
                     lastRotationTime = System.currentTimeMillis();
-                    rotate(90);
+                    rotate();
                     event.consume();
                 }
             });
