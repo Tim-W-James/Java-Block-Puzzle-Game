@@ -27,17 +27,16 @@ import static comp1110.ass2.Shape.*;
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
 // TODO Position Tiles on the side of screen in a clear, clean way (make sure they are not touching each other)
-// TODO Drag and drop
 // TODO Drag and drop snap
 // TODO Rotation
 // TODO Drag and drop check valid
 // TODO Drag and drop highlight
 // TODO Generate challenge
 // TODO Display challenge
-// TODO Reset button
 // TODO Check if the user has found a solution
 // TODO Generating a new challenge should reset the board
 // TODO Remove text box for letting the user enter placement strings (drag and drop only)
+// TODO Make challenge not change on reset
 
 /*
 Authorship: Nicholas Dale
@@ -48,8 +47,8 @@ public class Board extends Application {
     /**
      * The GameBoardArray contains most of the logic behind the game
      */
-    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
-//    private GameBoardArray game = new GameBoardArray();
+//    private GameBoardArray game = new GameBoardArray("a701b400c410d303e111f330g030h000i733j332");
+    private GameBoardArray game = new GameBoardArray();
 
     private GTile hint;
     private boolean isSLASHDown = false;
@@ -224,8 +223,40 @@ public class Board extends Application {
 
         /**
          * Snaps tile to game grid
+         * This method updates GameBoardArray
          */
-        private void snapToGameGrid() {
+        void snapToGameGrid() {
+            double x = getLayoutX();
+            double y = getLayoutY();
+            Position pos = null;
+
+            if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
+                double ajX = x - OFFSET_X + 10;
+                double ajY = y - OFFSET_Y + 10;
+
+                int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
+                int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
+
+//                System.out.println("Guessing tile is at: " + tileX + "," + tileY);
+//                System.out.println("Based on input coords: " + x + "," + y);
+//                System.out.println("And adjusted coords: " + ajX + "," + ajY);
+                pos = new Position(tileX,tileY);
+            }
+
+            if (pos != null) {
+                Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
+                if (inGame) {
+                    game.removeFromBoard(t);
+
+                    if (game.checkValidPosition(newTile)) {
+                        game.updateBoardPosition(newTile);
+                    } else {
+                        sendToDefaultPlacement();
+                    }
+                }
+            } else {
+                sendToDefaultPlacement();
+            }
 
         }
 
@@ -234,10 +265,27 @@ public class Board extends Application {
          * @param x
          * @param y
          */
-        private void getGameGridSquare(double x, double y){
+         Position getGameGridSquare(double x, double y){
+            if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
+                double ajX = x - OFFSET_X + 10;
+                double ajY = y - OFFSET_Y + 10;
 
+                int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
+                int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
+
+//                System.out.println("Guessing tile is at: " + tileX + "," + tileY);
+//                System.out.println("Based on input coords: " + x + "," + y);
+//                System.out.println("And adjusted coords: " + ajX + "," + ajY);
+
+                return (new Position(tileX, tileY));
+            }
+            else
+                return (new Position(0,0));
         }
 
+        Position getGameGridSquare() {
+             return getGameGridSquare(getLayoutX(),getLayoutY());
+        }
 
         /**
          * Rotate the tile and update any necessary coordinates
@@ -364,7 +412,12 @@ public class Board extends Application {
 //                    setLayoutX(findNearestTile(getLayoutX(),getLayoutY()).getLayoutX());
 //                    setLayoutY(findNearestTile(getLayoutX(),getLayoutY()).getLayoutY());
 
+                    snapToGameGrid();
                     setInGame(true);
+                    renderGameBoard(game);
+
+
+
                 }
 
             });
