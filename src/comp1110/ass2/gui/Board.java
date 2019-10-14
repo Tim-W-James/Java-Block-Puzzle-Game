@@ -12,9 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -603,6 +606,23 @@ public class Board extends Application {
     }
 
 
+    private void setupInstructions() {
+        Button button = new Button("How to Play");
+        button.setLayoutX(15);
+        button.setLayoutY(BOARD_HEIGHT + 5);
+
+        Stage popup = new Stage();
+
+        popup.setTitle("How to Play");
+        button.setOnAction(event -> popup.show());
+
+
+        root.getChildren().addAll(button);
+
+    }
+
+
+
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
@@ -751,6 +771,7 @@ public class Board extends Application {
         setupInitialTileArea();
         setupChallengeArea();
         makeChallengeControls();
+        setupInstructions();
 
         primaryStage.setScene(scene);
         primaryStage.show();
