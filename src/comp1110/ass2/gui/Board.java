@@ -15,8 +15,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+import javafx.scene.effect.DropShadow;
 
 import java.util.*;
 
@@ -88,7 +93,18 @@ public class Board extends Application {
     private static final int CHALLENGE_AREA_X = OFFSET_X + SQUARE_SIZE * 3; //Maybe make a universal margin constant
     private static final int CHALLENGE_AREA_Y = BOARD_HEIGHT + 60; //Maybe make a universal margin constant
 
+    //Challenge controls
+    private final static ToggleGroup group = new ToggleGroup();
+    private final static RadioButton b1 = new RadioButton("Starter");
+    private final static RadioButton b2 = new RadioButton("Junior");
+    private final static RadioButton b3 = new RadioButton("Expert");
+    private final static RadioButton b4 = new RadioButton("Master");
+    private final static RadioButton b5 = new RadioButton("Wizard");
+
+    //The challenge string
     private static String challengeString;
+    //The respective solution
+    private static String solutionString;
 
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
@@ -101,17 +117,14 @@ public class Board extends Application {
 
     private TextField textField;
 
+    private final Text completionText = new Text("Challenge completed!");
+
     private HashSet<DraggableTile> allTiles = new HashSet<>();
 
-    //Challenge controls
-    private final static ToggleGroup group = new ToggleGroup();
-    private final static RadioButton b1 = new RadioButton("Starter");
-    private final static RadioButton b2 = new RadioButton("Junior");
-    private final static RadioButton b3 = new RadioButton("Expert");
-    private final static RadioButton b4 = new RadioButton("Master");
-    private final static RadioButton b5 = new RadioButton("Wizard");
-
+    //Rotation
     private static final long ROTATION_THRESHOLD = 100;
+
+
 
     class GTile extends ImageView {
         private Tile t;
@@ -272,7 +285,7 @@ public class Board extends Application {
             } else {
                 sendToDefaultPlacement();
             }
-
+            checkCompletion();
         }
 
         /**
@@ -514,6 +527,7 @@ public class Board extends Application {
                 game.resetGameBoardArray();
                 allTiles.clear();
                 resetGTiles();
+                hideCompletion();
 
                 renderGameBoard(game);
                 setupInitialTileArea();
@@ -647,7 +661,7 @@ public class Board extends Application {
 
 
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
-
+@SuppressWarnings("Duplicates")
     private void setupChallengeArea() {
 
         Rectangle border = new Rectangle(CHALLENGE_AREA_X-5, CHALLENGE_AREA_Y-5, CHALLENGE_AREA_WIDTH+10, CHALLENGE_AREA_HEIGHT+10);
@@ -702,11 +716,6 @@ public class Board extends Application {
         Random r = new Random();
         int random;
 
-
-        /*
-        N.B. need to decrement by one since you will be indexing from array
-         */
-
         if (group.getSelectedToggle() == b1) {
             random = r.nextInt (23);
         } else if (group.getSelectedToggle() == b2) {
@@ -719,13 +728,14 @@ public class Board extends Application {
         } else {
             random = 95+(int)(Math.random()*(119-95+1));
         }
+        //get respective solution
+        solutionString = FocusGame.getSolution(Solution.SOLUTIONS[random].objective);
 
         //if current challenge is the same as the newly generated one, generate a new challenge again
         if (challengeString == Solution.SOLUTIONS[random].objective)
             return generateChallenge();
         else
             return Solution.SOLUTIONS[random].objective;
-
     }
 
     private void makeChallengeControls() {
@@ -737,6 +747,7 @@ public class Board extends Application {
                 challengeString = generateChallenge();
                 setupChallengeArea();
                 defaultChallenge.toBack();
+                hideCompletion();
 
                 //Resets game board
                 game.resetGameBoardArray();
@@ -750,10 +761,8 @@ public class Board extends Application {
                 and my laptop can't handle all that very well lol
                  */
 
-
-
                 System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
-
+                //System.out.println("The corresponding solution is " + solutionString);
             }
         });
         button.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
@@ -797,10 +806,38 @@ public class Board extends Application {
 
         controls.getChildren().add(button);
         controls.getChildren().addAll(difficulties);
-
-
-
     }
+
+    /**
+     * Completion message
+     */
+    //Creating completion message
+    private void setupCompletion() {
+        completionText.setFont(Font.font("Comic Sans", FontWeight.EXTRA_BOLD, 30));
+        completionText.setLayoutX(BOARD_WIDTH/2-140);
+        completionText.setLayoutY(BOARD_HEIGHT+30);
+        completionText.setTextAlignment(TextAlignment.CENTER);
+        root.getChildren().add(completionText);
+    }
+    //Hiding completion message
+    private void hideCompletion() {
+        completionText.setOpacity(0);
+    }
+    //Showing completion message
+    private void showCompletion() {
+        completionText.setOpacity(1);
+        completionText.toFront();
+    }
+    //Checking if game is completed
+    private void checkCompletion() {
+        if (game.getPlacementString() == solutionString) {
+            showCompletion();
+            System.out.println("Game is completed");
+            System.out.println(game.getPlacementString() + " matches " + solutionString);
+        }
+    }
+
+
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
@@ -819,14 +856,17 @@ public class Board extends Application {
         setupBackground();
         setupTestControls();
         renderGameBoard(game);
+
         setupInitialTileArea();
+
         setupChallengeArea();
         makeChallengeControls();
         showDefaultChallenge();
-
+        hideCompletion();
 
         setupInstructions();
 
+        setupCompletion();
 
         primaryStage.setScene(scene);
         primaryStage.show();

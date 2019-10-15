@@ -27,6 +27,16 @@ declaration: >-
 #
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
+url: Dinosaurs Assignment 1
+  licence: Fair use?
+  comment: Used the following code as a template for how to structure
+  the rotation code for our game.
+  code: setOnScroll(event -> {
+    if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD) {
+    lastRotationTime = System.currentTimeMillis();
+    rotate();
+    event.consume();
+    }
 
 # Use this to list any assets (artwork, sound, etc) that you used.
 # Provide a comment explaining your use of that asset and the URL

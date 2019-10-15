@@ -50,6 +50,10 @@ method:
   - Tile.returnUnusedTileShapes
   - Tile.getShapeArrangement
   - Shape.charToShape
+  - Board.setupCompletion
+  - Board.hideCompletion
+  - Board.showCompletion
+  - Board.checkCompletion
 
 # sign *your* name and uid here
 name: Rebecca Gibson
