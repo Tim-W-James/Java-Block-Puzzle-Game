@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -96,13 +97,11 @@ public class Board extends Application {
     private final Group controls = new Group();
     private final Group gTiles = new Group();
     private final Group challenge = new Group();
+    private final Group defaultChallenge = new Group();
 
     private TextField textField;
 
     private HashSet<DraggableTile> allTiles = new HashSet<>();
-
-    //Difficulty slider
-    //private final Slider difficulty = new Slider();
 
     //Challenge controls
     private final static ToggleGroup group = new ToggleGroup();
@@ -508,18 +507,6 @@ public class Board extends Application {
 
     /* Create controls for testing */
     private void setupTestControls() {
-        /*Label label1 = new Label("Placement:");
-        textField = new TextField();
-        textField.setPrefWidth(300);
-        Button button = new Button("Refresh");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                makePlacementFromString(textField.getText());
-                textField.clear();
-            }
-        });*/
-
         Button reset = new Button("Reset");
         reset.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -530,8 +517,6 @@ public class Board extends Application {
 
                 renderGameBoard(game);
                 setupInitialTileArea();
-                //setupChallengeArea();
-                //don't include because it'll reset the challenge
                 System.out.println("GameBoard has been reset");
             }
         });
@@ -546,7 +531,7 @@ public class Board extends Application {
         //hb.getChildren().addAll(label1, textField, button,reset);
         hb.getChildren().add(reset);
         hb.setSpacing(10);
-        hb.setLayoutX(GAME_GRID_WIDTH/2);
+        hb.setLayoutX(GAME_GRID_WIDTH/2+10);
         hb.setLayoutY(15);
 
         controls.getChildren().add(hb);
@@ -663,8 +648,6 @@ public class Board extends Application {
 
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
 
-    // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
-
     private void setupChallengeArea() {
 
         Rectangle border = new Rectangle(CHALLENGE_AREA_X-5, CHALLENGE_AREA_Y-5, CHALLENGE_AREA_WIDTH+10, CHALLENGE_AREA_HEIGHT+10);
@@ -680,10 +663,6 @@ public class Board extends Application {
 
         //randomly generate challenge when 'new challenge' button is hit
         challengeString = generateChallenge();
-        //TODO there's a bug where the default challenge that is shown does not comply to the following rules
-        //i.e. default selected Button is Starter, but it can generate other difficulty challenges instead (upon setup)
-        //Possible solution: just set a particular string as the default (but that overrides it)
-
 
         for (int i = 0; i < challengeString.length(); i++) {
             if (i >= 0 && i <= 2) {
@@ -697,13 +676,30 @@ public class Board extends Application {
                 challenge.getChildren().add(challengeSquare);
             }
         }
+    }
 
+    //Really awful way of going about this bug but oh well
 
+    //Ensures that default challenge shown is the first starter challenge
+    @SuppressWarnings("Duplicates")
+    private void showDefaultChallenge() {
+        String defChal = "RRRBWBBRB";
+        for (int i = 0; i < defChal.length(); i++) {
+            if (i >= 0 && i <= 2) {
+                GTile challengeSquare = new GTile(new Position(i % 3, 0, State.charToState(defChal.charAt(i))));
+                defaultChallenge.getChildren().add(challengeSquare);
+            } else if (i >= 3 && i <= 5) {
+                GTile challengeSquare = new GTile(new Position(i % 3, 1, State.charToState(defChal.charAt(i))));
+                defaultChallenge.getChildren().add(challengeSquare);
+            } else {
+                GTile challengeSquare = new GTile(new Position(i % 3, 2, State.charToState(defChal.charAt(i))));
+                defaultChallenge.getChildren().add(challengeSquare);
+            }
+        }
     }
 
     private String generateChallenge() {
         Random r = new Random();
-        //int random = r.nextInt(Solution.SOLUTIONS.length);
         int random;
 
 
@@ -737,11 +733,26 @@ public class Board extends Application {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                //Generates new challenge
                 challengeString = generateChallenge();
                 setupChallengeArea();
-                System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
-                //TODO add toString() for the ToggleGroup??
+                defaultChallenge.toBack();
 
+                //Resets game board
+                game.resetGameBoardArray();
+                allTiles.clear();
+                resetGTiles();
+                renderGameBoard(game);
+                setupInitialTileArea();
+
+                /*
+                Rip my comp, literally everytime the game's reset it's just layering images over images
+                and my laptop can't handle all that very well lol
+                 */
+
+
+
+                System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
 
             }
         });
@@ -803,6 +814,7 @@ public class Board extends Application {
         root.getChildren().add(controls);
         root.getChildren().add(gTiles);
         root.getChildren().add(challenge);
+        root.getChildren().add(defaultChallenge);
 
         setupBackground();
         setupTestControls();
@@ -810,7 +822,11 @@ public class Board extends Application {
         setupInitialTileArea();
         setupChallengeArea();
         makeChallengeControls();
+        showDefaultChallenge();
+
+
         setupInstructions();
+
 
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -837,6 +853,33 @@ public class Board extends Application {
             }
         });
 
+
+        //Ughhh still doesn't work
+        //Screw it - low priority atm.
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.R) {
+                gTiles.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {
+                        for (Node current : gTiles.getChildren()) {
+                            if (mouseEvent.getTarget() == current && current instanceof DraggableTile) {
+                                ((DraggableTile) current).rotate(90);
+                                System.out.println("Tile is rotated");
+                            } else {
+                                System.out.println("Tile " + current + " is not rotated");
+                            }
+                    }
+                }
+            });
+        }});
+
+
+        for (Node current :
+                gTiles.getChildren()) {
+            if (current instanceof DraggableTile) {
+                allTiles.add((DraggableTile) current);
+            }
+        }
 
     }
 }
