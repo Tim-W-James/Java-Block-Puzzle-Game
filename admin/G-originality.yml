@@ -28,7 +28,7 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 url: Dinosaurs Assignment 1
-  licence: Fair use?
+  licence: Provided by lecturer
   comment: Used the following code as a template for how to structure
   the rotation code for our game.
   code: setOnScroll(event -> {
