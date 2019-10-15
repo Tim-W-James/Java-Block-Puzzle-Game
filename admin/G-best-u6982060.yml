@@ -30,35 +30,26 @@ declaration: >-
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - TODO
+   - Board.GTile (Tile t)
+   - Board.GTile (Position square)
+   - GameBoardArrayTest
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-  private String generateChallenge() {
-  Random r = new Random();
-  int random;
-
-  if (group.getSelectedToggle() == b1) {
-  random = r.nextInt (23);
-  } else if (group.getSelectedToggle() == b2) {
-  random = 24+(int)(Math.random()*(47-24+1));
-  //this bit would need to be a range
-  } else if (group.getSelectedToggle() == b3) {
-  random = 48+(int)(Math.random()*(71-48+1));
-  } else if (group.getSelectedToggle() == b4) {
-  random = 72+(int)(Math.random()*(95-72+1));
-  } else {
-  random = 95+(int)(Math.random()*(119-95+1));
-  }
-
-  //if current challenge is the same as the newly generated one, generate a new challenge again
-  if (challengeString == Solution.SOLUTIONS[random].objective)
-  return generateChallenge();
-  else
-  return Solution.SOLUTIONS[random].objective;
-
-}
+  - FocusGame.isPiecePlacementWellFormed
+  - Board.sendToDefaultPlacement
+  - Board.setupInitialTileArea
+  - Board.setupInstructions
+  - Board.setupChallengeArea
+  - Board.showDefaultChallenge
+  - Board.generateChallenge
+  - Board.makeChallengeControls
+  - GameBoardArray.removeFromBoard
+  - GameBoardArray.getTileAt
+  - Tile.returnUnusedTileShapes
+  - Tile.getShapeArrangement
+  - Shape.charToShape
 
 # sign *your* name and uid here
 name: Rebecca Gibson
