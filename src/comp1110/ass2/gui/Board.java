@@ -33,22 +33,23 @@ import static comp1110.ass2.Shape.*;
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
-// TODO Position Tiles on the side of screen in a clear, clean way (make sure they are not touching each other)
-// TODO Drag and drop
-// TODO Drag and drop snap
-// TODO Rotation
-// TODO Drag and drop check valid
-// TODO Drag and drop highlight
-// TODO Generate challenge
-// TODO Display challenge
-// TODO Reset button
+// DONE Position Tiles on the side of screen in a clear, clean way (make sure they are not touching each other)
+// DONE Drag and drop
+// DONE Drag and drop snap
+// DONE Rotation on key press
+// TODO Drag off board
+// DONE Drag and drop check valid
+// TODO Drag and drop highlight/overlay
+// DONE Generate challenge
+// DONE Display challenge
+// DONE Reset button
 // TODO Check if the user has found a solution
-// TODO Generating a new challenge should reset the board
-// TODO Remove text box for letting the user enter placement strings (drag and drop only)
+// DONE Generating a new challenge should reset the board
+// DONE Remove text box for letting the user enter placement strings (drag and drop only)
 // TODO instructions???
 
 /*
-Authorship: Nicholas Dale
+Authorship: Nicholas Dale, Rebecca Gibson, Timothy James
 */
 
 public class Board extends Application {
@@ -438,6 +439,7 @@ public class Board extends Application {
     class DraggableTile extends GTile {
         private double mouseX, mouseY;
         long lastRotationTime = System.currentTimeMillis();
+        boolean isHover = false;
 
 
         DraggableTile(Tile t, boolean inGame) {
@@ -464,15 +466,26 @@ public class Board extends Application {
                     snapToGameGrid();
                 }
             });
+
+            this.setOnMouseEntered(event -> {
+                isHover = true;
+            });
+
+            this.setOnMouseExited(event -> {
+                isHover = false;
+            });
+
             //doesn't work because it can't tell if you're referring to 'this' tile when you press R
             //Can anyone figure this out??
-            this.setOnMouseEntered(event -> {
-                setOnKeyPressed(e -> {
-                    if (e.getCode() == KeyCode.R) {
-                        rotate();
-                    }
-                });
-            });
+//            this.setOnMouseEntered(event -> {
+//                System.out.println("OI");
+//                isHover = true;
+//                setOnKeyPressed(e -> {
+//                    if (e.getCode() == KeyCode.R) {
+//                        rotate();
+//                    }
+//                });
+//            });
 
             //Scroll to Rotate
             /*
@@ -695,7 +708,6 @@ public class Board extends Application {
 
 
 
-    // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
 @SuppressWarnings("Duplicates")
     private void setupChallengeArea() {
 
@@ -865,16 +877,12 @@ public class Board extends Application {
     }
     //Checking if game is completed
     private void checkCompletion() {
-        if (game.getPlacementString() == solutionString) {
+        if (game.getPlacementString().equals(solutionString)) {
             showCompletion();
             System.out.println("Game is completed");
             System.out.println(game.getPlacementString() + " matches " + solutionString);
         }
     }
-
-
-
-    // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
     @Override
     public void start(Stage primaryStage) {
@@ -920,6 +928,19 @@ public class Board extends Application {
                 }
                 isSLASHDown = true;
             }
+            else if (e.getCode() == KeyCode.R) {
+                System.out.println("Pressed R");
+                for (Node current : gTiles.getChildren()) {
+                    if (current instanceof DraggableTile) {
+                        if (((DraggableTile) current).isHover) {
+                            ((DraggableTile) current).rotate(90);
+                            System.out.println("Tile is rotated");
+                        }
+                    } else {
+                        System.out.println("Tile " + current + " is not rotated");
+                    }
+                }
+            }
         });
         scene.setOnKeyReleased(e -> {
             if (e.getCode() == KeyCode.SLASH) { // remove hints when "/" is released
@@ -931,22 +952,22 @@ public class Board extends Application {
 
         //Ughhh still doesn't work
         //Screw it - low priority atm.
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.R) {
-                gTiles.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-                        for (Node current : gTiles.getChildren()) {
-                            if (mouseEvent.getTarget() == current && current instanceof DraggableTile) {
-                                ((DraggableTile) current).rotate(90);
-                                System.out.println("Tile is rotated");
-                            } else {
-                                System.out.println("Tile " + current + " is not rotated");
-                            }
-                    }
-                }
-            });
-        }});
+//        scene.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.R) {
+//                gTiles.setOnMouseEntered(new EventHandler<MouseEvent>() {
+//                    @Override
+//                    public void handle(MouseEvent mouseEvent) {
+//                        for (Node current : gTiles.getChildren()) {
+//                            if (mouseEvent.getTarget() == current && current instanceof DraggableTile) {
+//                                ((DraggableTile) current).rotate(90);
+//                                System.out.println("Tile is rotated");
+//                            } else {
+//                                System.out.println("Tile " + current + " is not rotated");
+//                            }
+//                    }
+//                }
+//            });
+//        }});
 
 
         for (Node current :
