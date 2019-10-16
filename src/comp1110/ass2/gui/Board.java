@@ -34,22 +34,6 @@ import static comp1110.ass2.Shape.*;
 // and add: --module-path ${PATH_TO_FX} --add-modules=javafx.controls,javafx.fxml,javafx.media
 // Note: for changes to be reflected, use Build -> Build Artifacts -> Build
 
-// DONE Position Tiles on the side of screen in a clear, clean way (make sure they are not touching each other)
-// DONE Drag and drop
-// DONE Drag and drop snap
-// DONE Rotation on key press
-// TODO Drag off board
-// DONE Drag and drop check valid
-// DONE Drag and drop highlight/overlay
-// DONE Generate challenge
-// DONE Display challenge
-// DONE Reset button
-// TODO Check if the user has found a solution
-// DONE Generating a new challenge should reset the board
-// DONE Remove text box for letting the user enter placement strings (drag and drop only)
-// DONE instructions???
-// TODO task11
-
 /*
 Authorship: Nicholas Dale, Rebecca Gibson, Timothy James
 */
@@ -177,8 +161,8 @@ public class Board extends Application {
                 setFitHeight(t.getWidth() * SQUARE_SIZE);
             }
 
-            System.out.println(t.getHeight() + ", " + t.getWidth());
-            System.out.println(t.getShape().getMaxReach(t.getDirection(), true) + ", " + t.getShape().getMaxReach(t.getDirection(), false));
+//            System.out.println(t.getHeight() + ", " + t.getWidth());
+//            System.out.println(t.getShape().getMaxReach(t.getDirection(), true) + ", " + t.getShape().getMaxReach(t.getDirection(), false));
 
             Rotate rotation = new Rotate();
             rotation.setPivotX(0);
@@ -248,6 +232,7 @@ public class Board extends Application {
          * Rotate the tile by 90 degrees and update any necessary coordinates
          */
         void rotate(int rotation) {
+            root.getChildren().remove(preview);
             setRotate((getRotate() + rotation) % 360);
             Direction d = t.getDirection();
             Direction newDirection;
@@ -269,7 +254,7 @@ public class Board extends Application {
             }
 
             this.t = new Tile(t.getShape(),t.getPosition(),newDirection);
-            System.out.println("The tile " + this.t + " is rotated " + rotation + " degrees");
+//            System.out.println("The tile " + this.t + " is rotated " + rotation + " degrees");
         }
 
         void rotate() {
@@ -301,7 +286,7 @@ public class Board extends Application {
 */
                     pos = new Position(tileX,tileY);
                 }
-                System.out.println("Adding tile " + t + " at position " + pos);
+//                System.out.println("Adding tile " + t + " at position " + pos);
 
                 if (pos != null) {
                     Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
@@ -453,6 +438,7 @@ public class Board extends Application {
         private double mouseX, mouseY;
         long lastRotationTime = System.currentTimeMillis();
         boolean isHover = false;
+        boolean isDrag = false;
 
 
         DraggableTile(Tile t, boolean inGame) {
@@ -467,11 +453,13 @@ public class Board extends Application {
             this.setOnMouseDragged(event -> {
                 setLayoutX(event.getSceneX() - mouseX);
                 setLayoutY(event.getSceneY() - mouseY);
+                isDrag = true;
                 placementPreview();
                 setInGame(true);    //resizes when dragged for easier placement
             });
 
             this.setOnMouseReleased(event -> {
+                isDrag = false;
                 // If out of GameGrid send to default placement, otherwise snap
                 if (getLayoutX() > GAME_GRID_WIDTH || getLayoutY() > BOARD_HEIGHT) {
                     setInGame(false);
@@ -588,7 +576,7 @@ public class Board extends Application {
             if (candidate == null) {
                 candidate = t;
             } else {
-                System.out.println("Changing shortest distance of " + shortestDistance + " To distance of " + distance);
+//                System.out.println("Changing shortest distance of " + shortestDistance + " To distance of " + distance);
                 if (distance < shortestDistance && distance != 0) {
                     candidate = t;
                     shortestDistance = distance;
@@ -597,8 +585,8 @@ public class Board extends Application {
         }
 
         if (candidate != null) {
-            System.out.println(shortestDistance);
-            System.out.println(candidate);
+//            System.out.println(shortestDistance);
+//            System.out.println(candidate);
             return candidate;
         } else {
             throw new NoSuchElementException("No tiles exist in gTiles");
@@ -641,7 +629,7 @@ public class Board extends Application {
 
                 renderGameBoard(game);
                 setupInitialTileArea();
-                System.out.println("GameBoard has been reset");
+//                System.out.println("GameBoard has been reset");
             }
         });
 //        reset.setLayoutX(20);
@@ -720,7 +708,7 @@ public class Board extends Application {
         }
         gTiles.toFront();
 
-        System.out.println(gTiles.getChildren());
+//        System.out.println(gTiles.getChildren());
     }
 
     // make sure these accommodate for the gameboardarray if you are using them in that manner - Tim
@@ -731,7 +719,7 @@ public class Board extends Application {
     private void removeTile(Tile t) { // this does not work, as it is attempting to remove a Tile, not GTile - Tim
 
 
-        gTiles.getChildren().remove(t);
+        gTiles.getChildren().remove(new GTile(t));
     }
 
 
@@ -740,6 +728,7 @@ public class Board extends Application {
      */
     private void resetGTiles() {
         gTiles.getChildren().removeAll(gTiles);
+        root.getChildren().remove(preview);
 
     }
 
@@ -770,7 +759,7 @@ public class Board extends Application {
         Scene helpScene = new Scene(helpBox, 300, 80);
         popup.setScene(helpScene);
 
-
+        button.toBack();
         root.getChildren().addAll(button);
 
     }
@@ -877,7 +866,7 @@ public class Board extends Application {
                 and my laptop can't handle all that very well lol
                  */
 
-                System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
+//                System.out.println("The new challenge is a " + group.getSelectedToggle() + " challenge: "+ challengeString);
                 //System.out.println("The corresponding solution is " + solutionString);
             }
         });
@@ -948,8 +937,8 @@ public class Board extends Application {
     private void checkCompletion() {
         if (game.getPlacementString().equals(solutionString)) {
             showCompletion();
-            System.out.println("Game is completed");
-            System.out.println(game.getPlacementString() + " matches " + solutionString);
+//            System.out.println("Game is completed");
+//            System.out.println(game.getPlacementString() + " matches " + solutionString);
         }
     }
 
@@ -983,10 +972,40 @@ public class Board extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+        scene.setOnMousePressed(e -> {
+            double x = e.getX();
+            double y = e.getY();
 
+            // remove a piece on click
+            if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
+                try {
+                    double ajX = x - OFFSET_X + 10;
+                    double ajY = y - OFFSET_Y + 10;
 
+                    int tileX = (int) Math.floor(ajX / SQUARE_SIZE);
+                    int tileY = (int) Math.floor(ajY / SQUARE_SIZE);
+
+                    Position p = new Position(tileX, tileY);
+                    Tile t = game.getTileAt(p);
+
+                    game.removeFromBoard(t);
+                    root.getChildren().remove(preview);
+                    renderGameBoard(game);
+                    setupInitialTileArea();
+//                    System.out.println(game.toString());
+                }
+                catch (IllegalArgumentException ex) {
+//                    System.out.println("No Tile Found");
+                }
+                catch(ArrayIndexOutOfBoundsException ex)
+                {
+//                    System.out.println("Outside Board");
+                }
+            }
+        });
 
         //Is it possible to put all this in another function just for a cleaner look in the main method?
+        // it is useful to keep general events within the main method - Tim
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.SLASH && !isSLASHDown) { // update hints while "/" is pressed
                 String h = new Challenge(challengeString).generateHint(game.getPlacementString());
@@ -997,16 +1016,16 @@ public class Board extends Application {
                 }
                 isSLASHDown = true;
             }
+            // rotate any piece being hovered or dragged
             else if (e.getCode() == KeyCode.R) {
-                System.out.println("Pressed R");
                 for (Node current : gTiles.getChildren()) {
                     if (current instanceof DraggableTile) {
-                        if (((DraggableTile) current).isHover) {
+                        if (((DraggableTile) current).isHover || ((DraggableTile) current).isDrag) {
                             ((DraggableTile) current).rotate(90);
-                            System.out.println("Tile is rotated");
+//                            System.out.println("Tile is rotated");
                         }
                     } else {
-                        System.out.println("Tile " + current + " is not rotated");
+//                        System.out.println("Tile " + current + " is not rotated");
                     }
                 }
             }

@@ -65,13 +65,10 @@ public class GameBoardArray {
     public State getStateAt(int x, int y) { return gameBoard[x][y]; }
 
     /*
-    Authorship: Rebecca Gibson
+    Authorship: Rebecca Gibson, Timothy james
      */
     // based on the placementString, returns the appropriate Tile of a given Position
     public Tile getTileAt (Position p) {
-        // check position has a tile
-        if (getStateAt(p) == EMP || getStateAt(p) == NLL)
-            throw new IllegalArgumentException("No Tile At: "+p);
         String correctpp = "";
         // split placement string into array of tiles
         Tile[] ppTiles = Tile.placementToTileArray(getPlacementString());
@@ -83,6 +80,11 @@ public class GameBoardArray {
                 }
             }
         }
+
+        // check position has a tile
+        if (correctpp.equals(""))
+            throw new IllegalArgumentException("No Tile At: "+p);
+
         return new Tile(correctpp);
     }
 
@@ -176,14 +178,16 @@ public class GameBoardArray {
     }
 
     /*
-    Authorship: Rebecca Gibson
+    Authorship: Rebecca Gibson, Timothy James
      */
     // removes a given tile from the board
     public String removeFromBoard (Tile t) {
+        // this check does not account for origin positions that are empty - Tim
         // 1. check that the Tile actually exists on the board before it can be removed
-        if (!t.equals(getTileAt(t.getPosition()))) {
-            throw new IllegalArgumentException("Tile "+t+" does not exist on the current game board");
-        }
+//        if (!t.equals(getTileAt(t.getPosition()))) {
+//            throw new IllegalArgumentException("Tile "+t+" does not exist on the current game board");
+//        }
+
         // 2. update the gameBoard by removing the Tile
         for (Position p : t.getShapeArrangement()) {
             gameBoard[p.getX()][p.getY()] = EMP;
