@@ -40,14 +40,14 @@ import static comp1110.ass2.Shape.*;
 // DONE Rotation on key press
 // TODO Drag off board
 // DONE Drag and drop check valid
-// TODO Drag and drop highlight/overlay
+// DONE Drag and drop highlight/overlay
 // DONE Generate challenge
 // DONE Display challenge
 // DONE Reset button
 // TODO Check if the user has found a solution
 // DONE Generating a new challenge should reset the board
 // DONE Remove text box for letting the user enter placement strings (drag and drop only)
-// TODO instructions???
+// DONE instructions???
 // TODO task11
 
 /*
@@ -63,6 +63,7 @@ public class Board extends Application {
     private GameBoardArray game = new GameBoardArray();
 
     private GTile hint;
+    private GTile preview;
     private boolean isSLASHDown = false;
 
     // Size of the board within the window
@@ -466,6 +467,7 @@ public class Board extends Application {
             this.setOnMouseDragged(event -> {
                 setLayoutX(event.getSceneX() - mouseX);
                 setLayoutY(event.getSceneY() - mouseY);
+                placementPreview();
                 setInGame(true);    //resizes when dragged for easier placement
             });
 
@@ -514,7 +516,52 @@ public class Board extends Application {
 
         }
 
+        // modification of snapToGameGrid() which creates a preview of where snapping will occur
+        void placementPreview() {
+            try {
+                double x = getLayoutX();
+                double y = getLayoutY();
+                Position pos = null;
+
+                // Figure out where the game square is
+                if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
+                    double ajX = x - OFFSET_X + 10;
+                    double ajY = y - OFFSET_Y + 10;
+
+                    int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
+                    int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
+
+                    pos = new Position(tileX,tileY);
+                }
+
+                if (pos != null) {
+                    Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
+                    this.inGame = true;
+                    if (inGame) {
+                        if (game.checkValidPosition(newTile)) {
+                            createPreview(newTile);
+                        }
+                        else {
+                            root.getChildren().remove(preview);
+                        }
+                    }
+                }
+            }
+            // when invalid placements are attempted, send to default placement - Tim
+            catch (IllegalArgumentException ex) {
+                root.getChildren().remove(preview);
+            }
+        }
+
         //N.B. maybe use a key 'r' and every time that is pressed, the tile is rotated 90 degrees clockwise
+    }
+
+    // creates a preview image of a tile
+    private void createPreview(Tile t) {
+        root.getChildren().remove(preview);
+        preview = new GTile(t);
+        preview.setOpacity(0.25);
+        root.getChildren().add(preview);
     }
 
     /**
