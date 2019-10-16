@@ -197,6 +197,15 @@ public class GameBoardArray {
         return placementString;
     }
 
+    public void removeFromBoardSafe (Tile t) {
+        try {
+            removeFromBoard(t);
+        } catch (IllegalArgumentException e) {
+            return;
+        }
+        return;
+    }
+
     /*
     Authorship: Timothy James
      */

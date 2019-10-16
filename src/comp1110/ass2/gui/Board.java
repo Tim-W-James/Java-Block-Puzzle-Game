@@ -280,6 +280,7 @@ public class Board extends Application {
             double y = getLayoutY();
             Position pos = null;
 
+            // Figure out where the game square is
             if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
                 double ajX = x - OFFSET_X + 10;
                 double ajY = y - OFFSET_Y + 10;
@@ -294,14 +295,17 @@ public class Board extends Application {
 */
                 pos = new Position(tileX,tileY);
             }
+            System.out.println("Adding tile " + t + " at position " + pos);
 
             if (pos != null) {
                 Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
+                this.inGame = true;
                 if (inGame) {
-                    game.removeFromBoard(t);
+                    game.removeFromBoardSafe(t);
 
                     if (game.checkValidPosition(newTile)) {
                         game.updateBoardPosition(newTile);
+                        renderGameBoard(game);
                     } else {
                         sendToDefaultPlacement();
                     }
@@ -448,6 +452,8 @@ public class Board extends Application {
                 if (getLayoutX() > GAME_GRID_WIDTH || getLayoutY() > BOARD_HEIGHT) {
                     setInGame(false);
                     sendToDefaultPlacement();
+                } else {
+                    snapToGameGrid();
                 }
             });
             //doesn't work because it can't tell if you're referring to 'this' tile when you press R
