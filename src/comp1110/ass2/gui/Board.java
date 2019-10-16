@@ -23,6 +23,7 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.scene.effect.DropShadow;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static comp1110.ass2.Shape.*;
@@ -127,7 +128,7 @@ public class Board extends Application {
 
 
     class GTile extends ImageView {
-        private Tile t;
+        Tile t;
         boolean inGame = false;
 
 
@@ -306,6 +307,8 @@ public class Board extends Application {
                     if (game.checkValidPosition(newTile)) {
                         game.updateBoardPosition(newTile);
                         renderGameBoard(game);
+                        setupInitialTileArea();
+
                     } else {
                         sendToDefaultPlacement();
                     }
@@ -396,6 +399,11 @@ public class Board extends Application {
                     homeX = TILE_AREA_STARTING_X;
                     break;
             }
+
+            if (game.getPlacementString().contains(String.valueOf(t.getShape().toChar()))) {
+                setOpacity(0);
+            }
+
             setLayoutX(homeX);
             setLayoutY(homeY-25);
         }
@@ -589,9 +597,6 @@ public class Board extends Application {
      */
     private void setupInitialTileArea() {
         //NOTE: Position values for tile shouldn't matter while it is in setup
-        /*
-        Converting each Tile A to J into a GTile
-         */
         DraggableTile A = new DraggableTile(new Tile("a000"), false);
         DraggableTile B = new DraggableTile(new Tile("b000"), false);
         DraggableTile C = new DraggableTile(new Tile("c000"), false);

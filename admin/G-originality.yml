@@ -28,10 +28,10 @@ declaration: >-
 # Add as many "url+licence+comment" entries as necessary
 # (or remove it altogether if you haven't used any external code)
 url: Dinosaurs Assignment 1
-  licence: Provided by lecturer
-  comment: Used the following code as a template for how to structure
+licence: Provided by lecturer
+comment: Used the following code as a template for how to structure
   the rotation code for our game.
-  code: setOnScroll(event -> {
+code: setOnScroll(event -> {
     if (System.currentTimeMillis() - lastRotationTime > ROTATION_THRESHOLD) {
     lastRotationTime = System.currentTimeMillis();
     rotate();
