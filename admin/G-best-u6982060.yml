@@ -30,12 +30,30 @@ declaration: >-
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - TODO
+   - Board.GTile (Tile t)
+   - Board.GTile (Position square)
+   - GameBoardArrayTest
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   - TODO
+  - FocusGame.isPiecePlacementWellFormed
+  - Board.sendToDefaultPlacement
+  - Board.setupInitialTileArea
+  - Board.setupInstructions
+  - Board.setupChallengeArea
+  - Board.showDefaultChallenge
+  - Board.generateChallenge
+  - Board.makeChallengeControls
+  - GameBoardArray.removeFromBoard
+  - GameBoardArray.getTileAt
+  - Tile.returnUnusedTileShapes
+  - Tile.getShapeArrangement
+  - Shape.charToShape
+  - Board.setupCompletion
+  - Board.hideCompletion
+  - Board.showCompletion
+  - Board.checkCompletion
 
 # sign *your* name and uid here
 name: Rebecca Gibson

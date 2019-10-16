@@ -107,7 +107,7 @@ public class Tile implements Comparable<Tile> {
 
 
     /*
-    Authorship: Tim James
+    Authorship: Tim James, Rebecca Gibson
     */
 
     // returns an array of positions a tile has, given a shape and direction,
