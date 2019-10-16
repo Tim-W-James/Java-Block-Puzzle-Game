@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -47,6 +48,7 @@ import static comp1110.ass2.Shape.*;
 // DONE Generating a new challenge should reset the board
 // DONE Remove text box for letting the user enter placement strings (drag and drop only)
 // TODO instructions???
+// TODO task11
 
 /*
 Authorship: Nicholas Dale, Rebecca Gibson, Timothy James
@@ -710,6 +712,16 @@ public class Board extends Application {
 
         popup.setTitle("How to Play");
         button.setOnAction(event -> popup.show());
+
+        // update with more info, formatting
+        VBox helpBox = new VBox();
+        helpBox.getChildren().add(new Text(
+                "Controls:\n" +
+                "- To Move: Click and drag\n" +
+                "- To Rotate: Press \"R\" while hovering over a shape\n" +
+                "- Hints: Hold \"/\""));
+        Scene helpScene = new Scene(helpBox, 300, 80);
+        popup.setScene(helpScene);
 
 
         root.getChildren().addAll(button);
