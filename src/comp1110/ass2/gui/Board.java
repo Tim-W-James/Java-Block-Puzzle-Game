@@ -278,46 +278,52 @@ public class Board extends Application {
          * This method updates GameBoardArray
          */
         void snapToGameGrid() {
-            double x = getLayoutX();
-            double y = getLayoutY();
-            Position pos = null;
+            try {
+                double x = getLayoutX();
+                double y = getLayoutY();
+                Position pos = null;
 
-            // Figure out where the game square is
-            if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                double ajX = x - OFFSET_X + 10;
-                double ajY = y - OFFSET_Y + 10;
+                // Figure out where the game square is
+                if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
+                    double ajX = x - OFFSET_X + 10;
+                    double ajY = y - OFFSET_Y + 10;
 
-                int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
-                int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
+                    int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
+                    int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
 
 /*
                 System.out.println("Guessing tile is at: " + tileX + "," + tileY);
                 System.out.println("Based on input coords: " + x + "," + y);
                 System.out.println("And adjusted coords: " + ajX + "," + ajY);
 */
-                pos = new Position(tileX,tileY);
-            }
-            System.out.println("Adding tile " + t + " at position " + pos);
-
-            if (pos != null) {
-                Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
-                this.inGame = true;
-                if (inGame) {
-                    game.removeFromBoardSafe(t);
-
-                    if (game.checkValidPosition(newTile)) {
-                        game.updateBoardPosition(newTile);
-                        renderGameBoard(game);
-                        setupInitialTileArea();
-
-                    } else {
-                        sendToDefaultPlacement();
-                    }
+                    pos = new Position(tileX,tileY);
                 }
-            } else {
+                System.out.println("Adding tile " + t + " at position " + pos);
+
+                if (pos != null) {
+                    Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
+                    this.inGame = true;
+                    if (inGame) {
+                        game.removeFromBoardSafe(t);
+
+                        if (game.checkValidPosition(newTile)) {
+                            game.updateBoardPosition(newTile);
+                            renderGameBoard(game);
+                            setupInitialTileArea();
+
+                        } else {
+                            sendToDefaultPlacement();
+                        }
+                    }
+                } else {
+                    sendToDefaultPlacement();
+                }
+                checkCompletion();
+            }
+            // when invalid placements are attempted, send to default placement - Tim
+            catch (IllegalArgumentException ex) {
                 sendToDefaultPlacement();
             }
-            checkCompletion();
         }
 
         /**
@@ -404,6 +410,10 @@ public class Board extends Application {
             if (game.getPlacementString().contains(String.valueOf(t.getShape().toChar()))) {
                 setOpacity(0);
             }
+
+            // now resets scale when sent back - Tim
+            setScaleX(0.5);
+            setScaleY(0.5);
 
             setLayoutX(homeX);
             setLayoutY(homeY-25);
