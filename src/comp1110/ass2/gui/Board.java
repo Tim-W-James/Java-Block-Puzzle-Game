@@ -82,9 +82,9 @@ public class Board extends Application {
     private final static RadioButton b5 = new RadioButton("Wizard");
 
     //The challenge string
-    private static String challengeString;
+    private static String challengeString = new String();
     //The respective solution
-    private static String solutionString;
+    private static String solutionString = new String();
 
     private static final String URI_BASE = "comp1110/ass2/gui/assets/";
 
@@ -675,7 +675,11 @@ public class Board extends Application {
         challenge.getChildren().clear();
 
         //randomly generate challenge when 'new challenge' button is hit
-        challengeString = generateChallenge();
+        if (challengeString.isEmpty()) {
+            challengeString = "RRRBWBBRB";
+            solutionString = "a000b013c113d302e323f400g420h522i613j701";
+        } else
+            challengeString = generateChallenge();
 
         //Formatting squares
         for (int i = 0; i < challengeString.length(); i++) {
@@ -688,27 +692,6 @@ public class Board extends Application {
             } else {
                 GTile challengeSquare = new GTile(new Position(i % 3, 2, State.charToState(challengeString.charAt(i))));
                 challenge.getChildren().add(challengeSquare);
-            }
-        }
-    }
-
-    /**
-     * Ensures that default challenge shown is the first starter challenge
-     */
-
-    private void forceDefaultChallenge() {
-        challengeString = "RRRBWBBRB";
-        solutionString = "a000b013c113d302e323f400g420h522i613j701";
-        for (int i = 0; i < challengeString.length(); i++) {
-            if (i >= 0 && i <= 2) {
-                GTile challengeSquare = new GTile(new Position(i % 3, 0, State.charToState(challengeString.charAt(i))));
-                defaultChallenge.getChildren().add(challengeSquare);
-            } else if (i >= 3 && i <= 5) {
-                GTile challengeSquare = new GTile(new Position(i % 3, 1, State.charToState(challengeString.charAt(i))));
-                defaultChallenge.getChildren().add(challengeSquare);
-            } else {
-                GTile challengeSquare = new GTile(new Position(i % 3, 2, State.charToState(challengeString.charAt(i))));
-                defaultChallenge.getChildren().add(challengeSquare);
             }
         }
     }
@@ -855,7 +838,6 @@ public class Board extends Application {
 
         setupChallengeArea();
         makeChallengeControls();
-        forceDefaultChallenge();
         hideCompletion();
 
         setupInstructions();
