@@ -18,6 +18,12 @@ declaration: >-
 #
 # Add as many "name+comment" entries as necessary
 # (or remove it altogether if you haven't collaborated with anyone)
+collaboration:
+  - name: Nicholas Dale
+    comment: Group member who contributed to discussion of code
+  - name: Rebecca Gibson
+    comment: Group member who contributed to discussion of code
+
 # Use this to list any code that you used that you did not write,
 # aside from code provided by the lecturer.  Provide a comment
 # explaining your use and the URL to that code and the licence for
@@ -29,12 +35,31 @@ declaration: >-
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
 class:
-   - TODO
+   - Viewer
+   - GTile (Tile t, boolean inGame)
+   -
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
 method:
-   - TODO
+   - GTile.rotate
+   - GTile.getGameGridSquare
+   - GTile.getDistance
+   - GTile.setInGame
+   - DraggableTile (Most of constructor and skeleton code)
+   - DraggableTile findNearestTile
+   - Board.setupTestControls
+   - Board.renderGameBoard
+   - Board.makeTiles
+   - Board.resetGTiles
+   - Direction (constructor)
+   - Shape (constructor)
+   - Tile.getWidth
+   - Tile.getHeight
+   - Tile.hashCode
+   - TileTest.checkEquals
+   - TileTest.checkHash
+   - ShapeTest (added a few)
 
 # sign *your* name and uid here
 name: Nicholas Dale
