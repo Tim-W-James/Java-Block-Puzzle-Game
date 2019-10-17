@@ -704,8 +704,11 @@ public class Board extends Application {
         }
     }
 
-    //Ensures that default challenge shown is the first starter challenge
-    private void showDefaultChallenge() {
+    /**
+     * Ensures that default challenge shown is the first starter challenge
+     */
+
+    private void forceDefaultChallenge() {
         challengeString = "RRRBWBBRB";
         solutionString = "a000b013c113d302e323f400g420h522i613j701";
         for (int i = 0; i < challengeString.length(); i++) {
@@ -868,7 +871,7 @@ public class Board extends Application {
 
         setupChallengeArea();
         makeChallengeControls();
-        showDefaultChallenge();
+        forceDefaultChallenge();
         hideCompletion();
 
         setupInstructions();
