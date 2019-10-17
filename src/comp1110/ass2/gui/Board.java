@@ -129,18 +129,9 @@ public class Board extends Application {
          */
         GTile(Tile t, boolean inGame) {
             this(t);
-            this.inGame = inGame;
+            setInGame(inGame);
             if (! inGame) {
                 sendToDefaultPlacement();
-            }
-
-            // Scaling
-            if (!inGame) {
-                setScaleX(0.5);
-                setScaleY(0.5);
-            } else {
-                setScaleX(1);
-                setScaleY(1);
             }
         }
 
@@ -297,7 +288,7 @@ public class Board extends Application {
         }
 
         /**
-         * get the game grid square for a given tile
+         * get the game grid square for a this tile
          * @return
          */
         Position getGameGridSquare() {
@@ -360,10 +351,7 @@ public class Board extends Application {
                 setOpacity(0);
             }
 
-            // now resets scale when sent back - Tim
-            setScaleX(0.5);
-            setScaleY(0.5);
-
+            setInGame(false);
             setLayoutX(homeX);
             setLayoutY(homeY-25);
         }
