@@ -667,11 +667,18 @@ public class Board extends Application {
         // update with more info, formatting
         VBox helpBox = new VBox();
         helpBox.getChildren().add(new Text(
-                "Controls:\n" +
+                "Welcome to virtual IQ-Focus!\n"+
+                        "\n"+
+                        "Your challenge is to place all the pieces of the game onto the \n" +
+                        "board in a such a way that the shaded area in the middle\n"+
+                        "corresponds to the challenge grid at the bottom of the screen\n" +
+                        "\n"+
+                 "Controls:\n" +
                 "- To Move: Click and drag\n" +
-                "- To Rotate: Press \"R\" while hovering over a shape\n" +
+                "- To Rotate: Press \"R\" while hovering over a shape or scroll over\n"+"a tile\n" +
+                "- To Remove a Piece: Click over a tile on the board\n"+
                 "- Hints: Hold \"/\""));
-        Scene helpScene = new Scene(helpBox, 300, 80);
+        Scene helpScene = new Scene(helpBox, 400, 300);
         popup.setScene(helpScene);
 
         button.toBack();
