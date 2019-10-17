@@ -110,19 +110,6 @@ public class Board extends Application {
         boolean inGame = false;
 
         /**
-         * Constructor for gTile with inGame value
-         * @param t
-         * @param inGame
-         */
-        GTile(Tile t, boolean inGame) {
-            this(t);
-            setInGame(inGame);
-            if (! inGame) {
-                sendToDefaultPlacement();
-            }
-        }
-
-        /**
          * Constructor to build a PLAYING tile
          */
         GTile(Tile t) {
@@ -386,7 +373,11 @@ public class Board extends Application {
          * @param inGame
          */
         DraggableTile(Tile t, boolean inGame) {
-            super(t, inGame);
+            super(t);
+            setInGame(inGame);
+            if (! inGame) {
+                sendToDefaultPlacement();
+            }
 
             this.setOnMousePressed(event -> {
                 mouseX = event.getX(); //gets X coordinates
