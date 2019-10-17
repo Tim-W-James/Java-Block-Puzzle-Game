@@ -11,7 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -22,12 +21,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
-import javafx.scene.effect.DropShadow;
 
-import java.lang.reflect.Array;
 import java.util.*;
-
-import static comp1110.ass2.Shape.*;
 
 // a packaged executable called game.jar can be found at the root directory,
 // to run this on IntelliJ go to Run -> Edit Configurations -> VM options,
@@ -539,10 +534,6 @@ public class Board extends Application {
 //                throw new IllegalArgumentException("Tile at position " + x + "," + y + " is not on game board");
     }
 
-
-
-
-
     /**
      * Sets up background of game
      */
@@ -571,7 +562,7 @@ public class Board extends Application {
     /***
      * Create controls for testing
      */
-    private void setupTestControls() {
+    private void setupResetButton() {
         Button reset = new Button("Reset");
         reset.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -879,7 +870,7 @@ public class Board extends Application {
         root.getChildren().add(defaultChallenge);
 
         setupBackground();
-        setupTestControls();
+        setupResetButton();
         renderGameBoard(game);
 
         setupInitialTiles();
