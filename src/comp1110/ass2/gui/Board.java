@@ -767,7 +767,7 @@ public class Board extends Application {
                 //Generates new challenge
                 challengeString = generateChallenge();
                 setupChallengeArea();
-                defaultChallenge.toBack();
+                defaultChallenge.getChildren().clear();
                 hideCompletion();
 
                 //Resets game board
