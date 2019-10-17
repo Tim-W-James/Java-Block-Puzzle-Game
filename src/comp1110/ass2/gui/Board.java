@@ -177,7 +177,7 @@ public class Board extends Application {
                     objTileID = "sq-g";
                     break;
                 default:
-                    objTileID = "sq-b";
+                    throw new IllegalArgumentException("Square position " + square + " is invalid");
             }
 
             setImage(new Image(URI_BASE + objTileID + ".png"));
@@ -726,7 +726,7 @@ public class Board extends Application {
         solutionString = FocusGame.getSolution(Solution.SOLUTIONS[random].objective);
 
         //if current challenge is the same as the newly generated one, generate a new challenge again
-        if (challengeString == Solution.SOLUTIONS[random].objective)
+        if (challengeString.equals(Solution.SOLUTIONS[random].objective))
             return generateChallenge();
         else
             return Solution.SOLUTIONS[random].objective;
@@ -901,8 +901,6 @@ public class Board extends Application {
                             ((DraggableTile) current).rotate();
                             ((DraggableTile) current).placementPreview();
                         }
-                    } else {
-
                     }
                 }
             }
