@@ -32,7 +32,6 @@ declaration: >-
 class:
    - Board.GTile (Tile t)
    - Board.GTile (Position square)
-   - GameBoardArrayTest
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
@@ -42,7 +41,7 @@ method:
   - Board.setupInitialTileArea
   - Board.setupInstructions
   - Board.setupChallengeArea
-  - Board.showDefaultChallenge
+  - Board.forceDefaultChallenge
   - Board.generateChallenge
   - Board.makeChallengeControls
   - GameBoardArray.removeFromBoard
@@ -54,6 +53,12 @@ method:
   - Board.hideCompletion
   - Board.showCompletion
   - Board.checkCompletion
+  - GameBoardArrayTest.checkConstructors
+  - GameBoardArrayTest.checkGetFieldMethods
+  - GameBoardArrayTest.checkGetTileAt
+  - GameBoardArrayTest.checkValidPosition
+  - GameBoardArrayTest.checkRemoveFromBoard
+
 
 # sign *your* name and uid here
 name: Rebecca Gibson
