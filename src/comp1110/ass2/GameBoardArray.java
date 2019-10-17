@@ -69,17 +69,19 @@ public class GameBoardArray {
      */
     // based on the placementString, returns the appropriate Tile of a given Position
     public Tile getTileAt (Position p) {
-        String correctpp = "";
+        String correctpp;
         // split placement string into array of tiles
         Tile[] ppTiles = Tile.placementToTileArray(getPlacementString());
         // Look at all the positions each Tile covers
+        StringBuilder correctppBuilder = new StringBuilder();
         for (Tile t : ppTiles) {
             for (Position pos : t.getShapeArrangement()) {
                 if (pos.getX() == p.getX() && pos.getY() == p.getY()){
-                    correctpp += t.getPlacement();
+                    correctppBuilder.append(t.getPlacement());
                 }
             }
         }
+        correctpp = correctppBuilder.toString();
 
         // check position has a tile
         if (correctpp.equals(""))
@@ -205,9 +207,7 @@ public class GameBoardArray {
         try {
             removeFromBoard(t);
         } catch (IllegalArgumentException e) {
-            return;
         }
-        return;
     }
 
     /*
@@ -216,7 +216,7 @@ public class GameBoardArray {
     // prints the array for easy debugging
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (int y = 0; y < 5; y++) {
             for (int x = 0; x < 9; x++) {
@@ -230,16 +230,16 @@ public class GameBoardArray {
                 }
 
                 if (gameBoard[x][y] == EMP)
-                    result += br1+"["+x+"]["+y+"]:   "+br2+" ";
+                    result.append(br1).append("[").append(x).append("][").append(y).append("]:   ").append(br2).append(" ");
                 else if (gameBoard[x][y] == NLL)
-                    result += br1+"["+x+"]["+y+"]:___"+br2+" ";
+                    result.append(br1).append("[").append(x).append("][").append(y).append("]:___").append(br2).append(" ");
                 else
-                    result += br1+"["+x+"]["+y+"]:"+gameBoard[x][y]+br2+" ";
+                    result.append(br1).append("[").append(x).append("][").append(y).append("]:").append(gameBoard[x][y]).append(br2).append(" ");
             }
-            result += "\n";
+            result.append("\n");
         }
 
-        return result;
+        return result.toString();
     }
 
     /*
