@@ -41,7 +41,6 @@ method:
   - Board.setupInitialTileArea
   - Board.setupInstructions
   - Board.setupChallengeArea
-  - Board.forceDefaultChallenge
   - Board.generateChallenge
   - Board.makeChallengeControls
   - GameBoardArray.removeFromBoard
