@@ -119,9 +119,6 @@ public class Board extends Application {
         Tile t;
         boolean inGame = false;
 
-
-        //What's the difference between this GTile and the next?? Which one are we actually using?
-
         /**
          * Constructor for gTile with inGame value
          * @param t
@@ -174,8 +171,6 @@ public class Board extends Application {
                 setLayoutY(getLayoutY() + SQUARE_SIZE * t.getHeight());
             }
 
-//            System.out.println(t.getPosition());
-
         }
 
         /**
@@ -194,9 +189,6 @@ public class Board extends Application {
             switch (square.getS()) {
                 case WTE:
                     objTileID = "sq-w";
-                    break;
-                case BLE:
-                    objTileID = "sq-b";
                     break;
                 case RED:
                     objTileID = "sq-r";
