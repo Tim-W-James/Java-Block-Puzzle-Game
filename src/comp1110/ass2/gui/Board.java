@@ -587,6 +587,13 @@ public class Board extends Application {
         });
         reset.toFront();
 
+        HBox hb = new HBox();
+        hb.getChildren().add(reset);
+        hb.setSpacing(10);
+        hb.setLayoutX(GAME_GRID_WIDTH/2+10);
+        hb.setLayoutY(15);
+
+        controls.getChildren().add(hb);
         controls.toFront();
     }
 
