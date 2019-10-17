@@ -2,8 +2,6 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -155,11 +153,11 @@ public class Board extends Application {
         /**
          * Constructor to build CHALLENGE tiles for the challenge area
 
-        Using Position's int x and int y parameters to specify where they should be placed on the
-        challenge board by treating them as coordinates:
-            (0,0) (1,0) (2,0)
-            (0,1) (1,1) (2,1)
-            (0,2) (1,2) (2,2)
+         Using Position's int x and int y parameters to specify where they should be placed on the
+         challenge board by treating them as coordinates:
+         (0,0) (1,0) (2,0)
+         (0,1) (1,1) (2,1)
+         (0,2) (1,2) (2,2)
          */
 
         GTile(Position square) {
@@ -208,7 +206,7 @@ public class Board extends Application {
                     break;
                 case SOUTH:
                     newDirection = Direction.WEST;
-                     break;
+                    break;
                 case WEST:
                     newDirection = Direction.NORTH;
                     break;
@@ -234,18 +232,17 @@ public class Board extends Application {
 
                 if (pos != null) {
                     Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
-                    this.inGame = true;
-                    if (inGame) {
-                        game.removeFromBoardSafe(t);
+                    setInGame(true);
 
-                        if (game.checkValidPosition(newTile)) {
-                            game.updateBoardPosition(newTile);
-                            renderGameBoard(game);
-                            setupInitialTiles();
+                    game.removeFromBoardSafe(t);
 
-                        } else {
-                            sendToDefaultPlacement();
-                        }
+                    if (game.checkValidPosition(newTile)) {
+                        game.updateBoardPosition(newTile);
+                        renderGameBoard(game);
+                        setupInitialTiles();
+
+                    } else {
+                        sendToDefaultPlacement();
                     }
                 } else {
                     sendToDefaultPlacement();
@@ -260,7 +257,7 @@ public class Board extends Application {
 
         /**
          * get the game grid square for a this tile
-         * @return
+         * @return returns a position for the top left of the tile
          */
         Position getGameGridSquare() {
             return Board.getGameGridSquare(getLayoutX(),getLayoutY());
@@ -338,7 +335,7 @@ public class Board extends Application {
 
         /**
          * Scales tile if it's active
-         * @param inGame
+         * @param inGame whether the tile is in the game grid
          */
         void setInGame(boolean inGame) {
             this.inGame = inGame;
@@ -366,8 +363,8 @@ public class Board extends Application {
 
         /**
          * Constructor to build a draggable gTile
-         * @param t
-         * @param inGame
+         * @param t A logical tile
+         * @param inGame whether the tile is starting in the game or not
          */
         DraggableTile(Tile t, boolean inGame) {
             super(t);
@@ -401,13 +398,9 @@ public class Board extends Application {
                 }
             });
 
-            this.setOnMouseEntered(event -> {
-                isHover = true;
-            });
+            this.setOnMouseEntered(event -> isHover = true);
 
-            this.setOnMouseExited(event -> {
-                isHover = false;
-            });
+            this.setOnMouseExited(event -> isHover = false);
 
             //Scroll to rotate
             this.setOnScroll(event -> {
@@ -427,20 +420,15 @@ public class Board extends Application {
          */
         void placementPreview() {
             try {
-                double x = getLayoutX();
-                double y = getLayoutY();
                 Position pos = getGameGridSquare();
 
                 if (pos != null) {
                     Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
-                    this.inGame = true;
-                    if (inGame) {
-                        if (game.checkValidPosition(newTile)) {
-                            createPreview(newTile);
-                        }
-                        else {
-                            root.getChildren().remove(preview);
-                        }
+                    if (game.checkValidPosition(newTile)) {
+                        createPreview(newTile);
+                    }
+                    else {
+                        root.getChildren().remove(preview);
                     }
                 }
             }
@@ -454,7 +442,7 @@ public class Board extends Application {
 
     /**
      * Creates the tile preview image
-     * @param t
+     * @param t Create a preview tile representing the logical tile t
      */
     private void createPreview(Tile t) {
         root.getChildren().remove(preview);
@@ -552,23 +540,20 @@ public class Board extends Application {
      */
     private void setupResetButton() {
         Button reset = new Button("Reset");
-        reset.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                game.resetGameBoardArray();
-                resetGTiles();
-                hideCompletion();
+        reset.setOnAction(actionEvent -> {
+            game.resetGameBoardArray();
+            resetGTiles();
+            hideCompletion();
 
-                renderGameBoard(game);
-                setupInitialTiles();
-            }
+            renderGameBoard(game);
+            setupInitialTiles();
         });
         reset.toFront();
 
         HBox hb = new HBox();
         hb.getChildren().add(reset);
         hb.setSpacing(10);
-        hb.setLayoutX(GAME_GRID_WIDTH/2+10);
+        hb.setLayoutX(GAME_GRID_WIDTH/2.0+10);
         hb.setLayoutY(15);
 
         controls.getChildren().add(hb);
@@ -596,7 +581,7 @@ public class Board extends Application {
 
     /**
      * Renders game board
-     * @param g
+     * @param g the GameBoardArray that will be rendered
      */
     void renderGameBoard(GameBoardArray g) {
         State[][] ToDraw = g.getBoardState();
@@ -655,9 +640,9 @@ public class Board extends Application {
         VBox helpBox = new VBox();
         helpBox.getChildren().add(new Text(
                 "Controls:\n" +
-                "- To Move: Click and drag\n" +
-                "- To Rotate: Press \"R\" while hovering over a shape\n" +
-                "- Hints: Hold \"/\""));
+                        "- To Move: Click and drag\n" +
+                        "- To Rotate: Press \"R\" while hovering over a shape\n" +
+                        "- Hints: Hold \"/\""));
         Scene helpScene = new Scene(helpBox, 300, 80);
         popup.setScene(helpScene);
 
@@ -749,22 +734,19 @@ public class Board extends Application {
 
     private void makeChallengeControls() {
         Button button = new Button("New Challenge");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                //Generates new challenge
-                challengeString = generateChallenge();
-                setupChallengeArea();
-                defaultChallenge.getChildren().clear();
-                hideCompletion();
+        button.setOnAction(event -> {
+            //Generates new challenge
+            challengeString = generateChallenge();
+            setupChallengeArea();
+            defaultChallenge.getChildren().clear();
+            hideCompletion();
 
-                //Resets game board
-                game.resetGameBoardArray();
-                resetGTiles();
-                renderGameBoard(game);
-                setupInitialTiles();
+            //Resets game board
+            game.resetGameBoardArray();
+            resetGTiles();
+            renderGameBoard(game);
+            setupInitialTiles();
 
-            }
         });
         button.setLayoutX(CHALLENGE_AREA_X+SQUARE_SIZE*4);
         button.setLayoutY(CHALLENGE_AREA_Y);
@@ -812,7 +794,7 @@ public class Board extends Application {
      */
     private void setupCompletion() {
         completionText.setFont(Font.font("Comic Sans", FontWeight.EXTRA_BOLD, 30));
-        completionText.setLayoutX(BOARD_WIDTH/2-140);
+        completionText.setLayoutX(BOARD_WIDTH/2.0-140);
         completionText.setLayoutY(BOARD_HEIGHT+30);
         completionText.setTextAlignment(TextAlignment.CENTER);
         root.getChildren().add(completionText);
@@ -844,7 +826,7 @@ public class Board extends Application {
 
     /**
      * Main method
-     * @param primaryStage
+     * @param primaryStage Starting stage for the GUI
      */
     @Override
     public void start(Stage primaryStage) {
@@ -892,9 +874,10 @@ public class Board extends Application {
                     setupInitialTiles();
                 }
                 catch (IllegalArgumentException ex) {
+                    System.out.println("IllegalArgumentException while trying to remove tile at " + p);
                 }
-                catch(ArrayIndexOutOfBoundsException ex)
-                {
+                catch(ArrayIndexOutOfBoundsException ex) {
+                    System.out.println("ArrayIndexOutOfBoundsException while trying to remove tile at " + p);
                 }
             }
         });
