@@ -298,8 +298,8 @@ public class Board extends Application {
 
         /**
          * Returns the grid position of the gamegrid
-         * @param x
-         * @param y
+         * @param x Optional x
+         * @param y Optional y
          * The function can either take a specified x,y or be called from a given tile
          * @return Position or null if position is invalid
          */
@@ -489,18 +489,7 @@ public class Board extends Application {
             try {
                 double x = getLayoutX();
                 double y = getLayoutY();
-                Position pos = null;
-
-                // Figure out where the game square is
-                if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                    double ajX = x - OFFSET_X + 5;
-                    double ajY = y - OFFSET_Y + 5;
-
-                    int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
-                    int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
-
-                    pos = new Position(tileX,tileY);
-                }
+                Position pos = getGameGridSquare();
 
                 if (pos != null) {
                     Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
