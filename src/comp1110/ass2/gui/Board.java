@@ -217,8 +217,6 @@ public class Board extends Application {
             this.t = new Tile(t.getShape(),t.getPosition(),newDirection);
 
             setRotate(t.getDirection().toDegree());
-
-            System.out.println("The tile " + this + " is rotated 90 degrees");
         }
 
         /**
