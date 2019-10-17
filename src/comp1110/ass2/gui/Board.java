@@ -100,8 +100,6 @@ public class Board extends Application {
 
     private final Text completionText = new Text("Challenge completed!");
 
-    private HashSet<DraggableTile> allTiles = new HashSet<>();
-
     //Rotation
     private static final long ROTATION_THRESHOLD = 100;
 
@@ -557,7 +555,6 @@ public class Board extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 game.resetGameBoardArray();
-                allTiles.clear();
                 resetGTiles();
                 hideCompletion();
 
@@ -762,7 +759,6 @@ public class Board extends Application {
 
                 //Resets game board
                 game.resetGameBoardArray();
-                allTiles.clear();
                 resetGTiles();
                 renderGameBoard(game);
                 setupInitialTiles();
@@ -934,13 +930,5 @@ public class Board extends Application {
                 isSLASHDown = false;
             }
         });
-
-        for (Node current :
-                gTiles.getChildren()) {
-            if (current instanceof DraggableTile) {
-                allTiles.add((DraggableTile) current);
-            }
-        }
-
     }
 }
