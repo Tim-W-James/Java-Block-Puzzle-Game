@@ -37,7 +37,6 @@ collaboration:
 class:
    - Viewer
    - GTile (Tile t, boolean inGame)
-   -
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
