@@ -121,18 +121,9 @@ public class Board extends Application {
          */
         GTile(Tile t, boolean inGame) {
             this(t);
-            this.inGame = inGame;
+            setInGame(inGame);
             if (! inGame) {
                 sendToDefaultPlacement();
-            }
-
-            // Scaling
-            if (!inGame) {
-                setScaleX(0.5);
-                setScaleY(0.5);
-            } else {
-                setScaleX(1);
-                setScaleY(1);
             }
         }
 
@@ -260,18 +251,7 @@ public class Board extends Application {
             try {
                 double x = getLayoutX();
                 double y = getLayoutY();
-                Position pos = null;
-
-                // Figure out where the game square is
-                if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                    double ajX = x - OFFSET_X + 5;
-                    double ajY = y - OFFSET_Y + 5;
-
-                    int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
-                    int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
-
-                    pos = new Position(tileX,tileY);
-                }
+                Position pos = getGameGridSquare();
 
                 if (pos != null) {
                     Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
@@ -300,29 +280,12 @@ public class Board extends Application {
         }
 
         /**
-         * Returns the grid position of the game grid
-         * @param x
-         * @param y
-         * The function can either take a specified x,y or be called from a given tile
+         * get the game grid square for a this tile
+         * @return
          */
-         Position getGameGridSquare(double x, double y){
-            if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                double ajX = x - OFFSET_X + 5;
-                double ajY = y - OFFSET_Y + 5;
-
-                int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
-                int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
-
-                return (new Position(tileX, tileY));
-            }
-            else
-                return (new Position(0,0));
-        }
-
         Position getGameGridSquare() {
-             return getGameGridSquare(getLayoutX(),getLayoutY());
+            return Board.getGameGridSquare(getLayoutX(),getLayoutY());
         }
-
 
         /**
          * Sends the playing tiles to its starting position
@@ -379,10 +342,7 @@ public class Board extends Application {
                 setOpacity(0);
             }
 
-            //Reset scale in tile starting area
-            setScaleX(0.5);
-            setScaleY(0.5);
-
+            setInGame(false);
             setLayoutX(homeX);
             setLayoutY(homeY-25);
         }
@@ -418,8 +378,6 @@ public class Board extends Application {
                     getLayoutX() + "," + getLayoutY() + "\n" + this.t + "\n";
         }
     }
-
-
 
     class DraggableTile extends GTile {
         private double mouseX, mouseY;
@@ -488,18 +446,7 @@ public class Board extends Application {
             try {
                 double x = getLayoutX();
                 double y = getLayoutY();
-                Position pos = null;
-
-                // Figure out where the game square is
-                if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                    double ajX = x - OFFSET_X + 5;
-                    double ajY = y - OFFSET_Y + 5;
-
-                    int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
-                    int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
-
-                    pos = new Position(tileX,tileY);
-                }
+                Position pos = getGameGridSquare();
 
                 if (pos != null) {
                     Tile newTile = new Tile(this.t.getShape(),pos,this.t.getDirection());
@@ -570,6 +517,30 @@ public class Board extends Application {
             throw new NoSuchElementException("No tiles exist in gTiles");
         }
     }
+
+    /**
+     * Returns the grid position of the gamegrid
+     * @param x Optional x
+     * @param y Optional y
+     * The function can either take a specified x,y or be called from a given tile
+     * @return Position or null if position is invalid
+     */
+    static Position getGameGridSquare(double x, double y){
+        if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
+            double ajX = x - OFFSET_X + 5;
+            double ajY = y - OFFSET_Y + 5;
+
+            int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
+            int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
+            return (new Position(tileX, tileY));
+        }
+        else
+            return null;
+//                throw new IllegalArgumentException("Tile at position " + x + "," + y + " is not on game board");
+    }
+
+
+
 
 
     /**
@@ -921,17 +892,11 @@ public class Board extends Application {
         scene.setOnMousePressed(e -> {
             double x = e.getX();
             double y = e.getY();
+            Position p = getGameGridSquare(x,y);
 
             // remove a piece on click
             if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
                 try {
-                    double ajX = x - OFFSET_X + 5;
-                    double ajY = y - OFFSET_Y + 5;
-
-                    int tileX = (int) Math.floor(ajX / SQUARE_SIZE);
-                    int tileY = (int) Math.floor(ajY / SQUARE_SIZE);
-
-                    Position p = new Position(tileX, tileY);
                     Tile t = game.getTileAt(p);
 
                     game.removeFromBoard(t);
