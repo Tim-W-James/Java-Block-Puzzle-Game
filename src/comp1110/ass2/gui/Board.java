@@ -161,9 +161,6 @@ public class Board extends Application {
                 setFitHeight(t.getWidth() * SQUARE_SIZE);
             }
 
-//            System.out.println(t.getHeight() + ", " + t.getWidth());
-//            System.out.println(t.getShape().getMaxReach(t.getDirection(), true) + ", " + t.getShape().getMaxReach(t.getDirection(), false));
-
             Rotate rotation = new Rotate();
             rotation.setPivotX(0);
             rotation.setPivotY(0);
@@ -230,10 +227,11 @@ public class Board extends Application {
 
         /**
          * Rotate the tile by 90 degrees and update any necessary coordinates
+         * Defaults to 90 degrees if no argument provided
          */
-        void rotate(int rotation) {
+        void rotate() {
             root.getChildren().remove(preview);
-            setRotate((getRotate() + rotation) % 360);
+
             Direction d = t.getDirection();
             Direction newDirection;
             switch (d) {
@@ -254,16 +252,17 @@ public class Board extends Application {
             }
 
             this.t = new Tile(t.getShape(),t.getPosition(),newDirection);
-//            System.out.println("The tile " + this.t + " is rotated " + rotation + " degrees");
-        }
 
-        void rotate() {
-            rotate(90);
+            setRotate(t.getDirection().toDegree());
+
+            System.out.println("The tile " + this + " is rotated 90 degrees");
+
         }
 
         /**
          * Snaps tile to game grid
          * This method updates GameBoardArray
+         * And also updates the game board rendering
          */
         void snapToGameGrid() {
             try {
@@ -273,8 +272,8 @@ public class Board extends Application {
 
                 // Figure out where the game square is
                 if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                    double ajX = x - OFFSET_X + 10;
-                    double ajY = y - OFFSET_Y + 10;
+                    double ajX = x - OFFSET_X + 5;
+                    double ajY = y - OFFSET_Y + 5;
 
                     int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
                     int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
@@ -318,11 +317,12 @@ public class Board extends Application {
          * Returns the grid position of the gamegrid
          * @param x
          * @param y
+         * The function can either take a specified x,y or be called from a given tile
          */
          Position getGameGridSquare(double x, double y){
             if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                double ajX = x - OFFSET_X + 10;
-                double ajY = y - OFFSET_Y + 10;
+                double ajX = x - OFFSET_X + 5;
+                double ajY = y - OFFSET_Y + 5;
 
                 int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
                 int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
@@ -513,8 +513,8 @@ public class Board extends Application {
 
                 // Figure out where the game square is
                 if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
-                    double ajX = x - OFFSET_X + 10;
-                    double ajY = y - OFFSET_Y + 10;
+                    double ajX = x - OFFSET_X + 5;
+                    double ajY = y - OFFSET_Y + 5;
 
                     int tileX = (int)Math.floor(ajX / SQUARE_SIZE);
                     int tileY = (int)Math.floor(ajY / SQUARE_SIZE);
@@ -979,8 +979,8 @@ public class Board extends Application {
             // remove a piece on click
             if (x < BOARD_WIDTH && y < BOARD_HEIGHT) {
                 try {
-                    double ajX = x - OFFSET_X + 10;
-                    double ajY = y - OFFSET_Y + 10;
+                    double ajX = x - OFFSET_X + 5;
+                    double ajY = y - OFFSET_Y + 5;
 
                     int tileX = (int) Math.floor(ajX / SQUARE_SIZE);
                     int tileY = (int) Math.floor(ajY / SQUARE_SIZE);
@@ -1021,7 +1021,8 @@ public class Board extends Application {
                 for (Node current : gTiles.getChildren()) {
                     if (current instanceof DraggableTile) {
                         if (((DraggableTile) current).isHover || ((DraggableTile) current).isDrag) {
-                            ((DraggableTile) current).rotate(90);
+                            ((DraggableTile) current).rotate();
+                            ((DraggableTile) current).placementPreview();
 //                            System.out.println("Tile is rotated");
                         }
                     } else {
