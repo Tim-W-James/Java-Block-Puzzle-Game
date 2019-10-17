@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -111,6 +112,7 @@ public class Board extends Application {
 
         /**
          * Constructor to build a PLAYING tile
+         * @param t a logical Tile object
          */
         GTile(Tile t) {
             this.t = t;
@@ -129,7 +131,6 @@ public class Board extends Application {
             //Location
             setLayoutX((t.getPosition().getX()) * SQUARE_SIZE + OFFSET_X);
             setLayoutY((t.getPosition().getY()) * SQUARE_SIZE + OFFSET_Y);
-
 
             //Rotation
             Rotate rotation = new Rotate();
@@ -221,7 +222,6 @@ public class Board extends Application {
             setRotate(t.getDirection().toDegree());
 
             System.out.println("The tile " + this + " is rotated 90 degrees");
-
         }
 
         /**
@@ -231,8 +231,6 @@ public class Board extends Application {
          */
         void snapToGameGrid() {
             try {
-                double x = getLayoutX();
-                double y = getLayoutY();
                 Position pos = getGameGridSquare();
 
                 if (pos != null) {
