@@ -29,11 +29,11 @@
   <h2 align="center">Java Block Puzzle Game</h2>
 
   <p align="center">
-    Block puzzle game with GUI
+    Block puzzle game with GUI.
     <br />
     This project was created during my university studies at <b>ANU</b> in <b>2019</b> and has been transferred from the ANU GitLab server.
     <br />
-    <b>Group project</b> - see <a href="#acknowledgements">Acknowledgements</a> and code comments for attributions
+    <b>Group project</b> - see <a href="#acknowledgements">Acknowledgements</a> and code comments for attributions.
     <br />
 <!--     <a href="https://github.com/Tim-W-James/repo_name"><strong>Explore the docs »</strong></a>
     <br /> 
